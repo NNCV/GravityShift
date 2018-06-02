@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca76c486b4e199a4cbf262f976cf9f25, type: 3}
+  m_Name: Protos
+  m_EditorClassIdentifier: 
+  itemImage: {fileID: 21300000, guid: 9a492da31bbbd0247971857bee156aa2, type: 3}
+  itemName: Protos Reactor
+  itemDescription: A prototype of sorts
+  itemValue: 0
+  itemType: Equippable
+  equipmentType: 0
+  slotImage: {fileID: 21300000, guid: 0159fb9eed8e2f74cbabb1fcac8a8736, type: 3}
+  stat1: energy
+  stat1Value: 1
+  stat2: regen
+  stat2Value: 0.5
+  maxEnergy: 1000
+  rechargeRate: 4
+  timeRecharge: 2
