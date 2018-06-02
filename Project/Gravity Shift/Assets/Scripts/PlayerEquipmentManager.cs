@@ -83,35 +83,37 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public void Update()
     {
-        
-        if(Input.GetMouseButtonDown(0))
+        if (pm.timeStopped == false)
         {
-            Fire();
-        }
-
-        if (shieldRecharge > 0)
-        {
-            shieldCooldown += Time.deltaTime;
-            if (shieldCooldown >= shieldRechargeRate)
+            if (Input.GetMouseButtonDown(0))
             {
-                shieldCurrent += shieldRecharge;
+                Fire();
             }
-        }
 
-        energyCooldown += Time.deltaTime;
-        if (energyCooldown >= energyRechargeRate)
-        {
-            energyCurrent += energyRecharge;
-        }
+            if (shieldRecharge > 0)
+            {
+                shieldCooldown += Time.deltaTime;
+                if (shieldCooldown >= shieldRechargeRate)
+                {
+                    shieldCurrent += shieldRecharge;
+                }
+            }
 
-        if (shieldCurrent >= shieldMax)
-        {
-            shieldCurrent = shieldMax;
-        }
+            energyCooldown += Time.deltaTime;
+            if (energyCooldown >= energyRechargeRate)
+            {
+                energyCurrent += energyRecharge;
+            }
 
-        if (energyCurrent >= energyMax)
-        {
-            energyCurrent = energyMax;
+            if (shieldCurrent >= shieldMax)
+            {
+                shieldCurrent = shieldMax;
+            }
+
+            if (energyCurrent >= energyMax)
+            {
+                energyCurrent = energyMax;
+            }
         }
     }
 

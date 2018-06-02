@@ -42,27 +42,24 @@ public class PlayerManager : MonoBehaviour {
     public float timeWait = 1f;
     public float timeCurrent = 0f;
     public bool timeStopped = false;
-
-    public IEnumerator TimeToZero()
+    
+    private void Update()
     {
-        timeCurrent += Time.deltaTime;
-
-        if (timeCurrent >= timeWait)
+        if(timeStopped == true)
         {
-            if (timeMult <= 0.05f)
+            if(timeCurrent >= timeWait)
             {
-                timeMult = 0;
-                timeStopped = true;
+                Time.timeScale = Time.timeScale / timeSubMult;
+                if(Time.timeScale <= 0.05f)
+                {
+                    Time.timeScale = 0f;
+                }
             }
             else
-                timeMult = timeMult / timeSubMult;
+            {
+                timeCurrent += Time.deltaTime;
+            }
         }
-        
-        Time.timeScale = timeMult;
-
-        if (timeStopped == false)
-            yield return TimeToZero();
-        else yield return null;
     }
 
     public void Start()
@@ -84,7 +81,8 @@ public class PlayerManager : MonoBehaviour {
     public void stopTime()
     {
         timeStopped = true;
-        StartCoroutine(TimeToZero());
+        timeCurrent = 0f;
+        //StartCoroutine(TimeToZero());
     }
 
     public void returnTime()
