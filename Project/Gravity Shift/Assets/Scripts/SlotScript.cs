@@ -57,6 +57,15 @@ public class SlotScript : MonoBehaviour {
         }
     }
 
+    public void DisableChildren()
+    {
+        for(int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(false);
+        }
+        transform.gameObject.SetActive(false);
+    }
+
     public void DisplayDialogue()
     {
         if (itemInSlot != null)
@@ -71,7 +80,7 @@ public class SlotScript : MonoBehaviour {
                     sds.animState = 1;
                     sds.DisplayStats(this);
                     break;
-                case "Equippable":
+                case "Equippable Shield":
                     sds.animState = 2;
                     sds.DisplayStats(this);
                     break;
@@ -79,6 +88,18 @@ public class SlotScript : MonoBehaviour {
                     sds.animState = 3;
                     sds.DisplayStats(this);
                     break;
+            }
+            if(itemInSlot.itemType.Contains("Equippable"))
+            {
+                if (itemInSlot.itemType == "Equippable Weapon")
+                {
+                    sds.animState = 3;
+                }
+                else
+                {
+                    sds.animState = 2;
+                }
+                sds.DisplayStats(this);
             }
         }
         else sds.animState = 0;

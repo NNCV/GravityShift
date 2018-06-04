@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Diffuser Mk1
   itemDescription: A typical shield
   itemValue: 0
-  itemType: Equippable
+  itemType: Equippable Shield
   equipmentType: 0
   slotImage: {fileID: 21300000, guid: 7b201c06c4d73504cbc815d6407707a3, type: 3}
   stat1: shield

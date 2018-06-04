@@ -27,20 +27,121 @@ public class PlayerEquipmentManager : MonoBehaviour
     public float energyCooldown;
 
     public int weaponSelected = 0;
+    
+    public void SetEquipment()
+    {
+        int currentWeaponNumber = 0;
+        int currentShieldNumber = 0;
+        int currentReactorNumber = 0;
+
+        currentHull = (HullItem)equipment[0].itemInSlot;
+
+        for (int a = 0; a < 6; a++)
+        {
+            if(equipment[a + 1].enabled == true)
+            {
+                currentBlasters[currentWeaponNumber] = (BlasterItem)equipment[a + 1].itemInSlot;
+                currentWeaponNumber++;
+            }
+        }
+
+        for (int b = 0; b < 3; b++)
+        {
+            if(equipment[b + 7].enabled == true)
+            {
+                currentShields[currentShieldNumber] = (ShieldItem)equipment[b + 7].itemInSlot;
+                currentShieldNumber++;
+            }
+        }
+
+        for (int c = 0; c < 3; c++)
+        {
+            if(equipment[c + 10].enabled == true)
+            {
+                currentReactors[currentReactorNumber] = (ReactorItem)equipment[c + 10].itemInSlot;
+                currentReactorNumber++;
+            }
+        }
+    }
 
     public void UpdateShipEquipmentStats()
     {
-        int weaponNumber = 0;
-        int shieldNumber = 0;
-        int reactorNumber = 0;
         equipment[0].itemInSlot = currentHull;
-        //equipment[0].DisplayItem();
-        for(int a = 1; a < currentHull.eqEnabled.Length; a++)
+        equipment[0].DisplayItem();
+
+        for (int a = 0; a < 6 ; a++)
+        {
+            if (currentHull.eqEnabled[a + 1] == 1)
+            {
+                equipment[a + 1].enabled = true;
+                if (a < currentHull.maxWeaponNumber)
+                {
+                    if (currentBlasters[a] != null)
+                        equipment[a + 1].itemInSlot = currentBlasters[a];
+                }
+                equipment[a + 1].DisplayItem();
+            }
+            else
+            {
+                equipment[a + 1].itemInSlot = null;
+                equipment[a + 1].DisableChildren();
+            }
+        }
+
+        for (int b = 0; b < 3 ; b++)
+        {
+            if (currentHull.eqEnabled[b + 7] == 1)
+            {
+                equipment[b + 7].enabled = true;
+                if (b < currentHull.maxShieldsNumber)
+                {
+                    if (currentShields[b] != null)
+                        equipment[b + 7].itemInSlot = currentShields[b];
+                }
+                equipment[b + 7].DisplayItem();
+            }
+            else
+            {
+                equipment[b + 7].itemInSlot = null;
+                equipment[b + 7].DisableChildren();
+            }
+        }
+
+        for (int b = 0; b < 3 ; b++)
+        {
+            if (currentHull.eqEnabled[b + 10] == 1)
+            {
+                equipment[b + 10].enabled = true;
+                if (b < currentHull.maxNeocortexNumber)
+                {
+                    if (currentReactors[b] != null)
+                        equipment[b + 10].itemInSlot = currentReactors[b];
+                }
+                equipment[b + 10].DisplayItem();
+            }
+            else
+            {
+                equipment[b + 10].itemInSlot = null;
+                equipment[b + 10].DisableChildren();
+            }
+        }
+
+        /*
+        for (int b = 0; b < currentHull.maxCPUnumber; b++)
+        {
+            equipment[b + 13].enabled = true;
+            if ([b] != null)
+                equipment[b + 13].itemInSlot = currentReactors[b];
+            equipment[b + 13].DisplayItem();
+        }
+        */
+
+        /*for(int a = 1; a < currentHull.eqEnabled.Length; a++)
         {
             if (currentHull.eqEnabled[a] == 1)
             {
                 equipment[a].enabled = true;
-                if (a <= 4)
+                if (a <= 6)
                 {
                     if (weaponNumber >= currentBlasters.Length)
                         break;
@@ -50,7 +151,7 @@ public class PlayerEquipmentManager : MonoBehaviour
                         weaponNumber++;
                     }
                 }
-                else if (a > 4 && a <= 7)
+                else if (a > 6 && a <= 9)
                 {
                     if (shieldNumber >= currentShields.Length)
                         break;
@@ -60,7 +161,7 @@ public class PlayerEquipmentManager : MonoBehaviour
                         shieldNumber++;
                     }
                 }
-                else if (a > 7 && a <= 10)
+                else if (a > 9 && a <= 12)
                 {
                     if (reactorNumber >= currentReactors.Length)
                         break;
@@ -69,7 +170,7 @@ public class PlayerEquipmentManager : MonoBehaviour
                         reactorNumber++;
                     }
                 }
-                else if (a > 10 && a <= 17)
+                else if (a > 12 && a <= 17)
                 {
                     equipment[a].itemInSlot = null;
                 }
@@ -77,8 +178,10 @@ public class PlayerEquipmentManager : MonoBehaviour
             else if(currentHull.eqEnabled[a] == 0)
             {
                 equipment[a].enabled = false;
+                equipment[a].DisableChildren();
             }
-        }
+            
+        }*/
     }
 
     public void Update()
@@ -141,7 +244,6 @@ public class PlayerEquipmentManager : MonoBehaviour
                 GameObject blasterToSpawn = blaster.blasterGO;
                 blasterToSpawn.GetComponent<BlasterScript>().pm = this.pm;
                 GameObject.Instantiate(blasterToSpawn, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -1f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
-
             }
         }
     }

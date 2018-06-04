@@ -20,8 +20,6 @@ public class DialogueManager : MonoBehaviour {
                 dialogue.GetComponent<RectTransform>().position = ds.pos.position;
                 Instantiate(dialogue, this.gameObject.GetComponent<RectTransform>(), false);
                 inDialogue = true;
-                //-31498.61 x
-                //-8099.644 z
             }
         }
         else

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Diablo Turret
   itemDescription: A fierce turret firing a fiery load
   itemValue: 100
-  itemType: Weapon
+  itemType: Equippable Weapon
   equipmentType: 1
   slotImage: {fileID: 21300000, guid: 0697262c7b99b0949a0e98c098feb50b, type: 3}
   stat1: thermal

@@ -12,19 +12,16 @@ public class DropScript : MonoBehaviour {
     {
         if (collision.tag == "Player")
         {
-            int randomNumber = Random.Range(1, 10) + 1;
-            if(randomNumber <= 6)
-            {
-                pim.AddItemToLastPosition(possibleDrops[0], 0, 0);
-            }
-            else if (randomNumber <= 9 && randomNumber > 6)
-            {
-                pim.AddItemToLastPosition(possibleDrops[1], 0, 0);
-            }
-            else if (randomNumber == 10)
-            {
-                pim.AddItemToLastPosition(possibleDrops[2], 0, 0);
-            }
+            int randomNumber = Random.Range(0, possibleDrops.Length);
+            pim.AddItemToLastPosition(possibleDrops[randomNumber]);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            int randomNumber = Random.Range(0, possibleDrops.Length);
+            pim.AddItemToLastPosition(possibleDrops[randomNumber]);
         }
     }
 }

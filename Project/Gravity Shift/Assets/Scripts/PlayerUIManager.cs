@@ -48,6 +48,8 @@ public class PlayerUIManager : MonoBehaviour {
         level.text = pm.playerLevel.ToString();
     }
 
+
+
     public void SetAnimState(int a)
     {
         animState = a;
