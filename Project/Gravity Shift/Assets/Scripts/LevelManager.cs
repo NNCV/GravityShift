@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour {
 
-    public Random rand;
-    
+
+    public float sunHueMin, sunHueMax, sunA;
+    public float sunRadiusMin;
+    public float sunRadiusMax;
+
     //make "LevelObject" scriptable object
     //import the multiple types of levels here
     //randomize values
@@ -13,6 +16,7 @@ public class LevelManager : MonoBehaviour {
     //save
 
     public ParticleSystem[] pss;
+    public SunSector sun;
 
 	void Start () {
 
@@ -23,6 +27,5 @@ public class LevelManager : MonoBehaviour {
             ps.Clear();
             ps.Emit(PlayerPrefs.GetInt("ParticleAmmount"));
         }
-
 	}
 }

@@ -11,7 +11,9 @@ public class PlayerEquipmentManager : MonoBehaviour
     public BlasterItem[] currentBlasters;
     public ReactorItem[] currentReactors;
     public ShieldItem[] currentShields;
-    
+
+    public GameObject nothing;
+
     //0 = hull
     //1-4 = weapons
     //5-7 = shields
@@ -28,7 +30,7 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public int weaponSelected = 0;
     
-    public void SetEquipment()
+    public void SaveEquipment()
     {
         int currentWeaponNumber = 0;
         int currentShieldNumber = 0;
@@ -40,25 +42,47 @@ public class PlayerEquipmentManager : MonoBehaviour
         {
             if(equipment[a + 1].enabled == true)
             {
-                currentBlasters[currentWeaponNumber] = (BlasterItem)equipment[a + 1].itemInSlot;
+                if (equipment[a + 1].itemInSlot == null)
+                {
+                    currentBlasters[currentWeaponNumber] = null;
+                }
+                else
+                {
+                    currentBlasters[currentWeaponNumber] = (BlasterItem)equipment[a + 1].itemInSlot;
+                }
+
                 currentWeaponNumber++;
             }
         }
 
         for (int b = 0; b < 3; b++)
         {
-            if(equipment[b + 7].enabled == true)
+            if (equipment[b + 7].enabled == true)
             {
-                currentShields[currentShieldNumber] = (ShieldItem)equipment[b + 7].itemInSlot;
+                if (equipment[b + 7].itemInSlot == null)
+                {
+                    currentShields[currentShieldNumber] = null;
+                }
+                else
+                {
+                    currentShields[currentShieldNumber] = (ShieldItem)equipment[b + 7].itemInSlot;
+                }
                 currentShieldNumber++;
             }
         }
 
         for (int c = 0; c < 3; c++)
         {
-            if(equipment[c + 10].enabled == true)
+            if (equipment[c + 10].enabled == true)
             {
-                currentReactors[currentReactorNumber] = (ReactorItem)equipment[c + 10].itemInSlot;
+                if (equipment[c + 10].itemInSlot == null)
+                {
+                    currentReactors[currentReactorNumber] = null;
+                }
+                else
+                {
+                    currentReactors[currentReactorNumber] = (ReactorItem)equipment[c + 10].itemInSlot;
+                }
                 currentReactorNumber++;
             }
         }
@@ -237,7 +261,13 @@ public class PlayerEquipmentManager : MonoBehaviour
         //Recalibrate CurrentWeaponNumber Timer and check for bugs
         foreach (BlasterItem blaster in currentBlasters)
         {
-            if (blaster != null & currentHull.currentWeaponNumber <= currentHull.maxWeaponNumber)
+            if (blaster == null)
+            {
+                currentHull.currentWeaponNumber++;
+                GameObject.Instantiate(nothing, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -1f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
+            }
+            else
+            if (currentHull.currentWeaponNumber <= currentHull.maxWeaponNumber)
             {
                 currentHull.currentWeaponNumber++;
                 //Display new blaster at specified transform
@@ -254,6 +284,12 @@ public class PlayerEquipmentManager : MonoBehaviour
         {
             weaponSelected = 0;
         }
+        if (currentBlasters[weaponSelected] == null)
+        {
+            weaponSelected++;
+            return;
+        }
+        else
         if (energyCurrent >= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterEnergyDrain)
         {
             if (transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterCooldown >= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterFireRate)

@@ -315,11 +315,11 @@ public class PlayerManager : MonoBehaviour {
         {
             return;
         }
-        else if(ss.slotType.Contains("Equippable"))
-        {
-            slotSelector.enabled = false;
-            return;
-        }
+      //  else if(ss.slotType.Contains("Equippable"))
+      //  {
+      //      slotSelector.enabled = false;
+      //      return;
+      //  }
         else
         {
             slotSelector.enabled = true;
@@ -348,11 +348,6 @@ public class PlayerManager : MonoBehaviour {
 
         string toSlotType = ss.slotType;
         string fromSlotType = selectedSlot.slotType;
-        
-        if(ss.itemInSlot == null)
-        {
-            return;
-        }
 
         if(fromSlotType == "Inventory")
         {
@@ -369,40 +364,10 @@ public class PlayerManager : MonoBehaviour {
             else if(toSlotType.Contains("Equippable"))
             {
                 string fromItemType = selectedSlot.itemInSlot.itemType.Substring(9);
-                string toItemType = ss.itemInSlot.itemType.Substring(8);
 
-                if (fromItemType == toItemType)
+                if (ss.itemInSlot == null)
                 {
-                    ss.itemInSlot = from;
-                    selectedSlot.itemInSlot = to;
-
-                    selectedSlot.DisplayItem();
-                    ss.DisplayItem();
-
-                    DeselectSlot();
-
-                    pem.UpdateShipEquipmentStats();
-                }
-                else
-                {
-                    DeselectSlot();
-                }
-            }
-        }
-        else if(fromSlotType.Contains("Equippable"))
-        {
-            if(toSlotType == "Inventory")
-            {
-                string toItemType = ss.itemInSlot.itemType;
-                string fromItemType = selectedSlot.itemInSlot.itemType;
-
-                if(fromItemType.Contains("Equippable") == false)
-                {
-                    DeselectSlot();
-                }
-                else
-                {
-                    if(fromItemType == toItemType)
+                    if (from.itemType == ss.slotType)
                     {
                         ss.itemInSlot = from;
                         selectedSlot.itemInSlot = to;
@@ -412,6 +377,25 @@ public class PlayerManager : MonoBehaviour {
 
                         DeselectSlot();
 
+                        pem.SaveEquipment();
+                        pem.UpdateShipEquipmentStats();
+                    }
+                }
+                else
+                {
+                    string toItemType = ss.itemInSlot.itemType.Substring(8);
+
+                    if (fromItemType == toItemType)
+                    {
+                        ss.itemInSlot = from;
+                        selectedSlot.itemInSlot = to;
+
+                        selectedSlot.DisplayItem();
+                        ss.DisplayItem();
+
+                        DeselectSlot();
+
+                        pem.SaveEquipment();
                         pem.UpdateShipEquipmentStats();
                     }
                     else
@@ -419,15 +403,13 @@ public class PlayerManager : MonoBehaviour {
                         DeselectSlot();
                     }
                 }
-
             }
-            else
-            if (toSlotType.Contains("Equippable"))
+        }
+        else if(fromSlotType.Contains("Equippable"))
+        {
+            if(toSlotType == "Inventory")
             {
-                string fromItemType = selectedSlot.itemInSlot.itemType.Substring(9);
-                string toItemType = ss.itemInSlot.itemType.Substring(8);
-
-                if (fromItemType == toItemType)
+                if (ss.itemInSlot == null)
                 {
                     ss.itemInSlot = from;
                     selectedSlot.itemInSlot = to;
@@ -436,10 +418,85 @@ public class PlayerManager : MonoBehaviour {
                     ss.DisplayItem();
 
                     DeselectSlot();
+                    
+                    pem.SaveEquipment();
+                    pem.UpdateShipEquipmentStats();
                 }
                 else
                 {
-                    DeselectSlot();
+                    string toItemType = ss.itemInSlot.itemType;
+                    string fromItemType = selectedSlot.itemInSlot.itemType;
+
+                    if (fromItemType.Contains("Equippable") == false)
+                    {
+                        DeselectSlot();
+                    }
+                    else
+                    if (fromItemType == toItemType)
+                    {
+                        ss.itemInSlot = from;
+                        selectedSlot.itemInSlot = to;
+
+                        selectedSlot.DisplayItem();
+                        ss.DisplayItem();
+
+                        DeselectSlot();
+
+                        pem.SaveEquipment();
+                        pem.UpdateShipEquipmentStats();
+                    }
+                    else
+                    {
+                        DeselectSlot();
+                    }
+                }
+            }
+            else
+            if (toSlotType.Contains("Equippable"))
+            {
+                string fromItemType = selectedSlot.itemInSlot.itemType.Substring(9);
+
+                if (ss.itemInSlot == null)
+                {
+                    if (ss.slotType == selectedSlot.itemInSlot.itemType)
+                    {
+                        ss.itemInSlot = from;
+                        selectedSlot.itemInSlot = to;
+
+                        selectedSlot.DisplayItem();
+                        ss.DisplayItem();
+
+                        DeselectSlot();
+
+                        pem.SaveEquipment();
+                        pem.UpdateShipEquipmentStats();
+                    }
+                    else
+                    {
+                        DeselectSlot();
+                    }
+                }
+                else
+                {
+                    string toItemType = ss.itemInSlot.itemType.Substring(8);
+
+                    if (fromItemType == toItemType)
+                    {
+                        ss.itemInSlot = from;
+                        selectedSlot.itemInSlot = to;
+
+                        selectedSlot.DisplayItem();
+                        ss.DisplayItem();
+
+                        DeselectSlot();
+
+                        pem.SaveEquipment();
+                        pem.UpdateShipEquipmentStats();
+                    }
+                    else
+                    {
+                        DeselectSlot();
+                    }
                 }
             }
         }
