@@ -8,6 +8,7 @@ public class SectorObject : ScriptableObject {
     public string sectorName;
     public string sectorType;
     public Sprite sectorMenuImage;
-    public string sectorObjective;
+    public ObjectiveObject sectorObjective;
+    public GameObject sectorGO;
 
 }

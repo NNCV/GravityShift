@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SunSector : SectorObject {
 
-    public Gradient sunColor;
+    public Color sunColor;
     public float sunRadius;
 
 }
