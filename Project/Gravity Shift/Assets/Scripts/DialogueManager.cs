@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour {
     
     public bool inDialogue = false;
-	
+
 	void Update () {
 		
 	}

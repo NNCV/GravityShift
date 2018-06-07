@@ -53,12 +53,12 @@ public class MainMenuAnimationManager : MonoBehaviour {
         PlayerPrefs.SetString("Blaster1", "Diablo Turret");
         PlayerPrefs.SetString("Reactor0", "Protos Reactor");
         PlayerPrefs.SetString("Shield0", "Diffuser Mk1");
-        PlayerPrefs.SetString("CurrentScene", "TutorialScene");
-        PlayerPrefs.SetInt("Money", 0);
         PlayerPrefs.SetInt("HullCurrent", 20);
         PlayerPrefs.SetInt("ShieldCurrent", 0);
         PlayerPrefs.SetInt("EnergyCurrent", 0);
         PlayerPrefs.SetInt("ParticleAmmount", PlayerPrefs.GetInt("ParticleAmmount"));
+        PlayerPrefs.SetInt("PlayerCurrentSystemLevel", 0);
+        PlayerPrefs.SetFloat("JumpRange", 60000);
         for (int a = 0; a < 6; a++)
         {
             for (int b = 0; b < 8; b++)
@@ -66,15 +66,13 @@ public class MainMenuAnimationManager : MonoBehaviour {
                 PlayerPrefs.SetString("InventorySlot" + b + "" + a, "");
             }
         }
-        
-        pm.SaveGalaxy(lm.GenerateRandomGalaxy());
 
         loadGame();
     }
 
     public void loadGame()
     {
-        string sceneToLoad = PlayerPrefs.GetString("TutorialScene");
+        string sceneToLoad = "TutorialScene";
         SceneManager.LoadScene(sceneToLoad);
     }
 

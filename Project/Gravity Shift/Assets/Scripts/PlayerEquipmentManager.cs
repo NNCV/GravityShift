@@ -28,6 +28,14 @@ public class PlayerEquipmentManager : MonoBehaviour
     public float shieldCooldown;
     public float energyCooldown;
 
+    public float hydrSpeedMult;
+    public int hydrCost;
+    public float hydrTimeCurrent;
+    public float hydrTimeMax;
+    public bool isHyperDrifting = false;
+    public DialogueScript enterHydr, exitHydr, isInHydr;
+    public DialogueManager dm;
+
     public int weaponSelected = 0;
     
     public void SaveEquipment()
@@ -212,6 +220,23 @@ public class PlayerEquipmentManager : MonoBehaviour
     {
         if (pm.timeStopped == false)
         {
+            hydrTimeCurrent += Time.deltaTime;
+            
+            if(isHyperDrifting == true)
+            {
+                transform.GetComponent<PlayerMovementManager>().hydrSpeed = hydrSpeedMult;
+                energyCurrent -= hydrCost;
+            }
+            else
+            {
+                transform.GetComponent<PlayerMovementManager>().hydrSpeed = 1f;
+            }
+            
+            if(Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                ToggleHyperDrift();
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 Fire();
@@ -240,6 +265,12 @@ public class PlayerEquipmentManager : MonoBehaviour
             if (energyCurrent >= energyMax)
             {
                 energyCurrent = energyMax;
+            }
+
+            if(energyCurrent <= 0)
+            {
+                isHyperDrifting = false;
+                hydrTimeCurrent = 0;
             }
         }
     }
@@ -276,6 +307,30 @@ public class PlayerEquipmentManager : MonoBehaviour
                 GameObject.Instantiate(blasterToSpawn, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -1f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
             }
         }
+    }
+
+    public void ToggleHyperDrift()
+    {
+        if(hydrTimeCurrent >= hydrTimeMax)
+        {
+            isHyperDrifting = !isHyperDrifting;
+            hydrTimeCurrent = 0;
+
+            if(isHyperDrifting == true)
+            {
+                dm.ShowDialogue(enterHydr);
+            }
+            else
+            {
+                dm.ShowDialogue(exitHydr);
+            }
+
+        }
+        else
+        {
+            dm.ShowDialogue(isInHydr);
+        }
+
     }
 
     public void Fire()

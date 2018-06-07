@@ -34,34 +34,42 @@ public class MapDataContainerScript : MonoBehaviour {
     void Start () {
         cam = Camera.main;
         GetComponent<SpriteRenderer>().color = slo.systemCentre.sunColor;
-        orbitRing = slo.orbitRingGO;
+        GetComponent<SpriteRenderer>().sprite = slo.systemCentre.mapGO.GetComponent<SpriteRenderer>().sprite;
         transform.localScale = new Vector3(slo.systemCentre.sunRadius, slo.systemCentre.sunRadius, slo.systemCentre.sunRadius);
     //    showPlanets(scalarInside, transform);
     }
 
     public Vector3 returnPlanetPosition(int planet, float scalar, Transform origin)
     {
-        Vector3 pos;
-        pos.x = origin.position.x + (planet + offsetInside) * scalar * slo.systemPlanets[planet].rot1;
-        pos.y = origin.position.y + (planet + offsetInside) * scalar * slo.systemPlanets[planet].rot2;
-        pos.z = origin.position.z;
+        if (slo.systemPlanets[planet] == null)
+            return origin.position;
+        else
+        {
+            Vector3 pos;
+            pos.x = origin.position.x + (planet + offsetInside) * scalar * slo.systemPlanets[planet].rot1;
+            pos.y = origin.position.y + (planet + offsetInside) * scalar * slo.systemPlanets[planet].rot2;
+            pos.z = origin.position.z;
 
-        return pos;
+            return pos;
+        }
     }
 
     public void showPlanets(float scalar, Transform origin, int start)
     {
-        for(int a = start; a < slo.systemPlanetCount; a++)
+        for (int a = start; a < slo.systemPlanetCount; a++)
         {
-            Vector3 pos = new Vector3(0f, 0f, 0f);
-            pos.x = origin.position.x + (a + offsetInside) * scalar * slo.systemPlanets[a].rot1;
-            pos.y = origin.position.y + (a + offsetInside) * scalar * slo.systemPlanets[a].rot2;
-            pos.z = origin.position.z;
+            if (slo.systemPlanets[a] != null)
+            {
+                Vector3 pos = new Vector3(0f, 0f, 0f);
+                pos.x = origin.position.x + (a + offsetInside) * scalar * slo.systemPlanets[a].rot1;
+                pos.y = origin.position.y + (a + offsetInside) * scalar * slo.systemPlanets[a].rot2;
+                pos.z = origin.position.z;
 
-            GameObject pgo = slo.systemPlanets[a].mapGO;
-            pgo.transform.localScale = new Vector3(slo.systemPlanets[a].planetRadius, slo.systemPlanets[a].planetRadius, slo.systemPlanets[a].planetRadius);
+                GameObject pgo = slo.systemPlanets[a].mapGO;
+                pgo.transform.localScale = new Vector3(slo.systemPlanets[a].planetRadius, slo.systemPlanets[a].planetRadius, slo.systemPlanets[a].planetRadius);
 
-            Instantiate(pgo, pos, origin.rotation, origin);
+                Instantiate(pgo, pos, origin.rotation, origin);
+            }
         }
     }
 }

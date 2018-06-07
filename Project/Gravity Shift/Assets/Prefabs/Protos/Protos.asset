@@ -13,11 +13,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: 9a492da31bbbd0247971857bee156aa2, type: 3}
   itemName: Protos Reactor
-  itemDescription: A prototype of sorts
+  itemDescription: A prototype of sorts.
   itemValue: 0
   itemType: Equippable Reactor
   equipmentType: 0
-  slotImage: {fileID: 21300000, guid: 0159fb9eed8e2f74cbabb1fcac8a8736, type: 3}
+  slotImage: {fileID: 21300000, guid: 68276df2e7ca0ed4790840621ca9915b, type: 3}
   stat1: energy
   stat1Value: 1
   stat2: regen

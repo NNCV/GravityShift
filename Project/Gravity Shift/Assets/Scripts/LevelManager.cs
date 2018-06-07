@@ -28,6 +28,7 @@ public class LevelManager : MonoBehaviour {
 
     public SystemLevelObject saggitarius;
     public SystemLevelObject tutorial;
+    public SystemLevelObject loaded;
 
     public string[] starNames;
     public string[] planetTypes;
@@ -36,12 +37,14 @@ public class LevelManager : MonoBehaviour {
 
     public SystemLevelObject[] levels;
     public GalaxyObject currentGalaxy;
-    
+
+    public PlayerManager pm;
+
     public void GenerateGalaxyMap(Transform origin)
     {
-        for (int a = 0; a < 500; a++)
+        for (int a = galaxySystemMinLY; a < currentGalaxy.galaxySystemCount; a++)
         {
-            if (currentGalaxy.systems[a] != null)
+            if (currentGalaxy.systems[a].systemName != "null")
             {
                 GameObject mgo = currentGalaxy.systems[a].systemCentre.mapGO;
                 mgo.GetComponent<MapDataContainerScript>().slo = currentGalaxy.systems[a];
@@ -52,6 +55,11 @@ public class LevelManager : MonoBehaviour {
                 pos.x = origin.position.x + a * scalar * currentGalaxy.systems[a].systemCentre.rot1;
                 pos.y = origin.position.y + a * scalar * currentGalaxy.systems[a].systemCentre.rot2;
                 pos.z = origin.position.z;
+
+                if (currentGalaxy.systems[a] == pm.currentSystem)
+                {
+                    pm.currentPositionMap.position = pos;
+                }
 
                 Instantiate(mgo, pos, origin.rotation, origin);
             }
@@ -76,6 +84,9 @@ public class LevelManager : MonoBehaviour {
             GalaxyObject galaxy = new GalaxyObject();
             galaxy.galaxyName = GenerateRandomName("Galaxy ", 2);
             galaxy.systems = new SystemLevelObject[500];
+
+            int spawnPoint = 495;
+
             for (int a = galaxySystemMinLY; a < 500; a++)
             {
                 int chance = Random.Range(0, galaxySystemFrequency);
@@ -110,15 +121,83 @@ public class LevelManager : MonoBehaviour {
                         galaxy.galaxySystemCount++;
                     }
                 }
-                else galaxy.systems[a] = null;
+                else galaxy.systems[a] = new SystemLevelObject("null");
             }
-           // galaxy.systems[0] = saggitarius;
-           // galaxy.systems[500] = tutorial;
+
+
+
+            if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 0)
+            {
+                galaxy.systems[spawnPoint] = tutorial;
+                Debug.Log(galaxy.systems[spawnPoint].systemName);
+                pm.currentSystemLevel = 0;
+                pm.currentSector = 5;
+                galaxy.galaxySystemCount++;
+            }
+            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 1)
+            {
+                spawnPoint = generateAndRepeat(spawnPoint, 300, 495);
+                pm.currentSystem = galaxy.systems[spawnPoint];
+                pm.currentSystemLevel = 1;
+                pm.currentSector = genAndRepeatPlanet(pm.currentSystem.systemPlanetCount, 0, pm.currentSystem.systemPlanetCount);
+                galaxy.galaxySystemCount++;
+            }
+            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 2)
+            {
+                spawnPoint = generateAndRepeat(spawnPoint, 100, 300);
+                pm.currentSystem = galaxy.systems[spawnPoint];
+                pm.currentSystemLevel = 2;
+                pm.currentSector = genAndRepeatPlanet(pm.currentSystem.systemPlanetCount, 0, pm.currentSystem.systemPlanetCount);
+                galaxy.galaxySystemCount++;
+            }
+            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 3)
+            {
+                spawnPoint = generateAndRepeat(spawnPoint, galaxySystemMinLY, 100);
+                pm.currentSystem = galaxy.systems[spawnPoint];
+                pm.currentSystemLevel = 3;
+                pm.currentSector = genAndRepeatPlanet(pm.currentSystem.systemPlanetCount, 0, pm.currentSystem.systemPlanetCount);
+                galaxy.galaxySystemCount++;
+            }
+            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 4)
+            {
+                galaxy.systems[0] = saggitarius;
+                pm.currentSystem = galaxy.systems[0];
+                pm.currentSystemLevel = 4;
+                pm.currentSector = 0;
+                galaxy.galaxySystemCount++;
+            }
+
             return GenerateRandomGalaxy(galaxy);
         }
         else
         {
             return gToGen;
+        }
+    }
+
+    public int generateAndRepeat(int r, int bound1, int bound2)
+    {
+        r = Random.Range(bound1, bound2);
+        if (currentGalaxy.systems[r].systemName != "null")
+        {
+            return r;
+        }
+        else
+        {
+            return generateAndRepeat(r, bound1, bound2);
+        }
+    }
+    
+    public int genAndRepeatPlanet(int r, int b1, int b2)
+    {
+        r = Random.Range(b1, b2);
+        if (pm.currentSystem.systemPlanets[r] != null)
+        {
+            return r;
+        }
+        else
+        {
+            return genAndRepeatPlanet(r, b1, b2);
         }
     }
 
@@ -176,6 +255,11 @@ public class LevelManager : MonoBehaviour {
             system.systemPlanets[a].orbitNumber = a;
         }
         return system;
+    }
+
+    public SystemLevelObject GenerateSpecificSystem(SystemLevelObject slo)
+    {
+        return slo;
     }
 
     public string GenerateRandomName(string lastPart = "", int steps = 0)

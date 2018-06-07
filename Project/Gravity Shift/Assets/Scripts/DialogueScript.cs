@@ -32,6 +32,7 @@ public class DialogueScript : MonoBehaviour {
 
     private void Start()
     {
+        dm = FindObjectOfType<DialogueManager>();
         characterNameBox.text = dialogueLines[currentDialogueLine].characterName;
         characterTextBox.text = dialogueLines[currentDialogueLine].characterText;
         characterImageBox.sprite = dialogueLines[currentDialogueLine].characterImage;

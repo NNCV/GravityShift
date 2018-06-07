@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CreateAssetMenu]
 public class SectorObject : ScriptableObject {
     
     public string sectorName;

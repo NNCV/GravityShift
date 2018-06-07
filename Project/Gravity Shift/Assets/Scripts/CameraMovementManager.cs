@@ -8,6 +8,7 @@ public class CameraMovementManager : MonoBehaviour
     public LevelManager lm;
     public Transform mapCenter;
     public PlayerMapTargetManager pmtm;
+    public PlayerManager pm;
 
     public float focusSpeed = 1f;
     public float recoverSpeed = 1f;
@@ -44,6 +45,8 @@ public class CameraMovementManager : MonoBehaviour
     public GameObject mapSelectedSystem;
     public GameObject mapSelectedSector;
     public GameObject mapSelector;
+    public GameObject mapJumpRangeDisplay;
+    public float jumpRange;
     public bool selected = false;
     public bool isSystemView = true;
     public float selectorScalar = 10f;
@@ -150,6 +153,13 @@ public class CameraMovementManager : MonoBehaviour
         }
         else
         {
+            mapJumpRangeDisplay.transform.localScale = new Vector3(jumpRange, jumpRange, jumpRange);
+
+            mapJumpRangeDisplay.transform.position = pm.currentPositionMap.position;
+
+              //      mapSelectedSector.transform.position = mapSelectedSystem.GetComponent<MapDataContainerScript>().returnPlanetPosition(currentSector, systemPlanetsScalar, mapSelectedSystem.transform);
+            //pos.x = origin.position.x + a * scalar * currentGalaxy.systems[a].systemCentre.rot1;
+
             mapScalableSpeed = mapZoom / mapTravelMult;
             mapTargetScalableScale = (mapZoom / mapTravelMult) * mapTargetScale;
 
@@ -166,6 +176,7 @@ public class CameraMovementManager : MonoBehaviour
 
             if (isSystemView == false)
             {
+                jumpButton.enabled = false;
                 pmtm.startSpriteRenderer();
                // mapSelector.GetComponent<Renderer>().sharedMaterial.color = new Color(1f, 1f, 1f, 0.8f);
                 //mapSelector.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.8f);
@@ -185,6 +196,10 @@ public class CameraMovementManager : MonoBehaviour
             }
             else
             {
+                if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= jumpRange)
+                {
+                    jumpButton.enabled = true;
+                }
                 pmtm.stopSpriteRenderer();
                // mapSelector.GetComponent<Renderer>().sharedMaterial.color = new Color(mapSelector.GetComponent<Renderer>().sharedMaterial.color.r, mapSelector.GetComponent<Renderer>().sharedMaterial.color.g, mapSelector.GetComponent<Renderer>().sharedMaterial.color.b, Mathf.Lerp(mapSelector.GetComponent<Renderer>().sharedMaterial.color.a, 0.2f, Time.deltaTime * mapZoomSpeed));
                 //mapSelector.GetComponent<SpriteRenderer>().color = new Color(mapSelectedSystem.GetComponent<SpriteRenderer>().color.r, mapSelectedSystem.GetComponent<SpriteRenderer>().color.g, mapSelectedSystem.GetComponent<SpriteRenderer>().color.b, Mathf.Lerp(mapSelectedSystem.GetComponent<SpriteRenderer>().color.a, 0.1f, Time.deltaTime * mapZoomSpeed));
@@ -204,8 +219,12 @@ public class CameraMovementManager : MonoBehaviour
                         currentSector = mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length - 1;
                     }
                 }
-                mapSelectedSystem.GetComponent<MapDataContainerScript>().showPlanets(systemPlanetsScalar, mapSelectedSystem.transform, 1);
                 mapSelectedSector.transform.localScale = new Vector3(systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius, systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius, systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius);
+                
+                
+
+                //Debug.Log(mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].sectorName);
+                mapSelectedSystem.GetComponent<MapDataContainerScript>().showPlanets(systemPlanetsScalar, mapSelectedSystem.transform, 1);
                 if (currentSector == 0)
                 {
                     mapSelectedSector.transform.position = mapSelectedSystem.GetComponent<MapDataContainerScript>().returnPlanetPosition(currentSector, 0f, mapSelectedSystem.transform);
@@ -219,6 +238,12 @@ public class CameraMovementManager : MonoBehaviour
                 mapCam.orthographicSize = Mathf.Lerp(mapCam.orthographicSize, 350f, Time.deltaTime * mapZoomSpeed);
             }
         }
+    }
+
+    public void JumpToSector()
+    {
+        if(mapSelectedSector.activeSelf == true)
+            pm.JumpTo(mapSelectedSector, currentSector);
     }
 
     public void Shake(float shakeXIN, float shakeYIN, float shakeRotIN)

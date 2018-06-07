@@ -8,6 +8,8 @@ public class PlayerMovementManager : MonoBehaviour
     public float fSpeed = 1f;
     public float rSpeed = 1f;
 
+    public float hydrSpeed = 1f;
+
     public Rigidbody2D rb2d;
 
     void Start()
@@ -19,7 +21,7 @@ public class PlayerMovementManager : MonoBehaviour
     {
         if (this.GetComponent<PlayerManager>().isFrozen == false)
         {
-            rb2d.AddRelativeForce(new Vector2(0f, Input.GetAxisRaw("Vertical") * fSpeed));
+            rb2d.AddRelativeForce(new Vector2(0f, Input.GetAxisRaw("Vertical") * fSpeed * hydrSpeed));
             rb2d.AddTorque(-Input.GetAxis("Horizontal") * rSpeed);
         }
     }
