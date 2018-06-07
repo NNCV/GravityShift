@@ -10,7 +10,7 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Value\": {\n        \"r\": 1.0,\n        \"g\": 0.5666273832321167,\n        \"b\": 0.5047169923782349,\n        \"a\": 0.0\n    },\n    \"m_Name\": \"Sun Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"2546b453-8328-4f1d-a2ae-7e4bc746862f\"\n    },\n    \"m_ColorMode\": 1\n}"
+            "JSONnodeData": "{\n    \"m_Value\": {\n        \"r\": 1.0,\n        \"g\": 0.5666273832321167,\n        \"b\": 0.5047169923782349,\n        \"a\": 0.0\n    },\n    \"m_Name\": \"Sun Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"2546b453-8328-4f1d-a2ae-7e4bc746862f\"\n    },\n    \"m_ColorMode\": 0\n}"
         }
     ],
     "m_GUID": {

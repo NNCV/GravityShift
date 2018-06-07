@@ -9,5 +9,11 @@ public class PlanetObject : SectorObject {
     public Color planetMainColor;
     public Color planetSecondaryColor;
     public float planetRadius;
+    public int orbitNumber;
+
+    public PlanetObject()
+    {
+
+    }
 
 }

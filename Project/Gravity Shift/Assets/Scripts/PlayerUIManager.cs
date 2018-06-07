@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class PlayerUIManager : MonoBehaviour {
 
     public PlayerManager pm;
-    public PPLHelperMover pplhm;
 
     public Text level;
 
@@ -16,11 +15,48 @@ public class PlayerUIManager : MonoBehaviour {
 
     public Animator anim;
     public int animState = 0;
-    
-    public void SetStateOfPPLHM(Transform tr)
+
+    public Text[] galaxyViewTexts;
+    public Text[] systemViewTexts;
+    public Text galaxySectorSwitchView;
+
+    public void setGalaxyViewStats(SystemLevelObject systemIN)
     {
-        pplhm.isInCutscene = !pplhm.isInCutscene;
-        pplhm.posToGo = tr;
+        if (systemIN != null)
+        {
+            foreach (Text tx in galaxyViewTexts)
+            {
+                tx.transform.gameObject.SetActive(true);
+            }
+            galaxyViewTexts[1].text = systemIN.systemName;
+            galaxyViewTexts[3].text = (systemIN.systemPlanetCount - 1).ToString();
+            galaxyViewTexts[5].text = systemIN.systemOrbitStage.ToString() + "00 light years";
+
+        }
+        else
+        {
+            disableGalaxyViewStats();
+        }
+    }
+
+    public void disableGalaxyViewStats()
+    {
+        foreach(Text tx in galaxyViewTexts)
+        {
+            tx.transform.gameObject.SetActive(false);
+        }
+    }
+
+    public void switchGalaxySystemText()
+    {
+        if(galaxySectorSwitchView.text == "galaxy view")
+        {
+            galaxySectorSwitchView.text = "system view";
+        }
+        else if (galaxySectorSwitchView.text == "system view")
+        {
+            galaxySectorSwitchView.text = "galaxy view";
+        }
     }
 
     void LateUpdate()
@@ -48,7 +84,10 @@ public class PlayerUIManager : MonoBehaviour {
         level.text = pm.playerLevel.ToString();
     }
 
-
+    public void SwitchMapNormalCameraControls()
+    {
+        Camera.main.GetComponent<CameraMovementManager>().isInMapScreen = !Camera.main.GetComponent<CameraMovementManager>().isInMapScreen;
+    }
 
     public void SetAnimState(int a)
     {

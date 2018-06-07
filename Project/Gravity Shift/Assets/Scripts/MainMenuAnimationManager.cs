@@ -11,6 +11,8 @@ public class MainMenuAnimationManager : MonoBehaviour {
     public InputField playNameInputField;
     public Slider particleSlider;
 
+    public PlayerManager pm;
+    public LevelManager lm;
     public Animator anim;
     
     public int button = 0;
@@ -64,12 +66,15 @@ public class MainMenuAnimationManager : MonoBehaviour {
                 PlayerPrefs.SetString("InventorySlot" + b + "" + a, "");
             }
         }
+        
+        pm.SaveGalaxy(lm.GenerateRandomGalaxy());
+
         loadGame();
     }
 
     public void loadGame()
     {
-        string sceneToLoad = PlayerPrefs.GetString("CurrentScene");
+        string sceneToLoad = PlayerPrefs.GetString("TutorialScene");
         SceneManager.LoadScene(sceneToLoad);
     }
 

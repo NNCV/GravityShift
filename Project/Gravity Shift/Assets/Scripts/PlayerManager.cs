@@ -20,15 +20,17 @@ public class PlayerManager : MonoBehaviour {
     public PlayerEquipmentManager pem;
     public PlayerInventoryManager pim;
     public PlayerMovementManager pmm;
+    public LevelManager lm;
     public GameObject starsystem;
 
     public Image slotSelector;
     public SlotScript selectedSlot;
     public Vector2 slotSelectorOffset;
 
+    public GalaxyObject currentGalaxy;
+    public int currentSystem;
+    public int currentSector;
     public string playerName;
-    public string currentScene;
-    public int money;
 
     public int playerLevel = 1;
     public int currentXP = 0;
@@ -42,30 +44,39 @@ public class PlayerManager : MonoBehaviour {
     public float timeWait = 1f;
     public float timeCurrent = 0f;
     public bool timeStopped = false;
+
+    public int mode = 0;
     
     private void Update()
     {
-        if(timeStopped == true)
+        if (mode != 0)
         {
-            if(timeCurrent >= timeWait)
+            if (timeStopped == true)
             {
-                Time.timeScale = Time.timeScale / timeSubMult;
-                if(Time.timeScale <= 0.05f)
+                if (timeCurrent >= timeWait)
                 {
-                    Time.timeScale = 0f;
+                    Time.timeScale = Time.timeScale / timeSubMult;
+                    if (Time.timeScale <= 0.05f)
+                    {
+                        Time.timeScale = 0f;
+                    }
                 }
-            }
-            else
-            {
-                timeCurrent += Time.deltaTime;
+                else
+                {
+                    timeCurrent += Time.deltaTime;
+                }
             }
         }
     }
 
     public void Start()
     {
-        Load();
-        pem.UpdateShipEquipmentStats();
+        if (mode != 0)
+        {
+            Load();
+            pem.UpdateShipEquipmentStats();
+            lm.currentGalaxy = currentGalaxy;
+        }
     }
 
     public void FreezePlayerFunctions()
@@ -90,11 +101,10 @@ public class PlayerManager : MonoBehaviour {
         timeStopped = false;
     }
 
-    public PlayerManager(PlayerEquipmentManager pem, PlayerMovementManager pmm, string name, string scene)
+    public PlayerManager(PlayerEquipmentManager pem, PlayerMovementManager pmm, string name)
     {
         this.pem = pem;
         this.pmm = pmm;
-        currentScene = scene;
         playerName = name;
     }
 
@@ -205,9 +215,7 @@ public class PlayerManager : MonoBehaviour {
 
             pmm.fSpeed = pem.currentHull.forwardSpeed;
             pmm.rSpeed = pem.currentHull.rotationSpeed;
-
-            currentScene = PlayerPrefs.GetString("CurrentScene");
-            money = PlayerPrefs.GetInt("Money");
+            
             currentXP = PlayerPrefs.GetInt("CurrentXP");
             playerLevel = PlayerPrefs.GetInt("CurrentLevel");
 
@@ -239,6 +247,57 @@ public class PlayerManager : MonoBehaviour {
                     }
                 }
             }
+            
+            currentGalaxy = new GalaxyObject();
+            currentGalaxy.galaxyName = PlayerPrefs.GetString("GalaxyName");
+            currentGalaxy.galaxySystemCount = PlayerPrefs.GetInt("GalaxySystemsCount");
+
+            for(int a = 0; a < 500; a++)
+            {
+                if(PlayerPrefs.GetString("SystemName" + a) != "")
+                {
+                    SystemLevelObject slo = new SystemLevelObject();
+                    slo.systemName = PlayerPrefs.GetString("SystemName" + a);
+                    slo.systemType = PlayerPrefs.GetString("SystemType" + a);
+                    
+                    for(int b = 0; b < lm.sysPMax; b++)
+                    {
+                        if(b == 0)
+                        {
+                            SunSector ss = new SunSector();
+                            ss.sectorName = PlayerPrefs.GetString("SystemCentreSectorName" + a);
+                            ss.rot1 = PlayerPrefs.GetFloat("SystemCenterSectorR1" + a);
+                            ss.rot2 = PlayerPrefs.GetFloat("SystemCenterSectorR2" + a);
+                            ss.sunColor.r = PlayerPrefs.GetFloat("SystemCenterSectorColorR" + a);
+                            ss.sunColor.g = PlayerPrefs.GetFloat("SystemCenterSectorColorG" + a);
+                            ss.sunColor.b = PlayerPrefs.GetFloat("SystemCenterSectorColorB" + a);
+                            currentGalaxy.systems[a].systemCentre = ss;
+                        }
+                        if(PlayerPrefs.GetString("System" + a + "Sector" + b + "Name") != "")
+                        {
+                            PlanetObject po = new PlanetObject();
+                            po.sectorName = PlayerPrefs.GetString("System" + a + "Sector" + b + "Name");
+                            po.rot1 = PlayerPrefs.GetFloat("System" + a + "Sector" + b + "R1");
+                            po.rot2 = PlayerPrefs.GetFloat("System" + a + "Sector" + b + "R2");
+                            po.planetMainColor.r = PlayerPrefs.GetFloat("System" + a + "Sector" + b + "ColorR");
+                            po.planetMainColor.g = PlayerPrefs.GetFloat("System" + a + "Sector" + b + "ColorG");
+                            po.planetMainColor.b = PlayerPrefs.GetFloat("System" + a + "Sector" + b + "ColorB");
+                            slo.systemPlanets[b] = po;
+                        }
+                        else
+                        {
+                            slo.systemPlanets[b] = null;
+                        }
+                    }
+
+                    currentGalaxy.systems[a] = slo;
+                }
+                else
+                {
+                    currentGalaxy.systems[a] = null;
+                }
+            }
+            
         }
     }
 
@@ -284,8 +343,6 @@ public class PlayerManager : MonoBehaviour {
                     PlayerPrefs.SetString("Shield" + z, pem.currentShields[z].itemName);
             }
         }
-        PlayerPrefs.SetString("CurrentScene", currentScene);
-        PlayerPrefs.SetInt("Money", money);
         
         PlayerPrefs.SetInt("HullCurrent", pem.hullCurrent);
         PlayerPrefs.SetInt("ShieldCurrent", pem.shieldCurrent);
@@ -301,6 +358,52 @@ public class PlayerManager : MonoBehaviour {
                 }
                 else
                     PlayerPrefs.SetString("InventorySlot" + b + "" + a, pim.slots[b].line[a].itemInSlot.itemName);
+            }
+        }
+
+        SaveGalaxy(currentGalaxy);
+
+    }
+
+    public void SaveGalaxy(GalaxyObject currentGalaxy)
+    {
+        //Galaxy Saving
+
+        PlayerPrefs.SetString("GalaxyName", currentGalaxy.galaxyName);
+        PlayerPrefs.SetInt("GalaxySystemsCount", currentGalaxy.galaxySystemCount);
+
+        for (int a = lm.galaxySystemMinLY; a < 500; a++)
+        {
+            if (currentGalaxy.systems[a] != null)
+            {
+                PlayerPrefs.SetString("SystemName" + a, currentGalaxy.systems[a].systemName);
+                PlayerPrefs.SetString("SystemType" + a, currentGalaxy.systems[a].systemType);
+                
+                for (int b = 0; b < lm.sysPMax; b++)
+                {
+                    if (b == 0)
+                    {
+                        PlayerPrefs.SetString("SystemCenterSectorName" + a, currentGalaxy.systems[a].systemCentre.sectorName);
+                        PlayerPrefs.SetFloat("SystemCenterSectorR1" + a, currentGalaxy.systems[a].systemCentre.rot1);
+                        PlayerPrefs.SetFloat("SystemCenterSectorR2" + a, currentGalaxy.systems[a].systemCentre.rot2);
+                        PlayerPrefs.SetFloat("SystemCenterSectorColorR" + a, currentGalaxy.systems[a].systemCentre.sunColor.r);
+                        PlayerPrefs.SetFloat("SystemCenterSectorColorG" + a, currentGalaxy.systems[a].systemCentre.sunColor.g);
+                        PlayerPrefs.SetFloat("SystemCenterSectorColorB" + a, currentGalaxy.systems[a].systemCentre.sunColor.b);
+                    }
+                    if (currentGalaxy.systems[a].systemPlanets[b] != null)
+                    {
+                        PlayerPrefs.SetString("System" + a + "Sector" + b + "Name", currentGalaxy.systems[a].systemPlanets[b].sectorName);
+                        PlayerPrefs.SetFloat("System" + a + "Sector" + b + "R1", currentGalaxy.systems[a].systemPlanets[b].rot1);
+                        PlayerPrefs.SetFloat("System" + a + "Sector" + b + "R2", currentGalaxy.systems[a].systemPlanets[b].rot2);
+                        PlayerPrefs.SetFloat("System" + a + "Sector" + b + "ColorR", currentGalaxy.systems[a].systemPlanets[b].planetMainColor.r);
+                        PlayerPrefs.SetFloat("System" + a + "Sector" + b + "ColorG", currentGalaxy.systems[a].systemPlanets[b].planetMainColor.g);
+                        PlayerPrefs.SetFloat("System" + a + "Sector" + b + "ColorB", currentGalaxy.systems[a].systemPlanets[b].planetMainColor.b);
+                    }
+                    else
+                    {
+                        PlayerPrefs.SetString("System" + a + "Sector" + b + "Name", "");
+                    }
+                }
             }
         }
     }
