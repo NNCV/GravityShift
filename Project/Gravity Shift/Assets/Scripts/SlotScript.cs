@@ -109,8 +109,4 @@ public class SlotScript : MonoBehaviour {
     {
         sds.animState = 0;
     }
-
-    public void setItem(GeneralItem gi)
-    {
-    }
 }

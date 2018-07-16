@@ -1763,10 +1763,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db10cdd0ce1c55d47893a0a506f15884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sunMinR: 4
-  sunMaxR: 5.5
-  planetMinR: 0.25
-  planetMaxR: 0.85
+  sunMinR: 3
+  sunMaxR: 14
+  planetMinR: 2
+  planetMaxR: 6
   sunMinCR: 0.4
   sunMinCG: 0.4
   sunMinCB: 0.4
@@ -1779,7 +1779,7 @@ MonoBehaviour:
   sunShaderOuter: {fileID: 4800000, guid: 44c35f5323ca5ab429afed6d3935de37, type: 3}
   galaxySystemFrequency: 2
   galaxySystemMinReq: 80
-  galaxySystemMinLY: 35
+  galaxySystemMinLY: 45
   galaxySystemFreqBias: 0
   planetShadersInner:
   - {fileID: 0}
@@ -1787,24 +1787,26 @@ MonoBehaviour:
   - {fileID: 0}
   sysPMin: 1
   sysPMax: 7
-  scalar: 65
-  scalarInside: 30
+  systemLayerDivider: 0.15
+  scalar: 95
+  scalarInside: 45
   offsetInside: 1.25
   sunGO: {fileID: 1314964903867690, guid: a94418a3859e2134a9dc969b585a5892, type: 2}
-  sunMapGO: {fileID: 1821528968352036, guid: a3a2f7afda3903d46939ded983b0e76c, type: 2}
+  sunMapGO: {fileID: 1349220507869106, guid: a5a367d6b8e6a524aa9745f4eb4c6ea9, type: 2}
   planetsGO:
-  - {fileID: 1821528968352036, guid: 163b57fe6f83e724fb17f6af5204369f, type: 2}
-  - {fileID: 1821528968352036, guid: 1e074dd4b91bdc449b59e9833777ba36, type: 2}
-  - {fileID: 1821528968352036, guid: bb850aa98c931c940ada579d4887fa9a, type: 2}
-  - {fileID: 1821528968352036, guid: 4e8bee2bf5f4d394cace201fe20466b8, type: 2}
-  - {fileID: 1821528968352036, guid: 5463738aaa4c7b34fb74051ab9602c51, type: 2}
-  - {fileID: 1821528968352036, guid: cc448850cbeec7e499ce237f23a00a15, type: 2}
-  - {fileID: 1821528968352036, guid: 5e05eb5440ab9324d9107d051a9d6383, type: 2}
-  - {fileID: 1821528968352036, guid: 94c62af8724b4a64fa91a77903bbd31f, type: 2}
+  - {fileID: 1577141589127028, guid: 554ef3842b5a32549862b8992ee59632, type: 2}
+  - {fileID: 1599634070166454, guid: d1ba2cba5a2f31c478a43fd1b82ffd0a, type: 2}
+  - {fileID: 1045477279665344, guid: c5cc076290758fb4c91a59779a2ad0aa, type: 2}
+  - {fileID: 1717260349882886, guid: 6da29ae6722b1f44499f4a2fe6e89698, type: 2}
+  - {fileID: 1232407609135164, guid: 386e2ccd6d1d042498a018ecbfaa5b30, type: 2}
+  - {fileID: 1293426708555684, guid: 844e7ecad83c6f842934b11dc722564e, type: 2}
+  - {fileID: 1520021730764870, guid: 0da235c2e551f7e45b5c2de589103a8c, type: 2}
+  - {fileID: 1114866313270760, guid: d377c474eb0296945a5a1a4dfbd67a4f, type: 2}
   orbitRingGO: {fileID: 1809408596350302, guid: 962cb71ebe11ed24ebe053e448406920,
     type: 2}
-  saggitarius: {fileID: 0}
-  tutorial: {fileID: 0}
+  saggitarius: {fileID: 11400000, guid: 6f92f5c515a936c43bf6f1195970b9e8, type: 2}
+  tutorial: {fileID: 11400000, guid: 1ab1ebd5a468ea549aca1f055a16a52f, type: 2}
+  loaded: {fileID: 0}
   starNames:
   - zar
   - neo
@@ -1889,7 +1891,7 @@ MonoBehaviour:
   planetTypes:
   - Rocky Giant
   - Gas Giant
-  - Earth-like
+  - Earth Sibling
   - Water World
   - Lava World
   - Ice Giant
@@ -1900,6 +1902,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b6ee0be4645152e40bb2fa4dc897f2de, type: 2}
   levels: []
   currentGalaxy: {fileID: 0}
+  pm: {fileID: 0}
 --- !u!114 &993419562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1911,13 +1914,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89f0c6e20d967340898b58df2a81813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testEnemy: {fileID: 0}
-  eMinX: 0
-  eMinY: 0
-  eMaxX: 0
-  eMaxY: 0
-  eRotMin: 0
-  eRotMax: 0
   allItems: []
   hulls: []
   blasters: []
@@ -1927,17 +1923,18 @@ MonoBehaviour:
   pim: {fileID: 0}
   pmm: {fileID: 0}
   lm: {fileID: 993419561}
-  starsystem: {fileID: 0}
   slotSelector: {fileID: 0}
   selectedSlot: {fileID: 0}
   slotSelectorOffset: {x: 0, y: 0}
-  currentGalaxy: {fileID: 0}
-  currentSystem: 0
-  currentSector: 0
   playerName: 
   playerLevel: 0
   currentXP: 0
   xpLevels: 
+  currentGalaxy: {fileID: 0}
+  currentPositionMap: {fileID: 0}
+  currentSystem: {fileID: 0}
+  currentSector: 0
+  currentSystemLevel: 0
   isInCutscene: 0
   isFrozen: 0
   timeMult: 0
@@ -1945,6 +1942,15 @@ MonoBehaviour:
   timeWait: 0
   timeCurrent: 0
   timeStopped: 0
+  uiAnim: {fileID: 0}
+  uiAnimState: 0
+  playerAnim: {fileID: 0}
+  playerAnimState: 0
+  warpBridge: {fileID: 0}
+  warpTimeCurrent: 0
+  warpTimeMax: 0
+  warping: 0
+  jumpRange: 0
   mode: 0
 --- !u!1 &1026849729
 GameObject:

@@ -13,6 +13,7 @@ public class SectorObject : ScriptableObject {
     public GameObject sectorGO;
     public GameObject mapGO;
     public float rot1, rot2;
+    public Vector3 mapPosition;
 
     public SectorObject()
     {

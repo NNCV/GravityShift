@@ -216,9 +216,9 @@ public class PlayerEquipmentManager : MonoBehaviour
         }*/
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
-        if (pm.timeStopped == false)
+        if (pm.timeStopped == false || pm.warping == false)
         {
             hydrTimeCurrent += Time.deltaTime;
             

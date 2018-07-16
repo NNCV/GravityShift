@@ -11,16 +11,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e7ea7b924134346be781050deb38dc, type: 3}
   m_Name: P3
   m_EditorClassIdentifier: 
-  sectorName: EVE 50 - 2
+  sectorName: EVE 50 - 3
   sectorType: Planet
   sectorMenuImage: {fileID: 21300000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
   sectorObjective: {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
   sectorGO: {fileID: 0}
-  mapGO: {fileID: 1821528968352036, guid: 5463738aaa4c7b34fb74051ab9602c51, type: 2}
-  rot1: 0.25
+  mapGO: {fileID: 1520021730764870, guid: 0da235c2e551f7e45b5c2de589103a8c, type: 2}
+  rot1: 74
   rot2: 0.85
+  mapPosition: {x: 0, y: 0, z: 0}
   planetType: Dry Land
-  planetMainColor: {r: 0.4627451, g: 0.37403485, b: 0.27450982, a: 0}
+  planetMainColor: {r: 1, g: 0.9118514, b: 0.8160377, a: 1}
   planetSecondaryColor: {r: 0, g: 0, b: 0, a: 0}
   planetRadius: 0.65
   orbitNumber: 2

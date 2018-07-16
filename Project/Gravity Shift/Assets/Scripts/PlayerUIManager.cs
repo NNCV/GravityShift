@@ -61,10 +61,15 @@ public class PlayerUIManager : MonoBehaviour {
 
     void LateUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && pm.warping == false)
         {
             animState = -1;
             pm.stopTime();
+        }
+
+        if(pm.warping == true)
+        {
+            animState = 100;
         }
 
         anim.SetInteger("State", animState);

@@ -8,8 +8,8 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: NormalMap10
   m_Shader: {fileID: 4800000, guid: 44c35f5323ca5ab429afed6d3935de37, type: 3}
-  m_ShaderKeywords: _EMISSION _GLOSSYREFLECTIONS_OFF _NORMALMAP _OCCLUSIONMAP _SPECULARHIGHLIGHTS_OFF
-    _SPECULAR_SETUP
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _EMISSION _GLOSSYREFLECTIONS_OFF _NORMALMAP
+    _OCCLUSIONMAP _SPECULARHIGHLIGHTS_OFF _SPECULAR_SETUP
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0

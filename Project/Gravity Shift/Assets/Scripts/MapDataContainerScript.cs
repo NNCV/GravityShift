@@ -34,23 +34,31 @@ public class MapDataContainerScript : MonoBehaviour {
     void Start () {
         cam = Camera.main;
         GetComponent<SpriteRenderer>().color = slo.systemCentre.sunColor;
-        GetComponent<SpriteRenderer>().sprite = slo.systemCentre.mapGO.GetComponent<SpriteRenderer>().sprite;
+        GetComponent<SpriteRenderer>().sprite = slo.systemCentre.mapGO.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
         transform.localScale = new Vector3(slo.systemCentre.sunRadius, slo.systemCentre.sunRadius, slo.systemCentre.sunRadius);
     //    showPlanets(scalarInside, transform);
     }
 
-    public Vector3 returnPlanetPosition(int planet, float scalar, Transform origin)
+    public Vector3 returnPlanetPosition(int planet, float scalar)
     {
         if (slo.systemPlanets[planet] == null)
-            return origin.position;
+            return new Vector3(0f, 0f, 0f);
         else
         {
-            Vector3 pos;
-            pos.x = origin.position.x + (planet + offsetInside) * scalar * slo.systemPlanets[planet].rot1;
-            pos.y = origin.position.y + (planet + offsetInside) * scalar * slo.systemPlanets[planet].rot2;
-            pos.z = origin.position.z;
-
+            Vector3 pos = new Vector3(0f, 0f, 0f);
+            pos.x = (planet + offsetInside) * scalar;
             return pos;
+        }
+    }
+
+    public Quaternion returnPlanetRotation(int planet)
+    {
+        if (slo.systemPlanets[planet] == null)
+            return Quaternion.Euler(0f, 0f, 0f);
+        else
+        {
+            Quaternion returnRotation = Quaternion.Euler(0f, 0f, slo.systemPlanets[planet].rot1);
+            return returnRotation;
         }
     }
 
@@ -61,14 +69,17 @@ public class MapDataContainerScript : MonoBehaviour {
             if (slo.systemPlanets[a] != null)
             {
                 Vector3 pos = new Vector3(0f, 0f, 0f);
-                pos.x = origin.position.x + (a + offsetInside) * scalar * slo.systemPlanets[a].rot1;
-                pos.y = origin.position.y + (a + offsetInside) * scalar * slo.systemPlanets[a].rot2;
-                pos.z = origin.position.z;
-
+                Quaternion planetRotation = Quaternion.Euler(0f, 0f, slo.systemPlanets[a].rot1);
+                pos.x = (a + offsetInside) * scalar;
+                
                 GameObject pgo = slo.systemPlanets[a].mapGO;
-                pgo.transform.localScale = new Vector3(slo.systemPlanets[a].planetRadius, slo.systemPlanets[a].planetRadius, slo.systemPlanets[a].planetRadius);
+                pgo.transform.GetChild(0).transform.position = pos;
+                pgo.transform.rotation = planetRotation;
+                pgo.transform.GetChild(0).transform.localScale = new Vector3(slo.systemPlanets[a].planetRadius / origin.localScale.x, slo.systemPlanets[a].planetRadius / origin.localScale.y, slo.systemPlanets[a].planetRadius / origin.localScale.z);
 
-                Instantiate(pgo, pos, origin.rotation, origin);
+                slo.systemPlanets[a].mapPosition = pos;
+
+                Instantiate(pgo, origin);
             }
         }
     }

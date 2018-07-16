@@ -11,7 +11,6 @@ public class SystemLevelObject : ScriptableObject {
     public PlanetObject[] systemPlanets;
     public string systemType;
     public int systemOrbitStage;
-    public GameObject orbitRingGO;
 
     public SystemLevelObject()
     {

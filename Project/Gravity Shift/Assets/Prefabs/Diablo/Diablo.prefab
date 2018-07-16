@@ -110,16 +110,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4796e690694509446b2b062f5b36f207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pm: {fileID: 0}
   blast: {fileID: 1524688287045880, guid: 4abff092e67a0fd4abb76f77fb0a9dbc, type: 2}
   blastSpawnZone: {fileID: 4002313504133516}
   offset: -90
   pointSpeed: 10
-  shakeMovMin: -1
-  shakeMovMax: 1
-  shakeRotMin: -1
-  shakeRotMax: 1
-  blasterEnergyDrain: 15
-  blasterFireRate: 0.25
+  shakeMovMin: -0.6
+  shakeMovMax: 0.6
+  shakeRotMin: -6
+  shakeRotMax: 6
+  blasterEnergyDrain: 35
+  blasterFireRate: 0.35
   blasterCooldown: 0
 --- !u!212 &212549143145557426
 SpriteRenderer:

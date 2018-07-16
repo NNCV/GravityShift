@@ -27,7 +27,7 @@ MonoBehaviour:
   blasterDmgType2: Thermal
   blasterGO: {fileID: 1034998673504596, guid: 5fbb94a1b90b6bd459efd6bc5a98d388, type: 2}
   blasterEnergyDrain: 15
-  blasterFireRate: 0.25
+  blasterFireRate: 1
   blasterCooldown: 0
   wep1Value: 0.4
   wep2Value: 1

@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour {
     public Shader[] planetShadersOuter;
     public int sysPMin, sysPMax;
 
+    public float systemLayerDivider;
     public float scalar = 10f;
     public float scalarInside = 10f;
     public float offsetInside = 1f;
@@ -42,30 +43,36 @@ public class LevelManager : MonoBehaviour {
 
     public void GenerateGalaxyMap(Transform origin)
     {
-        for (int a = galaxySystemMinLY; a < currentGalaxy.galaxySystemCount; a++)
+        for (int a = 0 ; a < currentGalaxy.galaxySystemCount; a++)
         {
-            if (currentGalaxy.systems[a].systemName != "null")
+            if (currentGalaxy.systems[a] != null)
             {
-                GameObject mgo = currentGalaxy.systems[a].systemCentre.mapGO;
-                mgo.GetComponent<MapDataContainerScript>().slo = currentGalaxy.systems[a];
-                mgo.GetComponent<MapDataContainerScript>().scalarInside = scalarInside;
-                mgo.GetComponent<MapDataContainerScript>().offsetInside = offsetInside;
-
-                Vector3 pos = new Vector3(0f, 0f, 0f);
-                pos.x = origin.position.x + a * scalar * currentGalaxy.systems[a].systemCentre.rot1;
-                pos.y = origin.position.y + a * scalar * currentGalaxy.systems[a].systemCentre.rot2;
-                pos.z = origin.position.z;
-
-                if (currentGalaxy.systems[a] == pm.currentSystem)
+                if (currentGalaxy.systems[a].systemName != "null")
                 {
-                    pm.currentPositionMap.position = pos;
-                }
+                    GameObject mgo = currentGalaxy.systems[a].systemCentre.mapGO;
+                    mgo.transform.GetChild(0).GetComponent<MapDataContainerScript>().slo = currentGalaxy.systems[a];
+                    mgo.transform.GetChild(0).GetComponent<MapDataContainerScript>().scalarInside = scalarInside;
+                    mgo.transform.GetChild(0).GetComponent<MapDataContainerScript>().offsetInside = offsetInside;
 
-                Instantiate(mgo, pos, origin.rotation, origin);
+                    Vector3 pos = new Vector3(0f, 0f, 0f);
+                    Quaternion systemRotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[a].systemCentre.rot1);
+                    pos.x = origin.position.x + a * scalar;
+
+                    mgo.transform.GetChild(0).transform.position = pos;
+                    mgo.transform.rotation = systemRotation;
+
+                    if (currentGalaxy.systems[a] == pm.currentSystem)
+                    {
+                        pm.currentPositionMap.position = pos;
+                    }
+
+                    Instantiate(mgo, origin);
+                }
             }
         }
     }
 
+    //Just for testing for now
     public void LoadParticles(ParticleSystem[] pss)
     {
         foreach (ParticleSystem ps in pss)
@@ -84,48 +91,73 @@ public class LevelManager : MonoBehaviour {
             GalaxyObject galaxy = new GalaxyObject();
             galaxy.galaxyName = GenerateRandomName("Galaxy ", 2);
             galaxy.systems = new SystemLevelObject[500];
-
-            int spawnPoint = 495;
-
-            for (int a = galaxySystemMinLY; a < 500; a++)
+            
+            for (int a = 0; a < 500; a++)
             {
-                int chance = Random.Range(0, galaxySystemFrequency);
-                if (a < galaxySystemMinLY)
+                if(a == 0)
                 {
-                    chance = Random.Range(0, galaxySystemFrequency);
+                    galaxy.systems[a] = saggitarius;
+                    galaxy.galaxySystemCount++;
                 }
-                else if (a > 100 && a < 300)
+                else if (a > 0 && a < galaxySystemMinLY)
                 {
-                    chance = Random.Range(0, galaxySystemFrequency - 1);
+                    galaxy.systems[a] = new SystemLevelObject("null");
+                    galaxy.systems[a].systemOrbitStage = a;
+                    galaxy.galaxySystemCount++;
                 }
-                else if (a > 300 && a < 500)
+                else if(a == 499)
                 {
-                    chance = Random.Range(0, galaxySystemFrequency - 2);
+                    galaxy.systems[a] = tutorial;
+                    galaxy.galaxySystemCount++;
                 }
+                else
+                {
+                    int chance = Random.Range(0, galaxySystemFrequency);
 
-                if (chance == 0)
-                {
-                    if (a <= 100)
+                    if (a < galaxySystemMinLY)
                     {
-                        galaxy.systems[a] = GenerateRandomSystem("Augmented", a);
-                        galaxy.galaxySystemCount++;
+                        chance = Random.Range(0, galaxySystemFrequency);
                     }
-                    else if (a > 100 && a <= 300)
+                    else if (a > 100 && a < 300)
                     {
-                        galaxy.systems[a] = GenerateRandomSystem("Enhanced", a);
-                        galaxy.galaxySystemCount++;
+                        chance = Random.Range(0, galaxySystemFrequency - 1);
                     }
-                    else if (a < 300 && a <= 500)
+                    else if (a > 300 && a < 499)
                     {
-                        galaxy.systems[a] = GenerateRandomSystem("Normal", a);
+                        chance = Random.Range(0, galaxySystemFrequency - 2);
+                    }
+
+                    if (chance == 0)
+                    {
+                        if (a <= 100)
+                        {
+                            galaxy.systems[a] = GenerateRandomSystem("Augmented", a);
+                            galaxy.galaxySystemCount++;
+                        }
+                        else if (a > 100 && a <= 300)
+                        {
+                            galaxy.systems[a] = GenerateRandomSystem("Enhanced", a);
+                            galaxy.galaxySystemCount++;
+                        }
+                        else if (a > 300 && a <= 498)
+                        {
+                            galaxy.systems[a] = GenerateRandomSystem("Normal", a);
+                            galaxy.galaxySystemCount++;
+                        }
+                    }
+                    else
+                    {
+                        galaxy.systems[a] = new SystemLevelObject("null");
                         galaxy.galaxySystemCount++;
                     }
                 }
-                else galaxy.systems[a] = new SystemLevelObject("null");
             }
 
 
+            
 
+
+            /*
             if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 0)
             {
                 galaxy.systems[spawnPoint] = tutorial;
@@ -166,6 +198,8 @@ public class LevelManager : MonoBehaviour {
                 pm.currentSector = 0;
                 galaxy.galaxySystemCount++;
             }
+            */
+
 
             return GenerateRandomGalaxy(galaxy);
         }
@@ -175,6 +209,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //Just for testing
     public int generateAndRepeat(int r, int bound1, int bound2)
     {
         r = Random.Range(bound1, bound2);
@@ -187,7 +222,8 @@ public class LevelManager : MonoBehaviour {
             return generateAndRepeat(r, bound1, bound2);
         }
     }
-    
+  
+    //Just for testing
     public int genAndRepeatPlanet(int r, int b1, int b2)
     {
         r = Random.Range(b1, b2);
@@ -201,6 +237,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //Just for testing
     public void ShowSystemsOfCurrentGalaxy()
     {
         GalaxyObject g = currentGalaxy;
@@ -217,7 +254,7 @@ public class LevelManager : MonoBehaviour {
                 Debug.Log("STAR : " + g.systems[a].systemName);
                 Debug.Log("PLANET COUNT : " + g.systems[a].systemPlanetCount);
                 Debug.Log("DISTANCE FROM CENTER : " + a + "00 light years");
-                Debug.Log("SYSTEM TYPE : " + g.systems[a].systemType);
+             //   Debug.Log("SYSTEM TYPE : " + g.systems[a].systemType);
             }
         }
     }
@@ -225,8 +262,7 @@ public class LevelManager : MonoBehaviour {
     public SunSector GenerateRandomSun()
     {
         SunSector sun = new SunSector();
-        sun.rot1 = Mathf.Sin(Random.Range(0, Mathf.PI * 2));
-        sun.rot2 = Mathf.Sin(Random.Range(0, Mathf.PI * 2));
+        sun.rot1 = Random.Range(0f, 360f);
         sun.mapGO = sunMapGO;
         sun.sunRadius = Random.Range(sunMinR, sunMaxR);
         sun.sunColor = new Color(Random.Range(sunMinCR, sunMaxCR), Random.Range(sunMinCG, sunMaxCG), Random.Range(sunMinCB, sunMaxCB), 1f);
@@ -240,7 +276,6 @@ public class LevelManager : MonoBehaviour {
     public SystemLevelObject GenerateRandomSystem(string systemType = "", int sos = 0)
     {
         SystemLevelObject system = new SystemLevelObject();
-        system.orbitRingGO = orbitRingGO;
         system.systemOrbitStage = sos;
         system.systemCentre = GenerateRandomSun();
         system.systemName = system.systemCentre.sectorName;
@@ -257,6 +292,7 @@ public class LevelManager : MonoBehaviour {
         return system;
     }
 
+    //Just for testing
     public SystemLevelObject GenerateSpecificSystem(SystemLevelObject slo)
     {
         return slo;
@@ -278,11 +314,13 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //Just for testing
     public void ShowRandomName(int st)
     {
         Debug.Log(GenerateRandomName("", st));
     }
 
+    //Just for testing
     public void ShowInformationAboutCurrentSystem()
     {
         SystemLevelObject s = GenerateRandomSystem();
@@ -315,11 +353,9 @@ public class LevelManager : MonoBehaviour {
     public PlanetObject GenerateRandomPlanet(SunSector s, int orbitNumber = 1)
     {
         PlanetObject planet = new PlanetObject();
-        planet.rot1 = Mathf.Sin(Random.Range(0, Mathf.PI * 2));
-        planet.rot2 = Mathf.Sin(Random.Range(0, Mathf.PI * 2));
+        planet.rot1 = Random.Range(0f, 360f);
         planet.planetRadius = Random.Range(planetMinR, planetMaxR);
         planet.planetMainColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255));
-        planet.planetSecondaryColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255));
         int pType = Random.Range(0, planetTypes.Length);
         planet.planetType = planetTypes[pType];
         planet.mapGO = planetsGO[pType];

@@ -46,6 +46,7 @@ public class CameraMovementManager : MonoBehaviour
     public GameObject mapSelectedSector;
     public GameObject mapSelector;
     public GameObject mapJumpRangeDisplay;
+    public GameObject selectedSystemInMap;
     public float jumpRange;
     public bool selected = false;
     public bool isSystemView = true;
@@ -63,13 +64,16 @@ public class CameraMovementManager : MonoBehaviour
     {
         target = FindObjectOfType<PlayerEquipmentManager>().transform.gameObject;
         cam = GetComponent<Camera>();
-        if (target != null)
+        if (pm.warping == false)
         {
-            transform.position = target.transform.position + new Vector3(0f, 0f, -10f);
-        }
-        else
-        {
-            transform.position = initialPosition;
+            if (target != null)
+            {
+                transform.position = target.transform.position + new Vector3(0f, 0f, -10f);
+            }
+            else
+            {
+                transform.position = initialPosition;
+            }
         }
     }
 
@@ -82,6 +86,37 @@ public class CameraMovementManager : MonoBehaviour
     {
         if(selected == true)
         {
+            //removeMapPartsWhenSwitching();
+             
+            Transform trAct = mapSelectedSystem.transform.parent.transform.parent.Find(mapSelectedSystem.transform.parent.name);
+
+            GameObject[] goAll = GameObject.FindGameObjectsWithTag("MapPart");
+            Transform[] trAll = new Transform[goAll.Length];
+
+            Debug.Log(trAct.name);
+            
+            /*
+            for(int i = 5; i < trAll.Length; i++)
+            {
+                trAll[i] = goAll[i].transform.parent.transform;
+                if(trAll[i].GetComponentInChildren<MapDataContainerScript>() != null)
+                {
+                    //if(trAll[i].GetComponentInChildren<MapDataContainerScript>().slo.systemName == trAct.GetChild(0))
+                    if (trAll[i].GetChild(0).GetComponent<MapDataContainerScript>().slo.systemName == trAct.GetChild(0).GetComponent<MapDataContainerScript>().slo.systemName)
+                    {
+                        Debug.Log(trAll[i].name);
+                        Debug.Log(trAll[i].GetChild(0).GetComponent<MapDataContainerScript>().slo.systemName);
+                        Debug.Log(i);
+                    }
+                }
+            }
+            */
+
+
+
+
+            mapSelectedSystem.GetComponent<MapDataContainerScript>().showPlanets(systemPlanetsScalar, mapSelectedSystem.transform, 1);
+
             currentSector = 0;
             isSystemView = !isSystemView;
             mapSelectedSector.gameObject.SetActive(isSystemView);
@@ -89,6 +124,21 @@ public class CameraMovementManager : MonoBehaviour
             {
                 restartMap();
                 selected = false;
+            }
+        }
+    }
+
+    //modify this when implementing the jump system
+    public void removeMapPartsWhenSwitching()
+    {
+        //this either deletes all or none
+        //right now it deletes none
+        //please modify
+        foreach (GameObject inGO in GameObject.FindGameObjectsWithTag("MapPart"))
+        {
+            if (inGO.transform.GetChild(0).GetComponent<MapDataContainerScript>().slo.systemName != mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemName)
+            {
+                Destroy(inGO);
             }
         }
     }
@@ -104,138 +154,138 @@ public class CameraMovementManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(selected == false)
+        if (pm.warping == false)
         {
-            systemGalaxyViewButton.interactable = false;
-        }
-        else
-        {
-            systemGalaxyViewButton.interactable = true;
-        }
-
-        if(isSystemView == false)
-        {
-            jumpButton.interactable = false;
-        }
-        else
-        {
-            jumpButton.interactable = true;
-        }
-
-        if (isInMapScreen == false)
-        {
-            zoom += Input.GetAxisRaw("Mouse ScrollWheel") / zoomDif;
-            zoom = Mathf.Clamp(zoom, zoomMin, zoomMax);
-
-            finalMov = target.transform.position + new Vector3(shakeX, shakeY, -150f);
-            finalRot = target.transform.rotation * Quaternion.Euler(0f, 0f, shakeRot);
-
-            if (shakeX <= shakeThreshold)
+            if (selected == false)
             {
-                shakeX = 0f;
-            }
-            else shakeX = shakeX / recoverSpeed;
-            if (shakeY <= shakeThreshold)
-            {
-                shakeY = 0f;
-            }
-            else shakeY = shakeY / recoverSpeed;
-            if (shakeRot <= shakeThreshold)
-            {
-                shakeRot = 0f;
-            }
-            else shakeRot = shakeRot / recoverSpeed;
-
-            transform.position = Vector3.Lerp(transform.position, finalMov, focusSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, finalRot, focusSpeed * Time.deltaTime);
-
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
-        }
-        else
-        {
-            mapJumpRangeDisplay.transform.localScale = new Vector3(jumpRange, jumpRange, jumpRange);
-
-            mapJumpRangeDisplay.transform.position = pm.currentPositionMap.position;
-
-              //      mapSelectedSector.transform.position = mapSelectedSystem.GetComponent<MapDataContainerScript>().returnPlanetPosition(currentSector, systemPlanetsScalar, mapSelectedSystem.transform);
-            //pos.x = origin.position.x + a * scalar * currentGalaxy.systems[a].systemCentre.rot1;
-
-            mapScalableSpeed = mapZoom / mapTravelMult;
-            mapTargetScalableScale = (mapZoom / mapTravelMult) * mapTargetScale;
-
-            if (mapSelectedSystem != null)
-            {
-                mapSelector.SetActive(true);
-                mapSelector.transform.position = mapSelectedSystem.transform.position;
-                mapSelector.transform.localScale = new Vector3(mapSelectedSystem.transform.localScale.x * selectorScalar, mapSelectedSystem.transform.localScale.y * selectorScalar, mapSelectedSystem.transform.localScale.z * selectorScalar);
+                systemGalaxyViewButton.interactable = false;
             }
             else
             {
-                mapSelector.SetActive(false);
+                systemGalaxyViewButton.interactable = true;
             }
 
             if (isSystemView == false)
             {
-                jumpButton.enabled = false;
-                pmtm.startSpriteRenderer();
-               // mapSelector.GetComponent<Renderer>().sharedMaterial.color = new Color(1f, 1f, 1f, 0.8f);
-                //mapSelector.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.8f);
-                mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, mapTarget.transform.position + new Vector3(Input.GetAxisRaw("Horizontal") * mapScalableSpeed, -Input.GetAxisRaw("Vertical") * mapScalableSpeed, 0f), Time.deltaTime * mapTravelSpeed);
-                mapTarget.transform.localScale = Vector3.Lerp(mapTarget.transform.localScale, new Vector3(mapTargetScalableScale, mapTargetScalableScale, mapTargetScalableScale), Time.deltaTime * mapTravelSpeed);
-
-                mapZoom += Input.GetAxisRaw("Mouse ScrollWheel") / mapZoomDif;
-                mapZoom = Mathf.Clamp(mapZoom, mapZoomMin, mapZoomMax);
-
-                mapPos = mapTarget.transform.position + new Vector3(0f, 0f, -50f);
-
-                mapCam.transform.position = Vector3.Lerp(mapCam.transform.position, mapPos, Time.deltaTime * mapTravelSpeed);
-                mapCam.transform.rotation = mapRot;
-
-                cam.orthographicSize = 72;
-                mapCam.orthographicSize = Mathf.Lerp(mapCam.orthographicSize, mapZoom, Time.deltaTime * mapZoomSpeed);
+                jumpButton.interactable = false;
             }
             else
             {
-                if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= jumpRange)
-                {
-                    jumpButton.enabled = true;
-                }
-                pmtm.stopSpriteRenderer();
-               // mapSelector.GetComponent<Renderer>().sharedMaterial.color = new Color(mapSelector.GetComponent<Renderer>().sharedMaterial.color.r, mapSelector.GetComponent<Renderer>().sharedMaterial.color.g, mapSelector.GetComponent<Renderer>().sharedMaterial.color.b, Mathf.Lerp(mapSelector.GetComponent<Renderer>().sharedMaterial.color.a, 0.2f, Time.deltaTime * mapZoomSpeed));
-                //mapSelector.GetComponent<SpriteRenderer>().color = new Color(mapSelectedSystem.GetComponent<SpriteRenderer>().color.r, mapSelectedSystem.GetComponent<SpriteRenderer>().color.g, mapSelectedSystem.GetComponent<SpriteRenderer>().color.b, Mathf.Lerp(mapSelectedSystem.GetComponent<SpriteRenderer>().color.a, 0.1f, Time.deltaTime * mapZoomSpeed));
-                if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    currentSector++;
-                    if(currentSector >= mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length)
-                    {
-                        currentSector = 0;
-                    }
-                }
-                else if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    currentSector--;
-                    if(currentSector < 0)
-                    {
-                        currentSector = mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length - 1;
-                    }
-                }
-                mapSelectedSector.transform.localScale = new Vector3(systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius, systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius, systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius);
-                
-                
+                jumpButton.interactable = true;
+            }
 
-                //Debug.Log(mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].sectorName);
-                mapSelectedSystem.GetComponent<MapDataContainerScript>().showPlanets(systemPlanetsScalar, mapSelectedSystem.transform, 1);
-                if (currentSector == 0)
+            if (isInMapScreen == false)
+            {
+                zoom += Input.GetAxisRaw("Mouse ScrollWheel") / zoomDif;
+                zoom = Mathf.Clamp(zoom, zoomMin, zoomMax);
+
+                finalMov = target.transform.position + new Vector3(shakeX, shakeY, -150f);
+                finalRot = target.transform.rotation * Quaternion.Euler(0f, 0f, shakeRot);
+
+                if (shakeX <= shakeThreshold)
                 {
-                    mapSelectedSector.transform.position = mapSelectedSystem.GetComponent<MapDataContainerScript>().returnPlanetPosition(currentSector, 0f, mapSelectedSystem.transform);
+                    shakeX = 0f;
+                }
+                else shakeX = shakeX / recoverSpeed;
+                if (shakeY <= shakeThreshold)
+                {
+                    shakeY = 0f;
+                }
+                else shakeY = shakeY / recoverSpeed;
+                if (shakeRot <= shakeThreshold)
+                {
+                    shakeRot = 0f;
+                }
+                else shakeRot = shakeRot / recoverSpeed;
+
+                transform.position = Vector3.Lerp(transform.position, finalMov, focusSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, finalRot, focusSpeed * Time.deltaTime);
+
+                cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
+            }
+            else
+            {
+                cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                mapJumpRangeDisplay.transform.localScale = new Vector3(jumpRange, jumpRange, jumpRange);
+                mapJumpRangeDisplay.transform.position = pm.currentPositionMap.position;
+
+                mapScalableSpeed = mapZoom / mapTravelMult;
+                mapTargetScalableScale = (mapZoom / mapTravelMult) * mapTargetScale;
+
+                if (mapSelectedSystem != null)
+                {
+                    mapSelector.SetActive(true);
+                    mapSelector.transform.position = mapSelectedSystem.transform.position;
+                    mapSelector.transform.localScale = new Vector3(mapSelectedSystem.transform.localScale.x * selectorScalar, mapSelectedSystem.transform.localScale.y * selectorScalar, mapSelectedSystem.transform.localScale.z * selectorScalar);
                 }
                 else
                 {
-                    mapSelectedSector.transform.position = mapSelectedSystem.GetComponent<MapDataContainerScript>().returnPlanetPosition(currentSector, systemPlanetsScalar, mapSelectedSystem.transform);
+                    mapSelector.SetActive(false);
                 }
-                mapSelector.transform.localScale = Vector3.Lerp(mapSelector.transform.localScale, new Vector3((mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 50) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 50) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 50) * systemSectorScalar), Time.deltaTime * mapZoomSpeed);
-                mapCam.transform.position = Vector3.Lerp(mapCam.transform.position, new Vector3(mapSelectedSystem.transform.position.x, mapSelectedSystem.transform.position.y, mapCam.transform.position.z), Time.deltaTime * mapZoomSpeed);
-                mapCam.orthographicSize = Mathf.Lerp(mapCam.orthographicSize, 350f, Time.deltaTime * mapZoomSpeed);
+
+                if (isSystemView == false)
+                {
+                    jumpButton.enabled = false;
+                    pmtm.startSpriteRenderer();
+                    mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, mapTarget.transform.position + new Vector3(Input.GetAxisRaw("Horizontal") * mapScalableSpeed, -Input.GetAxisRaw("Vertical") * mapScalableSpeed, 0f), Time.deltaTime * mapTravelSpeed);
+                    mapTarget.transform.localScale = Vector3.Lerp(mapTarget.transform.localScale, new Vector3(mapTargetScalableScale, mapTargetScalableScale, mapTargetScalableScale), Time.deltaTime * mapTravelSpeed);
+
+                    mapZoom += Input.GetAxisRaw("Mouse ScrollWheel") / mapZoomDif;
+                    mapZoom = Mathf.Clamp(mapZoom, mapZoomMin, mapZoomMax);
+
+                    mapPos = mapTarget.transform.position + new Vector3(0f, 0f, -50f);
+
+                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, mapZoom, Time.deltaTime * mapZoomSpeed);
+                    cam.transform.position = Vector3.Lerp(cam.transform.position, mapPos, Time.deltaTime * mapTravelSpeed);
+                    cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, mapRot, Time.deltaTime * mapTravelSpeed);
+                }
+                else
+                {
+                    pmtm.stopSpriteRenderer();
+
+
+                    if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= jumpRange)
+                    {
+                        jumpButton.enabled = true;
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                    {
+                        currentSector++;
+                        if (currentSector >= mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length)
+                        {
+                            currentSector = 0;
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+                        currentSector--;
+                        if (currentSector < 0)
+                        {
+                            currentSector = mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length - 1;
+                        }
+                    }
+
+                    if (currentSector == 0)
+                    {
+                        mapSelectedSector.transform.position = Vector3.Lerp(mapSelectedSector.transform.position, mapSelectedSystem.transform.position, Time.deltaTime * 25f);
+
+                        mapSelectedSector.transform.localScale = Vector3.Lerp(mapSelectedSector.transform.localScale, new Vector3((systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f), Time.deltaTime * 25f);
+                    }
+                    else
+                    {
+                        mapSelectedSector.transform.position = Vector3.Lerp(mapSelectedSector.transform.position, mapSelectedSystem.transform.GetChild(currentSector - 1).transform.GetChild(0).transform.position, Time.deltaTime * 25f);
+                        mapSelectedSector.transform.localScale = Vector3.Lerp(mapSelectedSector.transform.localScale, new Vector3((systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f), Time.deltaTime * 25f);
+
+                    }
+
+                    mapSelector.transform.localScale = Vector3.Lerp(mapSelector.transform.localScale, new Vector3((mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar), Time.deltaTime * mapZoomSpeed);
+
+
+                    cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(mapSelectedSystem.transform.position.x, mapSelectedSystem.transform.position.y, -50f), Time.deltaTime * mapZoomSpeed);
+                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 700f, Time.deltaTime * mapZoomSpeed);
+
+                }
             }
         }
     }

@@ -16,6 +16,31 @@ MonoBehaviour:
   - {fileID: 114516146411737062}
   - {fileID: 114354536731784058}
   - {fileID: 114873935825456940}
+  - {fileID: 114101207104449844}
+--- !u!114 &114101207104449844
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  spectralLut:
+    overrideState: 0
+    value: {fileID: 0}
+  intensity:
+    overrideState: 1
+    value: 0.085
+  fastMode:
+    overrideState: 0
+    value: 0
 --- !u!114 &114354536731784058
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -33,10 +58,10 @@ MonoBehaviour:
     value: 1
   shutterAngle:
     overrideState: 1
-    value: 270
+    value: 360
   sampleCount:
     overrideState: 1
-    value: 10
+    value: 16
 --- !u!114 &114408442123075772
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -54,30 +79,30 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 2.7
+    value: 2
   threshold:
     overrideState: 1
-    value: 0.16
+    value: 0.2
   softKnee:
     overrideState: 1
-    value: 0.551
+    value: 0.55
   diffusion:
     overrideState: 1
-    value: 4.98
+    value: 5
   anamorphicRatio:
-    overrideState: 1
+    overrideState: 0
     value: 0
   color:
-    overrideState: 1
+    overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
   fastMode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   dirtTexture:
-    overrideState: 1
+    overrideState: 0
     value: {fileID: 0}
   dirtIntensity:
-    overrideState: 1
+    overrideState: 0
     value: 0
 --- !u!114 &114516146411737062
 MonoBehaviour:
@@ -129,7 +154,7 @@ MonoBehaviour:
     value: {fileID: 0}
   temperature:
     overrideState: 1
-    value: 9.23
+    value: 9
   tint:
     overrideState: 1
     value: 0
@@ -141,16 +166,16 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: 11.74
+    value: 12
   brightness:
     overrideState: 1
     value: 0
   postExposure:
-    overrideState: 1
+    overrideState: 0
     value: 0
   contrast:
     overrideState: 1
-    value: 9.45
+    value: 10
   mixerRedOutRedIn:
     overrideState: 1
     value: 100

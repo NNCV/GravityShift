@@ -5,58 +5,59 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour {
-
-    public GameObject testEnemy;
-    public float eMinX, eMinY;
-    public float eMaxX, eMaxY;
-    public float eRotMin, eRotMax;
-
+    
+    //Itemele care pot fi obtinute
     public GeneralItem[] allItems;
     public HullItem[] hulls;
     public BlasterItem[] blasters;
     public ReactorItem[] reactors;
     public ShieldItem[] shields;
     
+    //Sistemele jucatorului
     public PlayerEquipmentManager pem;
     public PlayerInventoryManager pim;
     public PlayerMovementManager pmm;
     public LevelManager lm;
-    public GameObject starsystem;
-
+    
+    //Lucruri pentru inventar
     public Image slotSelector;
     public SlotScript selectedSlot;
     public Vector2 slotSelectorOffset;
 
-    public GalaxyObject currentGalaxy = new GalaxyObject();
-    public Transform currentPositionMap;
-    public SystemLevelObject currentSystem = new SystemLevelObject();
-    public int currentSector = new int();
-    public int currentSystemLevel = new int();
+    //Atribute ale jucatorului care nu pot influenta generarea nivelelor
     public string playerName;
 
+    //Atribute ale jucatorului care pot influenta generarea nivelelor
     public int playerLevel = 1;
     public int currentXP = 0;
     public int[] xpLevels = new int[51];
-
+    public GalaxyObject currentGalaxy = new GalaxyObject();
+    public Transform currentPositionMap;
+    public SystemLevelObject currentSystem = new SystemLevelObject();
+    public int currentSector = 0;
+    public int currentSystemLevel = 0;
+    
+    //Atribute speciale pentru animatii si altele
     public bool isInCutscene = false;
     public bool isFrozen = false;
-
     public float timeMult = 1f;
     public float timeSubMult = 2f;
     public float timeWait = 1f;
     public float timeCurrent = 0f;
     public bool timeStopped = false;
-    
     public Animator uiAnim;
     public int uiAnimState;
     public Animator playerAnim;
     public int playerAnimState;
-    public GameObject warpBridge;
-    public SectorObject warpDestination;
 
+    //Animator global si animatii de salt
+    public Animator globalAnim;
     public float warpTimeCurrent, warpTimeMax;
     public bool warping = false;
+    public float warmUpTimeCurrent, warmUpTimeMax;
+    public bool warmingUp = false;
 
+    //Salt
     public void JumpTo(GameObject dest, int pl)
     {
         Transform tr = dest.transform;
@@ -76,37 +77,31 @@ public class PlayerManager : MonoBehaviour {
 
     public int mode = 0;
     
-    private void Update()
+    private void FixedUpdate()
     {
         if (mode != 0)
         {
-            Camera.main.GetComponent<CameraMovementManager>().jumpRange = jumpRange;
-            if (timeStopped == true)
+            if (warping == true)
             {
-                if (timeCurrent >= timeWait)
-                {
-                    Time.timeScale = Time.timeScale / timeSubMult;
-                    if (Time.timeScale <= 0.05f)
-                    {
-                        Time.timeScale = 0f;
-                    }
-                }
-                else
-                {
-                    timeCurrent += Time.deltaTime;
-                }
+
             }
-
-            //playerAnim.SetInteger("State", playerAnimState);
-
-            if (warping)
+            else
             {
-                warpTimeCurrent += Time.deltaTime;
-                if (warpTimeCurrent >= warpTimeMax)
+                Camera.main.GetComponent<CameraMovementManager>().jumpRange = jumpRange;
+                if (timeStopped == true)
                 {
-                    //uiAnim.SetInteger("State", 0);
-                    warpTimeCurrent = 0;
-                    warping = false;
+                    if (timeCurrent >= timeWait)
+                    {
+                        Time.timeScale = Time.timeScale / timeSubMult;
+                        if (Time.timeScale <= 0.05f)
+                        {
+                            Time.timeScale = 0f;
+                        }
+                    }
+                    else
+                    {
+                        timeCurrent += Time.deltaTime;
+                    }
                 }
             }
         }
@@ -118,9 +113,9 @@ public class PlayerManager : MonoBehaviour {
         {
             Load();
             pem.UpdateShipEquipmentStats();
-            lm.loaded = loadSectorAndSystem();
-            currentGalaxy = lm.GenerateRandomGalaxy();
-            lm.currentGalaxy = currentGalaxy;
+            //lm.loaded = loadSectorAndSystem();
+            //currentGalaxy = lm.GenerateRandomGalaxy();
+            //lm.currentGalaxy = currentGalaxy;
         }
     }
     
@@ -133,7 +128,7 @@ public class PlayerManager : MonoBehaviour {
             slo.systemName = PlayerPrefs.GetString("PlayerSystem");
             slo.systemOrbitStage = PlayerPrefs.GetInt("PlayerSystemOrbitStage");
             slo.systemPlanetCount = PlayerPrefs.GetInt("PlayerSystemPlanetCount");
-            slo.systemType = PlayerPrefs.GetString("PlayerSystemType");
+            //slo.systemType = PlayerPrefs.GetString("PlayerSystemType");
 
             slo.systemCentre = new SunSector();
             slo.systemPlanets = new PlanetObject[slo.systemPlanetCount];
@@ -178,39 +173,157 @@ public class PlayerManager : MonoBehaviour {
         return slo;
     }
 
-    /*
-    public void saveSectorAndSystem()
+    public void saveGalaxy()
     {
-        PlayerPrefs.SetString("PlayerSystem", currentGalaxy.systems[currentSystem].systemName);
-        PlayerPrefs.SetInt("PlayerSystemOrbitStage", currentGalaxy.systems[currentSystem].systemOrbitStage);
-        PlayerPrefs.SetInt("PlayerSystemPlanetCount", currentGalaxy.systems[currentSystem].systemPlanetCount);
-        PlayerPrefs.SetString("PlayerSystemSystemType", currentGalaxy.systems[currentSystem].systemType);
+        PlayerPrefs.SetString("Galaxy Name", currentGalaxy.galaxyName);
+        PlayerPrefs.SetInt("Galaxy System Count", currentGalaxy.galaxySystemCount);
 
-        for (int b = 0; b < currentGalaxy.systems[currentSystem].systemPlanetCount; b++)
+        for (int a = 0; a < currentGalaxy.systems.Length; a++)
         {
-            if (b == 0)
+            if (currentGalaxy.systems[a] != null)
             {
-                PlayerPrefs.SetFloat("PlayerSystemCenterRadius", currentGalaxy.systems[currentSystem].systemCentre.sunRadius);
-                PlayerPrefs.SetFloat("PlayerSystemCenterColorR", currentGalaxy.systems[currentSystem].systemCentre.sunColor.r);
-                PlayerPrefs.SetFloat("PlayerSystemCenterColorG", currentGalaxy.systems[currentSystem].systemCentre.sunColor.g);
-                PlayerPrefs.SetFloat("PlayerSystemCenterColorB", currentGalaxy.systems[currentSystem].systemCentre.sunColor.b);
-            }
-            if (currentGalaxy.systems[currentSystem].systemPlanets[b] != null)
-            {
-                PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "Rot1", currentGalaxy.systems[currentSystem].systemPlanets[b].rot1);
-                PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "Rot2", currentGalaxy.systems[currentSystem].systemPlanets[b].rot2);
-                PlayerPrefs.SetString("PlayerSystemPlanet" + b + "Name", currentGalaxy.systems[currentSystem].systemPlanets[b].sectorName);
-                PlayerPrefs.SetString("PlayerSystemPlanet" + b + "Type", currentGalaxy.systems[currentSystem].systemPlanets[b].sectorType);
-                PlayerPrefs.SetString("PlayerSystemPlanet" + b + "PlanetType", currentGalaxy.systems[currentSystem].systemPlanets[b].planetType);
-                PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorR", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.r);
-                PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorG", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.g);
-                PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorB", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.b);
-                PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "PlanetRadius", currentGalaxy.systems[currentSystem].systemPlanets[b].planetRadius);
+                if (currentGalaxy.systems[a].systemName == "null")
+                {
+                    PlayerPrefs.SetString("System " + a + " Name", "null");
+                }
+                else
+                {
+                    PlayerPrefs.SetInt("System " + a + " Orbit Stage", currentGalaxy.systems[a].systemOrbitStage);
+                    PlayerPrefs.SetString("System " + a + " Type", currentGalaxy.systems[a].systemType);
+                    PlayerPrefs.SetInt("System " + a + " Planet Count", currentGalaxy.systems[a].systemPlanetCount);
+                    PlayerPrefs.SetString("System " + a + " Name", currentGalaxy.systems[a].systemName);
+                    PlayerPrefs.SetString("System " + a + " Center Type", currentGalaxy.systems[a].systemCentre.sectorType);
+                    PlayerPrefs.SetFloat("System " + a + " Center Color R", currentGalaxy.systems[a].systemCentre.sunColor.r);
+                    PlayerPrefs.SetFloat("System " + a + " Center Color G", currentGalaxy.systems[a].systemCentre.sunColor.g);
+                    PlayerPrefs.SetFloat("System " + a + " Center Color B", currentGalaxy.systems[a].systemCentre.sunColor.b);
+                    PlayerPrefs.SetFloat("System " + a + " Center Rotation", currentGalaxy.systems[a].systemCentre.rot1);
+                    PlayerPrefs.SetFloat("System " + a + " Center Radius", currentGalaxy.systems[a].systemCentre.sunRadius);
+                    //PlayerPrefs.SetString("System " + a + " Center Completed", currentGalaxy.systems[a].systemCentre.sectorObjective.objectiveDone.ToString());
 
+                    for (int b = 1; b < currentGalaxy.systems[a].systemPlanetCount; b++)
+                    {
+                        PlayerPrefs.SetString("System " + a + " Planet " + b + " Type", currentGalaxy.systems[a].systemPlanets[b].sectorType);
+                        PlayerPrefs.SetString("System " + a + " Planet " + b + " PType", currentGalaxy.systems[a].systemPlanets[b].planetType);
+                        PlayerPrefs.SetInt("System " + a + " Planet " + b + " Orbit Number", currentGalaxy.systems[a].systemPlanets[b].orbitNumber);
+                        PlayerPrefs.SetFloat("System " + a + " Planet " + b + " Radius", currentGalaxy.systems[a].systemPlanets[b].planetRadius);
+                        PlayerPrefs.SetFloat("System " + a + " Planet " + b + " Color R", currentGalaxy.systems[a].systemPlanets[b].planetMainColor.r);
+                        PlayerPrefs.SetFloat("System " + a + " Planet " + b + " Color G", currentGalaxy.systems[a].systemPlanets[b].planetMainColor.g);
+                        PlayerPrefs.SetFloat("System " + a + " Planet " + b + " Color B", currentGalaxy.systems[a].systemPlanets[b].planetMainColor.b);
+                        PlayerPrefs.SetFloat("System " + a + " Planet " + b + " Rotation", currentGalaxy.systems[a].systemPlanets[b].rot1);
+                    }
+                }
             }
         }
     }
-    */
+
+    public void loadGalaxy()
+    {
+        GalaxyObject loadGalaxy = new GalaxyObject();
+        loadGalaxy.galaxyName = PlayerPrefs.GetString("Galaxy Name");
+        loadGalaxy.galaxySystemCount = PlayerPrefs.GetInt("Galaxy System Count");
+
+        loadGalaxy.systems = new SystemLevelObject[loadGalaxy.galaxySystemCount];
+
+        for(int a = 0; a < loadGalaxy.galaxySystemCount; a++)
+        {
+            if (PlayerPrefs.GetString("System " + a + " Name") == "null")
+            {
+                loadGalaxy.systems[a] = new SystemLevelObject("null");
+            }
+            else
+            {
+                loadGalaxy.systems[a] = new SystemLevelObject();
+                loadGalaxy.systems[a].systemName = PlayerPrefs.GetString("System " + a + " Name");
+                loadGalaxy.systems[a].systemOrbitStage = PlayerPrefs.GetInt("System " + a + " Orbit Stage");
+                loadGalaxy.systems[a].systemType = PlayerPrefs.GetString("System " + a + " Type");
+                loadGalaxy.systems[a].systemPlanetCount = PlayerPrefs.GetInt("System " + a + " Planet Count");
+
+                loadGalaxy.systems[a].systemCentre = new SunSector();
+                loadGalaxy.systems[a].systemCentre.sectorName = loadGalaxy.systems[a].systemName;
+                loadGalaxy.systems[a].systemCentre.sectorType = PlayerPrefs.GetString("System " + a + " Center Type");
+
+                if (a == 0)
+                {
+                    loadGalaxy.systems[a].systemCentre.mapGO = lm.saggitarius.systemCentre.mapGO;
+                }
+                else
+                {
+                    loadGalaxy.systems[a].systemCentre.mapGO = lm.sunMapGO;
+                }
+
+                loadGalaxy.systems[a].systemCentre.sunColor = new Color(PlayerPrefs.GetFloat("System " + a + " Center Color R"), PlayerPrefs.GetFloat("System " + a + " Center Color G"), PlayerPrefs.GetFloat("System " + a + " Center Color B"));
+                loadGalaxy.systems[a].systemCentre.rot1 = PlayerPrefs.GetFloat("System " + a + " Center Rotation");
+                loadGalaxy.systems[a].systemCentre.sunRadius = PlayerPrefs.GetFloat("System " + a + " Center Radius");
+
+                loadGalaxy.systems[a].systemPlanets = new PlanetObject[loadGalaxy.systems[a].systemPlanetCount];
+
+                loadGalaxy.systems[a].systemPlanets[0] = new SunSector();
+                loadGalaxy.systems[a].systemPlanets[0] = loadGalaxy.systems[a].systemCentre;
+
+                for (int b = 1; b < loadGalaxy.systems[a].systemPlanetCount; b++)
+                {
+                    loadGalaxy.systems[a].systemPlanets[b] = new PlanetObject();
+                    loadGalaxy.systems[a].systemPlanets[b].sectorName = loadGalaxy.systems[a].systemName + " - " + b;
+                    loadGalaxy.systems[a].systemPlanets[b].sectorType = PlayerPrefs.GetString("System " + a + " Planet " + b + " Type");
+                    loadGalaxy.systems[a].systemPlanets[b].orbitNumber = PlayerPrefs.GetInt("System " + a + " Planet " + b + " Orbit Number");
+                    loadGalaxy.systems[a].systemPlanets[b].planetRadius = PlayerPrefs.GetFloat("System " + a + " Planet " + b + " Radius");
+                    loadGalaxy.systems[a].systemPlanets[b].planetType = PlayerPrefs.GetString("System " + a + " Planet " + b + " PType");
+
+
+                    int selectedPlanetID = 0;
+
+                    for (int s = 0; s < lm.planetsGO.Length; s++)
+                    {
+                        if (loadGalaxy.systems[a].systemPlanets[b].planetType == lm.planetTypes[s])
+                        {
+                            selectedPlanetID = s;
+                        }
+                    }
+
+                    loadGalaxy.systems[a].systemPlanets[b].mapGO = lm.planetsGO[selectedPlanetID];
+                    loadGalaxy.systems[a].systemPlanets[b].planetMainColor = new Color(PlayerPrefs.GetFloat("System " + a + " Planet " + b + " Color R"), PlayerPrefs.GetFloat("System " + a + " Planet " + b + " Color G"), PlayerPrefs.GetFloat("System " + a + " Planet " + b + " Color B"));
+                    loadGalaxy.systems[a].systemPlanets[b].rot1 = PlayerPrefs.GetFloat("System " + a + " Planet " + b + " Rotation");
+                }
+            }
+        }
+
+        currentGalaxy = loadGalaxy;
+        lm.currentGalaxy = currentGalaxy;
+    }
+
+        /*
+        public void saveSectorAndSystem()
+        {
+            PlayerPrefs.SetString("PlayerSystem", currentGalaxy.systems[currentSystem].systemName);
+            PlayerPrefs.SetInt("PlayerSystemOrbitStage", currentGalaxy.systems[currentSystem].systemOrbitStage);
+            PlayerPrefs.SetInt("PlayerSystemPlanetCount", currentGalaxy.systems[currentSystem].systemPlanetCount);
+            PlayerPrefs.SetString("PlayerSystemSystemType", currentGalaxy.systems[currentSystem].systemType);
+
+            for (int b = 0; b < currentGalaxy.systems[currentSystem].systemPlanetCount; b++)
+            {
+                if (b == 0)
+                {
+                    PlayerPrefs.SetFloat("PlayerSystemCenterRadius", currentGalaxy.systems[currentSystem].systemCentre.sunRadius);
+                    PlayerPrefs.SetFloat("PlayerSystemCenterColorR", currentGalaxy.systems[currentSystem].systemCentre.sunColor.r);
+                    PlayerPrefs.SetFloat("PlayerSystemCenterColorG", currentGalaxy.systems[currentSystem].systemCentre.sunColor.g);
+                    PlayerPrefs.SetFloat("PlayerSystemCenterColorB", currentGalaxy.systems[currentSystem].systemCentre.sunColor.b);
+                }
+                if (currentGalaxy.systems[currentSystem].systemPlanets[b] != null)
+                {
+                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "Rot1", currentGalaxy.systems[currentSystem].systemPlanets[b].rot1);
+                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "Rot2", currentGalaxy.systems[currentSystem].systemPlanets[b].rot2);
+                    PlayerPrefs.SetString("PlayerSystemPlanet" + b + "Name", currentGalaxy.systems[currentSystem].systemPlanets[b].sectorName);
+                    PlayerPrefs.SetString("PlayerSystemPlanet" + b + "Type", currentGalaxy.systems[currentSystem].systemPlanets[b].sectorType);
+                    PlayerPrefs.SetString("PlayerSystemPlanet" + b + "PlanetType", currentGalaxy.systems[currentSystem].systemPlanets[b].planetType);
+                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorR", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.r);
+                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorG", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.g);
+                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorB", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.b);
+                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "PlanetRadius", currentGalaxy.systems[currentSystem].systemPlanets[b].planetRadius);
+
+                }
+            }
+        }
+        */
 
     public void FreezePlayerFunctions()
     {
@@ -241,23 +354,11 @@ public class PlayerManager : MonoBehaviour {
         playerName = name;
     }
 
-    public void SpawnEnemy()
-    {
-        Vector3 v3 = new Vector3(Random.Range(eMinX, eMaxX), Random.Range(eMinY, eMaxY), 0f);
-        Quaternion q = Quaternion.Euler(0f, 0f, Random.Range(eRotMin, eRotMax));
-        Instantiate(testEnemy, v3, q);
-    }
-
     public void QuitGame()
     {
         Application.Quit();
     }
-
-    public void passGalaxyToLM()
-    {
-        lm.currentGalaxy = currentGalaxy;
-    }
-
+    
     public void Load()
     {
 
@@ -389,6 +490,8 @@ public class PlayerManager : MonoBehaviour {
                 }
             }
 
+            loadGalaxy();
+
            // loadSectorAndSystem();
             
             /*
@@ -477,7 +580,6 @@ public class PlayerManager : MonoBehaviour {
         PlayerPrefs.SetString("ShipHull", pem.currentHull.itemName);
         PlayerPrefs.SetFloat("JumpRange", jumpRange);
 
-
         PlayerPrefs.SetInt("PlayerCurrentSystemLevel", currentSystemLevel);
 
         if (pem.currentBlasters != null)
@@ -534,8 +636,8 @@ public class PlayerManager : MonoBehaviour {
             }
         }
 
-        //SaveGalaxy(currentGalaxy);
-
+        saveGalaxy();
+        
     }
 
 
@@ -574,6 +676,8 @@ public class PlayerManager : MonoBehaviour {
                         }
                     } 
     */
+
+        //useless now
     public void SaveGalaxy(GalaxyObject currentGalaxy)
     {
         //Galaxy Saving
@@ -586,7 +690,7 @@ public class PlayerManager : MonoBehaviour {
             if (currentGalaxy.systems[a] != null)
             {
                 PlayerPrefs.SetString("SystemName" + a, currentGalaxy.systems[a].systemName);
-                PlayerPrefs.SetString("SystemType" + a, currentGalaxy.systems[a].systemType);
+               // PlayerPrefs.SetString("SystemType" + a, currentGalaxy.systems[a].systemType);
                 PlayerPrefs.SetInt("SystemPlanetCount" + a, currentGalaxy.systems[a].systemPlanetCount);
 
                 for (int b = 0; b < currentGalaxy.systems[a].systemPlanetCount; b++)

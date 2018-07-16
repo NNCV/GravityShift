@@ -34,7 +34,7 @@ public class BlastScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<EnemyTestTargetScript>().health -= damage;
+            collision.gameObject.GetComponent<BasicEnemyScript>().healthCurrent -= damage;
             Destroy(transform.gameObject);
         }
     }

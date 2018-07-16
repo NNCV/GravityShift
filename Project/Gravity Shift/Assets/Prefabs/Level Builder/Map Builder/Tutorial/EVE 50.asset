@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Name: EVE 50
   m_EditorClassIdentifier: 
   systemName: EVE 50
-  systemPlanetCount: 5
+  systemPlanetCount: 6
   systemCentre: {fileID: 11400000, guid: 270a971d8d9bb96419e6d159e0d591ba, type: 2}
   systemPlanets:
+  - {fileID: 11400000, guid: 270a971d8d9bb96419e6d159e0d591ba, type: 2}
   - {fileID: 11400000, guid: 9a2f594b8847ad4439ba6e6620c1b6ee, type: 2}
   - {fileID: 11400000, guid: 003f7644e075eed4abcc962d8217a594, type: 2}
   - {fileID: 11400000, guid: 8a27938aa512aa743bdf33991d731021, type: 2}
   - {fileID: 11400000, guid: 7ed8db98cc7f27e4d9709ef8095e5941, type: 2}
   - {fileID: 11400000, guid: 66a1f61b7af2f2a40b730bdc14d9cb71, type: 2}
   systemType: Tutorial
-  systemOrbitStage: 495
-  orbitRingGO: {fileID: 0}
+  systemOrbitStage: 499

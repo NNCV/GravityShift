@@ -8,6 +8,7 @@ TagManager:
   - MapSystem
   - MapPlayerTarget
   - MapPart
+  - SectorGOPart
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - bgRC
   - mgRC
   - fgRC
-  - 
+  - Sector
   - 
   - 
   - 

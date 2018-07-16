@@ -15,6 +15,4 @@ public class DialogueAreaManager : MonoBehaviour {
             dm.ShowDialogue(ds);
         }
     }
-    
-    
 }

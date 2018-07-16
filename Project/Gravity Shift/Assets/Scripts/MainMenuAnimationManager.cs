@@ -58,7 +58,8 @@ public class MainMenuAnimationManager : MonoBehaviour {
         PlayerPrefs.SetInt("EnergyCurrent", 0);
         PlayerPrefs.SetInt("ParticleAmmount", PlayerPrefs.GetInt("ParticleAmmount"));
         PlayerPrefs.SetInt("PlayerCurrentSystemLevel", 0);
-        PlayerPrefs.SetFloat("JumpRange", 60000);
+        PlayerPrefs.SetFloat("JumpRange", 10000);
+
         for (int a = 0; a < 6; a++)
         {
             for (int b = 0; b < 8; b++)
@@ -66,6 +67,11 @@ public class MainMenuAnimationManager : MonoBehaviour {
                 PlayerPrefs.SetString("InventorySlot" + b + "" + a, "");
             }
         }
+
+        pm.currentGalaxy = pm.lm.GenerateRandomGalaxy();
+        lm.currentGalaxy = pm.currentGalaxy;
+
+        pm.saveGalaxy();
 
         loadGame();
     }

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca76c486b4e199a4cbf262f976cf9f25, type: 3}
   m_Name: Protos
   m_EditorClassIdentifier: 
-  itemImage: {fileID: 21300000, guid: 9a492da31bbbd0247971857bee156aa2, type: 3}
+  itemImage: {fileID: 21300000, guid: 68276df2e7ca0ed4790840621ca9915b, type: 3}
   itemName: Protos Reactor
   itemDescription: A prototype of sorts.
   itemValue: 0

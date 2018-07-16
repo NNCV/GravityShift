@@ -15,14 +15,15 @@ MonoBehaviour:
   sectorType: Sun
   sectorMenuImage: {fileID: 21300000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
   sectorObjective: {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
-  sectorGO: {fileID: 0}
-  mapGO: {fileID: 1821528968352036, guid: a3a2f7afda3903d46939ded983b0e76c, type: 2}
+  sectorGO: {fileID: 1821528968352036, guid: a3a2f7afda3903d46939ded983b0e76c, type: 2}
+  mapGO: {fileID: 1349220507869106, guid: a5a367d6b8e6a524aa9745f4eb4c6ea9, type: 2}
   rot1: 0
   rot2: 0
+  mapPosition: {x: 0, y: 0, z: 0}
   planetType: 
-  planetMainColor: {r: 1, g: 0.8905559, b: 0.5990566, a: 0}
+  planetMainColor: {r: 1, g: 0.8905559, b: 0.5990566, a: 1}
   planetSecondaryColor: {r: 0, g: 0, b: 0, a: 0}
   planetRadius: 5
   orbitNumber: 0
-  sunColor: {r: 1, g: 0.8905559, b: 0.5990566, a: 0}
-  sunRadius: 5
+  sunColor: {r: 1, g: 0.8905559, b: 0.5990566, a: 1}
+  sunRadius: 6

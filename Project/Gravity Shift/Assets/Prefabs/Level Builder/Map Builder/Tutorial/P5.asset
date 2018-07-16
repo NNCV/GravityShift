@@ -11,16 +11,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e7ea7b924134346be781050deb38dc, type: 3}
   m_Name: P5
   m_EditorClassIdentifier: 
-  sectorName: EVE 50 - 4
+  sectorName: EVE 50 - 5
   sectorType: Planet
   sectorMenuImage: {fileID: 21300000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
   sectorObjective: {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
   sectorGO: {fileID: 0}
-  mapGO: {fileID: 1821528968352036, guid: 5463738aaa4c7b34fb74051ab9602c51, type: 2}
-  rot1: 0.2
+  mapGO: {fileID: 1045477279665344, guid: c5cc076290758fb4c91a59779a2ad0aa, type: 2}
+  rot1: 326
   rot2: -0.1
-  planetType: Earth-Like
-  planetMainColor: {r: 0.27450982, g: 0.4627451, b: 0.2964453, a: 0}
+  mapPosition: {x: 0, y: 0, z: 0}
+  planetType: Earth Sibling
+  planetMainColor: {r: 0.8537736, g: 1, b: 0.8720519, a: 1}
   planetSecondaryColor: {r: 0, g: 0, b: 0, a: 0}
   planetRadius: 0.8
   orbitNumber: 4

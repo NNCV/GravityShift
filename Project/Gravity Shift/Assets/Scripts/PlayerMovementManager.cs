@@ -19,6 +19,12 @@ public class PlayerMovementManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (this.GetComponent<PlayerManager>().warping == true)
+        {
+            rb2d.velocity = new Vector3(0f, 0f, 0f);
+            rb2d.angularVelocity = 0f;
+        }
+        else
         if (this.GetComponent<PlayerManager>().isFrozen == false)
         {
             rb2d.AddRelativeForce(new Vector2(0f, Input.GetAxisRaw("Vertical") * fSpeed * hydrSpeed));

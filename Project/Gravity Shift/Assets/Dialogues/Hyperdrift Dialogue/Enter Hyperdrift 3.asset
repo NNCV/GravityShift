@@ -14,5 +14,5 @@ MonoBehaviour:
   characterImage: {fileID: 21300000, guid: 489c2e37c4bafbd49b59c14eccd11a22, type: 3}
   characterName: abrarum
   characterText: hyperdrift impulse chargers cooling down.
-  timeToDisappear: 0.65
+  timeToDisappear: 1.35
   isSkippable: 0
