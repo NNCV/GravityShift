@@ -8,13 +8,11 @@ public class LevelManager : MonoBehaviour {
 
     public float sunMinR, sunMaxR, planetMinR, planetMaxR;
     public float sunMinCR, sunMinCG, sunMinCB, sunMaxCR, sunMaxCG, sunMaxCB;
-    public Shader sunShaderCentre, sunShaderInner, sunShaderMid, sunShaderOuter;
     public int galaxySystemFrequency = 8;
     public int galaxySystemMinReq = 40;
     public int galaxySystemMinLY = 35;
     public int galaxySystemFreqBias = 0;
-    public Shader[] planetShadersInner;
-    public Shader[] planetShadersOuter;
+    public int nebulaChance, nebulaBias;
     public int sysPMin, sysPMax;
 
     public float systemLayerDivider;
@@ -90,7 +88,7 @@ public class LevelManager : MonoBehaviour {
         if (gToGen == null || gToGen.galaxySystemCount <= galaxySystemMinReq)
         {
             GalaxyObject galaxy = new GalaxyObject();
-            galaxy.galaxyName = GenerateRandomName("Galaxy ", 2);
+            galaxy.galaxyName = "Saggitarius";
             galaxy.systems = new SystemLevelObject[500];
             
             for (int a = 0; a < 500; a++)
@@ -144,6 +142,13 @@ public class LevelManager : MonoBehaviour {
                         {
                             galaxy.systems[a] = GenerateRandomSystem("Normal", a);
                             galaxy.galaxySystemCount++;
+                        }
+
+                        int isNebula = Random.Range(0, nebulaChance + nebulaBias);
+
+                        if(isNebula == 0)
+                        {
+                            galaxy.systems[a].systemType += " Nebula";
                         }
                     }
                     else

@@ -170,7 +170,7 @@ public class CameraMovementManager : MonoBehaviour
                 if (pm.warping == false)
                 {
                     finalMov = target.transform.position + new Vector3(shakeX, shakeY, -150f);
-                    finalRot = Quaternion.Euler(0f, 0f, target.transform.rotation.z + shakeRot);
+                    finalRot = Quaternion.Euler(0f, 0f, target.transform.eulerAngles.z + shakeRot);
                 }
                 else
                 {

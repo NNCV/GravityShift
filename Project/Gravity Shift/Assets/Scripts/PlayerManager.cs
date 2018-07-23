@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour {
     public PlayerEquipmentManager pem;
     public PlayerInventoryManager pim;
     public PlayerMovementManager pmm;
+    public PlayerUIManager puim;
     public LevelManager lm;
     
     //Lucruri pentru inventar
@@ -31,7 +32,7 @@ public class PlayerManager : MonoBehaviour {
     public string playerName;
 
     //Atribute ale jucatorului care pot influenta generarea nivelelor
-    public int playerLevel = 50;
+    public int playerLevel = 0;
     public int currentXP = 0;
     public int[] xpLevels = new int[51];
     public int[] completedSystems;
@@ -59,9 +60,7 @@ public class PlayerManager : MonoBehaviour {
     public bool warping = false;
     public bool warmingUp = false;
     public GameObject warpConduit;
-
     public float jumpRange;
-
     public int mode = 0;
     
     public void smartSaveGalaxy()
@@ -80,6 +79,7 @@ public class PlayerManager : MonoBehaviour {
                 if(Camera.main.orthographicSize <= 12.05f && (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f))
                 {
                     warping = true;
+                    puim.setJumpSystemInformation(currentSector);
                     if (currentSystem == 499 && currentSector == 5)
                     {
                         globalAnim.SetInteger("State", 3);
@@ -135,7 +135,6 @@ public class PlayerManager : MonoBehaviour {
         {
             Load();
             pem.UpdateShipEquipmentStats();
-            //warmingUp = true;
         }
     }
     

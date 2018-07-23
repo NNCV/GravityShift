@@ -19,6 +19,10 @@ public class PlayerUIManager : MonoBehaviour {
     public Text[] galaxyViewTexts;
     public Text[] systemViewTexts;
     public Text galaxySectorSwitchView;
+    public Image jumpSystemTypeImage;
+    public Text jumpSystemTypeText;
+    public Text jumpSectorTypeText;
+    public Sprite[] jumpSystemTypes;
 
     public bool jumped = true;
     public float timeCurrent, timeMax;
@@ -62,6 +66,63 @@ public class PlayerUIManager : MonoBehaviour {
         }
     }
     
+    public void setJumpSystemInformation(int sector)
+    {
+        string systemType = pm.currentGalaxy.systems[pm.currentSystem].systemType;
+
+        string preFinalSystemText = "";
+        string preFinalSectorText = "";
+
+        if (systemType.Contains("Nebula"))
+        {
+            jumpSystemTypeImage.sprite = jumpSystemTypes[2];
+            preFinalSystemText = "Nebula System " + pm.currentGalaxy.systems[pm.currentSystem].systemName;
+        }
+        else
+        {
+            jumpSystemTypeImage.sprite = jumpSystemTypes[0];
+            preFinalSystemText = "System " + pm.currentGalaxy.systems[pm.currentSystem].systemName;
+        }
+
+        if (sector > 0)
+        {
+            preFinalSectorText = pm.currentGalaxy.systems[pm.currentSystem].systemPlanets[pm.currentSector].planetType + " " + pm.currentGalaxy.systems[pm.currentSystem].systemPlanets[pm.currentSector].sectorName;
+        }
+
+        string finalSystemText = "";
+        string finalSectorText = "";
+
+        foreach (char c in preFinalSystemText)
+        {
+            if (c == ' ')
+            {
+                finalSystemText += "   ";
+            }
+            else
+            {
+                finalSystemText += c + " ";
+            }
+        }
+
+        foreach (char c in preFinalSectorText)
+        {
+            if (c == ' ')
+            {
+                finalSectorText += "   ";
+            }
+            else
+            {
+                finalSectorText += c + " ";
+            }
+        }
+
+        finalSystemText = finalSystemText.Trim();
+        finalSectorText = finalSectorText.Trim();
+
+        jumpSystemTypeText.text = finalSystemText;
+        jumpSectorTypeText.text = finalSectorText;
+    }
+
     void LateUpdate()
     {
         if(Input.GetKeyDown(KeyCode.Escape) && pm.warping == false)
