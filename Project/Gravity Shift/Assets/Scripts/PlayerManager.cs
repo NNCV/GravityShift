@@ -95,7 +95,7 @@ public class PlayerManager : MonoBehaviour {
                     warmingUp = false;
                 }
             }
-            if(warping == true)
+            else if(warping == true)
             {
                 warpTimeCurrent += Time.deltaTime;
                 if(warpTimeCurrent >= warpTimeMax)
@@ -135,7 +135,7 @@ public class PlayerManager : MonoBehaviour {
         {
             Load();
             pem.UpdateShipEquipmentStats();
-            warmingUp = true;
+            //warmingUp = true;
         }
     }
     

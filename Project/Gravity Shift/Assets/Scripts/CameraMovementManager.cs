@@ -61,6 +61,7 @@ public class CameraMovementManager : MonoBehaviour
     public float mapTargetScalableScale, mapTargetScale;
     public Button systemGalaxyViewButton;
     public Button jumpButton;
+    public float lolnonnonono;
 
     void Start()
     {
@@ -133,8 +134,10 @@ public class CameraMovementManager : MonoBehaviour
     void FixedUpdate()
     {
         //Pregatire pentru salt
-        if (pm.warmingUp == true)
+        if (pm.warmingUp == true || pm.warping == true)
         {
+            cam.transform.position = cam.transform.parent.transform.position + new Vector3(0f, 1f, -50f);
+            cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             zoom = Mathf.Lerp(zoom, 12f, Time.deltaTime * 2f);
             cam.orthographicSize = zoom;
         }
@@ -164,9 +167,16 @@ public class CameraMovementManager : MonoBehaviour
                 zoom += Input.GetAxisRaw("Mouse ScrollWheel") / zoomDif;
                 zoom = Mathf.Clamp(zoom, zoomMin, zoomMax);
 
-                finalMov = target.transform.position + new Vector3(shakeX, shakeY, -150f);
-                finalRot = target.transform.rotation * Quaternion.Euler(0f, 0f, shakeRot);
-
+                if (pm.warping == false)
+                {
+                    finalMov = target.transform.position + new Vector3(shakeX, shakeY, -150f);
+                    finalRot = Quaternion.Euler(0f, 0f, target.transform.rotation.z + shakeRot);
+                }
+                else
+                {
+                    finalMov = new Vector3(0f, 1f, 4873f);
+                    finalRot = Quaternion.Euler(0f, 0f, 0f);
+                }
                 if (shakeX <= shakeThreshold)
                 {
                     shakeX = 0f;

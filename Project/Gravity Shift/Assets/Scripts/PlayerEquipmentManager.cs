@@ -295,7 +295,7 @@ public class PlayerEquipmentManager : MonoBehaviour
             if (blaster == null)
             {
                 currentHull.currentWeaponNumber++;
-                GameObject.Instantiate(nothing, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -1f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
+                GameObject.Instantiate(nothing, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -0.0001f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
             }
             else
             if (currentHull.currentWeaponNumber <= currentHull.maxWeaponNumber)
@@ -304,7 +304,7 @@ public class PlayerEquipmentManager : MonoBehaviour
                 //Display new blaster at specified transform
                 GameObject blasterToSpawn = blaster.blasterGO;
                 blasterToSpawn.GetComponent<BlasterScript>().pm = this.pm;
-                GameObject.Instantiate(blasterToSpawn, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -1f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
+                GameObject.Instantiate(blasterToSpawn, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -0.0001f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
             }
         }
     }

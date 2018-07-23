@@ -3596,7 +3596,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &170280144
 Transform:
   m_ObjectHideFlags: 0
@@ -8557,7 +8557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &460521789
 Transform:
   m_ObjectHideFlags: 0
@@ -11305,7 +11305,7 @@ MonoBehaviour:
   globalAnim: {fileID: 1556910750}
   warpTimeCurrent: 0
   warpTimeMax: 12.25
-  warping: 0
+  warping: 1
   warmingUp: 0
   warpConduit: {fileID: 224214375}
   jumpRange: 60000
@@ -13862,7 +13862,7 @@ MonoBehaviour:
   zoomMax: 32
   zoomSpeed: 6
   zoomDif: -0.1
-  initialPosition: {x: 0, y: 0, z: 0}
+  initialPosition: {x: 0, y: 3, z: 50}
   cam: {fileID: 0}
   finalMov: {x: 0, y: 0, z: 0}
   finalRot: {x: 0, y: 0, z: 0, w: 0}
@@ -13901,6 +13901,7 @@ MonoBehaviour:
   mapTargetScale: 0.75
   systemGalaxyViewButton: {fileID: 511844838}
   jumpButton: {fileID: 481593868}
+  lolnonnonono: 0
 --- !u!114 &690548255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35274,7 +35275,7 @@ MonoBehaviour:
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
   m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
+  m_InputActionsPerSecond: 35
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
 --- !u!114 &1920937594
