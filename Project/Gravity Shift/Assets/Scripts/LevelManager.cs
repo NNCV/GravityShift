@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject sunGO;
     public GameObject sunMapGO;
     public GameObject[] planetsGO;
+    public GameObject[] planetsSectorGO;
     public GameObject orbitRingGO;
 
     public SystemLevelObject saggitarius;
@@ -61,7 +62,7 @@ public class LevelManager : MonoBehaviour {
                     mgo.transform.GetChild(0).transform.position = pos;
                     mgo.transform.rotation = systemRotation;
 
-                    if (currentGalaxy.systems[a] == pm.currentSystem)
+                    if (currentGalaxy.systems[a] == currentGalaxy.systems[pm.currentSystem])
                     {
                         pm.currentPositionMap.position = pos;
                     }
@@ -227,7 +228,7 @@ public class LevelManager : MonoBehaviour {
     public int genAndRepeatPlanet(int r, int b1, int b2)
     {
         r = Random.Range(b1, b2);
-        if (pm.currentSystem.systemPlanets[r] != null)
+        if (pm.currentGalaxy.systems[pm.currentSystem].systemPlanets[r] != null)
         {
             return r;
         }
@@ -359,6 +360,7 @@ public class LevelManager : MonoBehaviour {
         int pType = Random.Range(0, planetTypes.Length);
         planet.planetType = planetTypes[pType];
         planet.mapGO = planetsGO[pType];
+        planet.sectorGO = planetsSectorGO[pType];
         planet.sectorObjective = possibleObjectives[Random.Range(1, possibleObjectives.Length)];
         planet.sectorType = planet.planetType;
         planet.sectorName = s.sectorName + " - " + orbitNumber;

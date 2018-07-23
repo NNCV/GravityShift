@@ -218,7 +218,7 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (pm.timeStopped == false || pm.warping == false)
+        if (pm.timeStopped == false || pm.warping == false || pm.warmingUp == false)
         {
             hydrTimeCurrent += Time.deltaTime;
             
@@ -342,9 +342,7 @@ public class PlayerEquipmentManager : MonoBehaviour
         if (currentBlasters[weaponSelected] == null)
         {
             weaponSelected++;
-            return;
         }
-        else
         if (energyCurrent >= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterEnergyDrain)
         {
             if (transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterCooldown >= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterFireRate)

@@ -15,13 +15,12 @@ MonoBehaviour:
   sectorType: Planet
   sectorMenuImage: {fileID: 21300000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
   sectorObjective: {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
-  sectorGO: {fileID: 0}
+  sectorGO: {fileID: 1119013745491312, guid: e7819db4722005345958c520de02b765, type: 2}
   mapGO: {fileID: 1577141589127028, guid: 554ef3842b5a32549862b8992ee59632, type: 2}
   rot1: 274
   rot2: -0.5
   mapPosition: {x: 0, y: 0, z: 0}
   planetType: Rocky Planet
   planetMainColor: {r: 1, g: 0.98182, b: 0.8254717, a: 1}
-  planetSecondaryColor: {r: 0, g: 0, b: 0, a: 0}
   planetRadius: 1.25
   orbitNumber: 3

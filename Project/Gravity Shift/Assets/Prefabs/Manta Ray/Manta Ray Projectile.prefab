@@ -397,6 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7715870e73b2947b98b868a72b98c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosion: {fileID: 0}
   force: {x: 0, y: 125, z: 0}
   timeMax: 2
   timeCurrent: 0
@@ -437,7 +438,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 30
-  m_Sprite: {fileID: 21300000, guid: a3adf24a6ef2cc04ba6916bb4f663ca5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8643f420c7d0f9446814a39dbe65d623, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -29,16 +29,19 @@ public class BlasterScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (pm.isFrozen == false)
+        if (!pm.warmingUp || !pm.warping)
         {
-            dif = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            dif.Normalize();
+            if (pm.isFrozen == false)
+            {
+                dif = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                dif.Normalize();
 
-            blasterCooldown += Time.deltaTime;
+                blasterCooldown += Time.deltaTime;
+            }
+
+            float rotZ = Mathf.Atan2(dif.y, dif.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, rotZ + offset), Time.deltaTime * pointSpeed);
         }
-
-        float rotZ = Mathf.Atan2(dif.y, dif.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, rotZ + offset), Time.deltaTime * pointSpeed);
     }
 
     public void Fire()

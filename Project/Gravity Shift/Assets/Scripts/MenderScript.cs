@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MenderScript : BasicEnemyScript {
-
-    public Transform player;
+    
     public Rigidbody2D rb2d;
     public float offsetMultiplier;
     public float moveSpeed;

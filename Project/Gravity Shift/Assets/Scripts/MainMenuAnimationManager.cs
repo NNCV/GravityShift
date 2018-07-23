@@ -78,8 +78,7 @@ public class MainMenuAnimationManager : MonoBehaviour {
 
     public void loadGame()
     {
-        string sceneToLoad = "TutorialScene";
-        SceneManager.LoadScene(sceneToLoad);
+        SceneManager.LoadScene("Game Scene");
     }
 
     public void saveSettings()

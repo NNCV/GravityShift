@@ -15,13 +15,12 @@ MonoBehaviour:
   sectorType: Planet
   sectorMenuImage: {fileID: 21300000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
   sectorObjective: {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
-  sectorGO: {fileID: 0}
+  sectorGO: {fileID: 1119013745491312, guid: e7819db4722005345958c520de02b765, type: 2}
   mapGO: {fileID: 1232407609135164, guid: 386e2ccd6d1d042498a018ecbfaa5b30, type: 2}
   rot1: 172
   rot2: 1
   mapPosition: {x: 0, y: 0, z: 0}
   planetType: Lava World
   planetMainColor: {r: 1, g: 0.9009434, b: 0.9009434, a: 1}
-  planetSecondaryColor: {r: 0, g: 0, b: 0, a: 0}
   planetRadius: 0.75
   orbitNumber: 1

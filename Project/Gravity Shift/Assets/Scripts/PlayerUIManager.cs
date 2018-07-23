@@ -20,6 +20,9 @@ public class PlayerUIManager : MonoBehaviour {
     public Text[] systemViewTexts;
     public Text galaxySectorSwitchView;
 
+    public bool jumped = true;
+    public float timeCurrent, timeMax;
+
     public void setGalaxyViewStats(SystemLevelObject systemIN)
     {
         if (systemIN != null)
@@ -58,7 +61,7 @@ public class PlayerUIManager : MonoBehaviour {
             galaxySectorSwitchView.text = "galaxy view";
         }
     }
-
+    
     void LateUpdate()
     {
         if(Input.GetKeyDown(KeyCode.Escape) && pm.warping == false)
@@ -67,7 +70,7 @@ public class PlayerUIManager : MonoBehaviour {
             pm.stopTime();
         }
 
-        if(pm.warping == true)
+        if(pm.warping == true || pm.warmingUp == true)
         {
             animState = 100;
         }

@@ -29,7 +29,7 @@ public class SlotScript : MonoBehaviour {
         }
         else if (itemInSlot.itemName == "Hellstorm")
         {
-            EquippableItem eqi = (EquippableItem)itemInSlot;
+            //EquippableItem eqi = (EquippableItem)itemInSlot;
             //itemImage.sprite = eqi.slotImage;
         }
         else
