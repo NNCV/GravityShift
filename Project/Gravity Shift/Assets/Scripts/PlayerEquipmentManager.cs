@@ -38,7 +38,7 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public float[] weaponReload;
     public int weaponSelected = 0;
-    
+
     public void SaveEquipment()
     {
         int currentWeaponNumber = 0;
@@ -160,6 +160,8 @@ public class PlayerEquipmentManager : MonoBehaviour
                 equipment[b + 10].DisableChildren();
             }
         }
+
+        weaponReload = new float[currentBlasters.Length];
 
         for (int z = 0; z < currentBlasters.Length; z++)
         {
