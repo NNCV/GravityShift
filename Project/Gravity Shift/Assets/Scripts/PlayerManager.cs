@@ -70,7 +70,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void setMapJUmpDisplayStats()
     {
-        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).localScale = new Vector3(jumpRange, jumpRange, jumpRange);
+        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).localScale = new Vector3(jumpRange * 1.2f, jumpRange * 1.2f, jumpRange * 1.2f);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).transform.position = lm.getPositionOfSystem(currentSystem);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[currentSystem].systemCentre.rot1);
     }
@@ -85,10 +85,10 @@ public class PlayerManager : MonoBehaviour {
             }
             if (warmingUp == true)
             {
-                warpConduit.transform.position = new Vector3(transform.position.x , transform.position.y + 2f, -4825f);
+                transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0f, 0f, -4950f), Time.deltaTime * 12f);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 8f);
                 Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 12f, Time.deltaTime * 6f);
-                if(Camera.main.orthographicSize <= 12.05f && (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f))
+                if(Camera.main.orthographicSize <= 12.05f && (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f) && (transform.position.x >= -0.1f || transform.position.x <= 0.1f) && (transform.position.y >= -0.1f || transform.position.y <= 0.1f))
                 {
                     warping = true;
                     if (currentSystem == 499 && currentSector == 5)
@@ -110,13 +110,14 @@ public class PlayerManager : MonoBehaviour {
             {
                 warpTimeCurrent += Time.deltaTime;
                 puim.setJumpSystemInformation(currentSector);
+                transform.localPosition = new Vector3(0f, 0f, 0f);
                 setMapJUmpDisplayStats();
                 if (warpTimeCurrent >= warpTimeMax)
                 {
                     warping = false;
                     loadSector();
                     globalAnim.SetInteger("State", 0);
-                    transform.position = new Vector3(0f, 0f, -4950f);
+                    transform.localPosition = new Vector3(0f, 0f, -4950f);
                     warpTimeCurrent = 0;
                 }
             }
@@ -147,6 +148,7 @@ public class PlayerManager : MonoBehaviour {
         {
             Load();
             pem.UpdateShipEquipmentStats();
+            setMapJUmpDisplayStats();
         }
     }
     

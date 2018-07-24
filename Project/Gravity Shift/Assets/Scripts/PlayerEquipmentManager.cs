@@ -36,6 +36,7 @@ public class PlayerEquipmentManager : MonoBehaviour
     public DialogueScript enterHydr, exitHydr, isInHydr;
     public DialogueManager dm;
 
+    public float[] weaponReload;
     public int weaponSelected = 0;
     
     public void SaveEquipment()
@@ -109,7 +110,9 @@ public class PlayerEquipmentManager : MonoBehaviour
                 if (a < currentHull.maxWeaponNumber)
                 {
                     if (currentBlasters[a] != null)
+                    {
                         equipment[a + 1].itemInSlot = currentBlasters[a];
+                    }
                 }
                 equipment[a + 1].DisplayItem();
             }
@@ -156,6 +159,11 @@ public class PlayerEquipmentManager : MonoBehaviour
                 equipment[b + 10].itemInSlot = null;
                 equipment[b + 10].DisableChildren();
             }
+        }
+
+        for (int z = 0; z < currentBlasters.Length; z++)
+        {
+            weaponReload[z] = currentBlasters[z].blasterCooldown;
         }
 
         /*
@@ -218,10 +226,15 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (pm.timeStopped == false || pm.warping == false || pm.warmingUp == false)
+        if (pm.timeStopped == false && pm.warping == false && pm.warmingUp == false && pm.puim.animState != 100)
         {
             hydrTimeCurrent += Time.deltaTime;
             
+            for(int z = 0; z < currentBlasters.Length; z++)
+            {
+                weaponReload[z] += Time.deltaTime;
+            }
+
             if(isHyperDrifting == true)
             {
                 transform.GetComponent<PlayerMovementManager>().hydrSpeed = hydrSpeedMult;
@@ -345,8 +358,9 @@ public class PlayerEquipmentManager : MonoBehaviour
         }
         if (energyCurrent >= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterEnergyDrain)
         {
-            if (transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterCooldown >= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterFireRate)
+            if(weaponReload[weaponSelected] >= currentBlasters[weaponSelected].blasterFireRate)
             {
+                weaponReload[weaponSelected] = 0f;
                 transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().Fire();
                 energyCurrent -= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterEnergyDrain;
                 energyCooldown = 0;

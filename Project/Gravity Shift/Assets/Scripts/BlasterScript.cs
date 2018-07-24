@@ -18,7 +18,6 @@ public class BlasterScript : MonoBehaviour
 
     public int blasterEnergyDrain = 0;
     public float blasterFireRate = 0f;
-    public float blasterCooldown = 0f;
 
     Vector3 dif;
 
@@ -35,8 +34,6 @@ public class BlasterScript : MonoBehaviour
             {
                 dif = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
                 dif.Normalize();
-
-                blasterCooldown += Time.deltaTime;
             }
 
             float rotZ = Mathf.Atan2(dif.y, dif.x) * Mathf.Rad2Deg;
@@ -46,14 +43,10 @@ public class BlasterScript : MonoBehaviour
 
     public void Fire()
     {
-        if (blasterCooldown >= blasterFireRate)
-        {
-            float shakeMovAddX = Random.Range(shakeMovMin, shakeMovMax);
-            float shakeMovAddY = Random.Range(shakeMovMin, shakeMovMax);
-            float shakemovAddRot = Random.Range(shakeRotMin, shakeRotMax);
-            Instantiate(blast, blastSpawnZone.position, blastSpawnZone.rotation);
-            Camera.main.GetComponent<CameraMovementManager>().Shake(shakeMovAddX, shakeMovAddY, shakemovAddRot);
-            blasterCooldown = 0;
-        }
+        float shakeMovAddX = Random.Range(shakeMovMin, shakeMovMax);
+        float shakeMovAddY = Random.Range(shakeMovMin, shakeMovMax);
+        float shakemovAddRot = Random.Range(shakeRotMin, shakeRotMax);
+        Instantiate(blast, blastSpawnZone.position, blastSpawnZone.rotation);
+        Camera.main.GetComponent<CameraMovementManager>().Shake(shakeMovAddX, shakeMovAddY, shakemovAddRot);
     }
 }

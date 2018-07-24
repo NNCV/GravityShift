@@ -40,6 +40,7 @@ public class CameraMovementManager : MonoBehaviour
     public bool toResetIMS = false;
 
     //Variabile pentru harta
+    public float mapPosXMin, mapPosXMax, mapPosYMin, mapPosYMax;
     public float mapZoom, mapZoomMin, mapZoomMax, mapZoomSpeed, mapZoomDif;
     public Vector3 mapPos;
     public Quaternion mapRot;
@@ -221,6 +222,23 @@ public class CameraMovementManager : MonoBehaviour
                     mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, mapTarget.transform.position + new Vector3(Input.GetAxisRaw("Horizontal") * mapScalableSpeed, -Input.GetAxisRaw("Vertical") * mapScalableSpeed, 0f), Time.deltaTime * mapTravelSpeed);
                     mapTarget.transform.localScale = Vector3.Lerp(mapTarget.transform.localScale, new Vector3(mapTargetScalableScale, mapTargetScalableScale, mapTargetScalableScale), Time.deltaTime * mapTravelSpeed);
 
+                    if (mapTarget.transform.position.x >= mapPosXMax)
+                    {
+                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapPosXMax, mapTarget.transform.position.y, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                    }
+                    if (mapTarget.transform.position.x <= mapPosXMin)
+                    {
+                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapPosXMin, mapTarget.transform.position.y, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                    }
+                    if (mapTarget.transform.position.y >= mapPosYMax)
+                    {
+                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapTarget.transform.position.x, mapPosYMax, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                    }
+                    if (mapTarget.transform.position.y <= mapPosYMin)
+                    {
+                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapTarget.transform.position.x, mapPosYMin, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                    }
+
                     mapZoom += Input.GetAxisRaw("Mouse ScrollWheel") / mapZoomDif;
                     mapZoom = Mathf.Clamp(mapZoom, mapZoomMin, mapZoomMax);
 
@@ -228,6 +246,7 @@ public class CameraMovementManager : MonoBehaviour
 
                     cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, mapZoom, Time.deltaTime * mapZoomSpeed);
                     cam.transform.position = Vector3.Lerp(cam.transform.position, mapPos, Time.deltaTime * mapTravelSpeed);
+                    
                     cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, mapRot, Time.deltaTime * mapTravelSpeed);
                 }
                 else
@@ -273,7 +292,7 @@ public class CameraMovementManager : MonoBehaviour
 
 
                     cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(mapSelectedSystem.transform.position.x, mapSelectedSystem.transform.position.y, -50f), Time.deltaTime * mapZoomSpeed);
-                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 450f, Time.deltaTime * mapZoomSpeed);
+                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 750f, Time.deltaTime * mapZoomSpeed);
 
                 }
             }
