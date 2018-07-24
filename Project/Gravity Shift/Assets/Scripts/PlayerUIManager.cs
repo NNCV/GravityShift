@@ -125,7 +125,7 @@ public class PlayerUIManager : MonoBehaviour {
 
     void LateUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && pm.warping == false)
+        if(Input.GetKeyDown(KeyCode.Escape) && (pm.warping == false && pm.warmingUp == false))
         {
             animState = -1;
             pm.stopTime();

@@ -36,31 +36,30 @@ public class LevelManager : MonoBehaviour {
     public ObjectiveObject[] possibleObjectives;
 
     public SystemLevelObject[] levels;
-    public GalaxyObject currentGalaxy;
 
     public PlayerManager pm;
 
     public void GenerateGalaxyMap(Transform origin)
     {
-        for (int a = 0 ; a < currentGalaxy.galaxySystemCount; a++)
+        for (int a = 0 ; a < pm.currentGalaxy.galaxySystemCount; a++)
         {
-            if (currentGalaxy.systems[a] != null)
+            if (pm.currentGalaxy.systems[a] != null)
             {
-                if (currentGalaxy.systems[a].systemName != "null")
+                if (pm.currentGalaxy.systems[a].systemName != "null")
                 {
-                    GameObject mgo = currentGalaxy.systems[a].systemCentre.mapGO;
-                    mgo.transform.GetChild(0).GetComponent<MapDataContainerScript>().slo = currentGalaxy.systems[a];
+                    GameObject mgo = pm.currentGalaxy.systems[a].systemCentre.mapGO;
+                    mgo.transform.GetChild(0).GetComponent<MapDataContainerScript>().slo = pm.currentGalaxy.systems[a];
                     mgo.transform.GetChild(0).GetComponent<MapDataContainerScript>().scalarInside = scalarInside;
                     mgo.transform.GetChild(0).GetComponent<MapDataContainerScript>().offsetInside = offsetInside;
 
                     Vector3 pos = new Vector3(0f, 0f, 0f);
-                    Quaternion systemRotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[a].systemCentre.rot1);
+                    Quaternion systemRotation = Quaternion.Euler(0f, 0f, pm.currentGalaxy.systems[a].systemCentre.rot1);
                     pos.x = origin.position.x + a * scalar;
 
                     mgo.transform.GetChild(0).transform.position = pos;
                     mgo.transform.rotation = systemRotation;
 
-                    if (currentGalaxy.systems[a] == currentGalaxy.systems[pm.currentSystem])
+                    if (pm.currentGalaxy.systems[a] == pm.currentGalaxy.systems[pm.currentSystem])
                     {
                         pm.currentPositionMap.position = pos;
                     }
@@ -70,6 +69,20 @@ public class LevelManager : MonoBehaviour {
             }
         }
     }
+
+    public Vector3 getPositionOfSystem(int sys)
+    {
+        Vector3 pos = new Vector3(0f, 0f, 0f);
+        pos.x = sys * scalar;
+        return pos;
+    }
+
+    public Quaternion getRotationOfSystem(int sys)
+    {
+        Quaternion rot = Quaternion.Euler(0f, 0f, pm.currentGalaxy.systems[sys].systemCentre.rot1);
+        return rot;
+    }
+
 
     //Just for testing for now
     public void LoadParticles(ParticleSystem[] pss)
@@ -219,7 +232,7 @@ public class LevelManager : MonoBehaviour {
     public int generateAndRepeat(int r, int bound1, int bound2)
     {
         r = Random.Range(bound1, bound2);
-        if (currentGalaxy.systems[r].systemName != "null")
+        if (pm.currentGalaxy.systems[r].systemName != "null")
         {
             return r;
         }
@@ -246,7 +259,7 @@ public class LevelManager : MonoBehaviour {
     //Just for testing
     public void ShowSystemsOfCurrentGalaxy()
     {
-        GalaxyObject g = currentGalaxy;
+        GalaxyObject g = pm.currentGalaxy;
         Debug.Log("GALAXY");
         Debug.Log("GALAXY NAME - " + g.galaxyName);
         Debug.Log("GALAXY SYSTEM COUNT " + g.galaxySystemCount);

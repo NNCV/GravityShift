@@ -9226,6 +9226,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1474804728}
+        m_MethodName: SetAnimState
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 100
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &481593869
@@ -11277,7 +11288,7 @@ MonoBehaviour:
   pem: {fileID: 530135583}
   pim: {fileID: 530135587}
   pmm: {fileID: 530135582}
-  puim: {fileID: 0}
+  puim: {fileID: 1474804728}
   lm: {fileID: 530135588}
   slotSelector: {fileID: 1771086889}
   selectedSlot: {fileID: 0}
@@ -11566,7 +11577,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
   - {fileID: 11400000, guid: b6ee0be4645152e40bb2fa4dc897f2de, type: 2}
   levels: []
-  currentGalaxy: {fileID: 0}
   pm: {fileID: 530135584}
 --- !u!1 &531669792
 GameObject:
@@ -12176,7 +12186,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: l   a   v   a      p   l   a   n   e   t      s   e   c   t   o   r      e   v   e   -   5   0   -   1
+  m_Text: a
 --- !u!222 &543059997
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13416,7 +13426,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1403098447}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &669921564
 MeshCollider:
@@ -13880,9 +13890,8 @@ MonoBehaviour:
   mapSelectedSystem: {fileID: 0}
   mapSelectedSector: {fileID: 669921562}
   mapSelector: {fileID: 253360164}
-  mapJumpRangeDisplay: {fileID: 917612944}
+  mapJumpRangeDisplay: {fileID: 764169209}
   selectedSystemInMap: {fileID: 0}
-  jumpRange: 100
   selected: 0
   isSystemView: 0
   selectorScalar: 1
@@ -13896,7 +13905,6 @@ MonoBehaviour:
   mapTargetScale: 0.75
   systemGalaxyViewButton: {fileID: 511844838}
   jumpButton: {fileID: 481593868}
-  lolnonnonono: 0
 --- !u!114 &690548255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15356,6 +15364,35 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 760418697}
+--- !u!1 &764169209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 764169210}
+  m_Layer: 0
+  m_Name: Map Jump Range Display Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &764169210
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 764169209}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 917612945}
+  m_Father: {fileID: 1403098447}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &766655925
 GameObject:
   m_ObjectHideFlags: 0
@@ -16990,7 +17027,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: n  e  b  u  l  a    s  y  s  t  e  m    e  v  e  -  5  0
+  m_Text: a
 --- !u!222 &813693147
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19304,7 +19341,7 @@ GameObject:
   - component: {fileID: 917612947}
   - component: {fileID: 917612946}
   m_Layer: 0
-  m_Name: Quad (3)
+  m_Name: Map Jump Range Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19320,8 +19357,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1403098447}
-  m_RootOrder: 2
+  m_Father: {fileID: 764169210}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &917612946
 MeshCollider:
@@ -21093,7 +21130,7 @@ Transform:
   m_GameObject: {fileID: 1039399284}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.022222223, z: -0.22222222}
-  m_LocalScale: {x: 0.022222223, y: 0.022222223, z: 0.022222223}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1556910749}
   m_RootOrder: 4
@@ -23943,7 +23980,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ee4f42a1469faf44988c8226d41b9f14, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7b201c06c4d73504cbc815d6407707a3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -27467,8 +27504,8 @@ Transform:
   m_Children:
   - {fileID: 2013242295}
   - {fileID: 253360165}
-  - {fileID: 917612945}
   - {fileID: 669921563}
+  - {fileID: 764169210}
   - {fileID: 237623394}
   m_Father: {fileID: 1556910749}
   m_RootOrder: 6
@@ -29713,6 +29750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556910749}
   - component: {fileID: 1556910750}
+  - component: {fileID: 1556910751}
   m_Layer: 0
   m_Name: Global Animation
   m_TagString: Untagged
@@ -29770,6 +29808,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1556910751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1556910748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b245dbc2c3c1f6743b66bd8f40ce892d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1562763944
 GameObject:
   m_ObjectHideFlags: 0

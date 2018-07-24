@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e7ea7b924134346be781050deb38dc, type: 3}
   m_Name: P1
   m_EditorClassIdentifier: 
-  sectorName: EVE 50 - 1
+  sectorName: eve - 50 - 1
   sectorType: Planet
   sectorMenuImage: {fileID: 21300000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
   sectorObjective: {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}

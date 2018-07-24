@@ -49,7 +49,6 @@ public class CameraMovementManager : MonoBehaviour
     public GameObject mapSelector;
     public GameObject mapJumpRangeDisplay;
     public GameObject selectedSystemInMap;
-    public float jumpRange;
     public bool selected = false;
     public bool isSystemView = true;
     public float selectorScalar = 10f;
@@ -61,7 +60,6 @@ public class CameraMovementManager : MonoBehaviour
     public float mapTargetScalableScale, mapTargetScale;
     public Button systemGalaxyViewButton;
     public Button jumpButton;
-    public float lolnonnonono;
 
     void Start()
     {
@@ -138,8 +136,8 @@ public class CameraMovementManager : MonoBehaviour
         {
             cam.transform.position = cam.transform.parent.transform.position + new Vector3(0f, 1f, -50f);
             cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            zoom = Mathf.Lerp(zoom, 12f, Time.deltaTime * 2f);
-            cam.orthographicSize = zoom;
+           // zoom = Mathf.Lerp(zoom, 12f, Time.deltaTime * 2f);
+           // cam.orthographicSize = zoom;
         }
         else
         if (pm.warping == false)
@@ -201,8 +199,6 @@ public class CameraMovementManager : MonoBehaviour
             else
             {
                 cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                mapJumpRangeDisplay.transform.localScale = new Vector3(jumpRange, jumpRange, jumpRange);
-                mapJumpRangeDisplay.transform.position = pm.currentPositionMap.position;
 
                 mapScalableSpeed = mapZoom / mapTravelMult;
                 mapTargetScalableScale = (mapZoom / mapTravelMult) * mapTargetScale;
@@ -238,12 +234,10 @@ public class CameraMovementManager : MonoBehaviour
                 {
                     pmtm.stopSpriteRenderer();
                     
-                    /*
-                    if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= jumpRange)
+                    if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= pm.jumpRange)
                     {
                         jumpButton.enabled = true;
                     }
-                    */
                     
                     if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
                     {
@@ -279,7 +273,7 @@ public class CameraMovementManager : MonoBehaviour
 
 
                     cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(mapSelectedSystem.transform.position.x, mapSelectedSystem.transform.position.y, -50f), Time.deltaTime * mapZoomSpeed);
-                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 45f, Time.deltaTime * mapZoomSpeed);
+                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 450f, Time.deltaTime * mapZoomSpeed);
 
                 }
             }

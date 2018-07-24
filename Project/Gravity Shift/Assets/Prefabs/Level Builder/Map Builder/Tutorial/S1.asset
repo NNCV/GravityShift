@@ -11,13 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d00cbe2af7f806841bbeeb418f07f406, type: 3}
   m_Name: S1
   m_EditorClassIdentifier: 
-  sectorName: EVE 50
+  sectorName: eve - 50
   sectorType: Sun
   sectorMenuImage: {fileID: 21300000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
   sectorObjective: {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
   sectorGO: {fileID: 1484820966532428, guid: 0fccbdac109a42d4cbc7fb8d5d08c75c, type: 2}
   mapGO: {fileID: 1349220507869106, guid: a5a367d6b8e6a524aa9745f4eb4c6ea9, type: 2}
-  rot1: 0
+  rot1: -90
   rot2: 0
   mapPosition: {x: 0, y: 0, z: 0}
   planetType: 

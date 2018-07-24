@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ec4da7fe7aa1645b91f216cd033374, type: 3}
   m_Name: EVE 50
   m_EditorClassIdentifier: 
-  systemName: EVE 50
+  systemName: eve - 50
   systemPlanetCount: 6
   systemCentre: {fileID: 11400000, guid: 270a971d8d9bb96419e6d159e0d591ba, type: 2}
   systemPlanets:

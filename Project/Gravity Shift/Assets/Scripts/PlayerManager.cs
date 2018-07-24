@@ -68,18 +68,29 @@ public class PlayerManager : MonoBehaviour {
 
     }
 
+    public void setMapJUmpDisplayStats()
+    {
+        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).localScale = new Vector3(jumpRange, jumpRange, jumpRange);
+        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).transform.position = lm.getPositionOfSystem(currentSystem);
+        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[currentSystem].systemCentre.rot1);
+    }
+
     private void FixedUpdate()
     {
         if (mode != 0)
         {
+            if(Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                SceneManager.LoadScene("Testing Stuff");
+            }
             if (warmingUp == true)
             {
-                warpConduit.transform.position = new Vector3(transform.position.x , transform.position.y + 5f, -4825f);
+                warpConduit.transform.position = new Vector3(transform.position.x , transform.position.y + 2f, -4825f);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 8f);
+                Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 12f, Time.deltaTime * 6f);
                 if(Camera.main.orthographicSize <= 12.05f && (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f))
                 {
                     warping = true;
-                    puim.setJumpSystemInformation(currentSector);
                     if (currentSystem == 499 && currentSector == 5)
                     {
                         globalAnim.SetInteger("State", 3);
@@ -98,7 +109,9 @@ public class PlayerManager : MonoBehaviour {
             else if(warping == true)
             {
                 warpTimeCurrent += Time.deltaTime;
-                if(warpTimeCurrent >= warpTimeMax)
+                puim.setJumpSystemInformation(currentSector);
+                setMapJUmpDisplayStats();
+                if (warpTimeCurrent >= warpTimeMax)
                 {
                     warping = false;
                     loadSector();
@@ -109,7 +122,6 @@ public class PlayerManager : MonoBehaviour {
             }
             else
             {
-                Camera.main.GetComponent<CameraMovementManager>().jumpRange = jumpRange;
                 if (timeStopped == true)
                 {
                     if (timeCurrent >= timeWait)
@@ -264,7 +276,6 @@ public class PlayerManager : MonoBehaviour {
         }
 
         currentGalaxy = loadGalaxy;
-        lm.currentGalaxy = currentGalaxy;
     }
 
         /*
@@ -734,9 +745,13 @@ public class PlayerManager : MonoBehaviour {
 
     public void loadSector()
     {
-        foreach (GameObject oldSector in GameObject.FindGameObjectsWithTag("SectorGOPart"))
+        if(currentSystem == 0 || currentSystem == 499)
         {
-            Destroy(oldSector);
+            isFrozen = true;
+        }
+        else
+        {
+            isFrozen = false;
         }
 
         if (currentSector == 0)

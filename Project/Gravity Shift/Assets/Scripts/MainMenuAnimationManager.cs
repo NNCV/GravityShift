@@ -69,7 +69,6 @@ public class MainMenuAnimationManager : MonoBehaviour {
         }
 
         pm.currentGalaxy = pm.lm.GenerateRandomGalaxy();
-        lm.currentGalaxy = pm.currentGalaxy;
 
         pm.saveGalaxy();
 
