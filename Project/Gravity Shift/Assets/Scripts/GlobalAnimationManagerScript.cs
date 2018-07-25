@@ -10,6 +10,11 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
         {
             Destroy(oldSector);
         }
+        
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            Destroy(enemy);
+        }
     }
 
 }

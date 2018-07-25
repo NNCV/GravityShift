@@ -101,7 +101,7 @@ public class LevelManager : MonoBehaviour {
         if (gToGen == null || gToGen.galaxySystemCount <= galaxySystemMinReq)
         {
             GalaxyObject galaxy = new GalaxyObject();
-            galaxy.galaxyName = "Saggitarius";
+            galaxy.galaxyName = "saggitarius";
             galaxy.systems = new SystemLevelObject[500];
             
             for (int a = 0; a < 500; a++)
@@ -143,17 +143,17 @@ public class LevelManager : MonoBehaviour {
                     {
                         if (a <= 100)
                         {
-                            galaxy.systems[a] = GenerateRandomSystem("Augmented", a);
+                            galaxy.systems[a] = GenerateRandomSystem("augmented", a);
                             galaxy.galaxySystemCount++;
                         }
                         else if (a > 100 && a <= 300)
                         {
-                            galaxy.systems[a] = GenerateRandomSystem("Enhanced", a);
+                            galaxy.systems[a] = GenerateRandomSystem("enhanced", a);
                             galaxy.galaxySystemCount++;
                         }
                         else if (a > 300 && a <= 498)
                         {
-                            galaxy.systems[a] = GenerateRandomSystem("Normal", a);
+                            galaxy.systems[a] = GenerateRandomSystem("normal", a);
                             galaxy.galaxySystemCount++;
                         }
 
@@ -161,7 +161,7 @@ public class LevelManager : MonoBehaviour {
 
                         if(isNebula == 0)
                         {
-                            galaxy.systems[a].systemType += " Nebula";
+                            galaxy.systems[a].systemType += " nebula";
                         }
                     }
                     else
@@ -171,54 +171,6 @@ public class LevelManager : MonoBehaviour {
                     }
                 }
             }
-
-
-            
-
-
-            /*
-            if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 0)
-            {
-                galaxy.systems[spawnPoint] = tutorial;
-                Debug.Log(galaxy.systems[spawnPoint].systemName);
-                pm.currentSystemLevel = 0;
-                pm.currentSector = 5;
-                galaxy.galaxySystemCount++;
-            }
-            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 1)
-            {
-                spawnPoint = generateAndRepeat(spawnPoint, 300, 495);
-                pm.currentSystem = galaxy.systems[spawnPoint];
-                pm.currentSystemLevel = 1;
-                pm.currentSector = genAndRepeatPlanet(pm.currentSystem.systemPlanetCount, 0, pm.currentSystem.systemPlanetCount);
-                galaxy.galaxySystemCount++;
-            }
-            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 2)
-            {
-                spawnPoint = generateAndRepeat(spawnPoint, 100, 300);
-                pm.currentSystem = galaxy.systems[spawnPoint];
-                pm.currentSystemLevel = 2;
-                pm.currentSector = genAndRepeatPlanet(pm.currentSystem.systemPlanetCount, 0, pm.currentSystem.systemPlanetCount);
-                galaxy.galaxySystemCount++;
-            }
-            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 3)
-            {
-                spawnPoint = generateAndRepeat(spawnPoint, galaxySystemMinLY, 100);
-                pm.currentSystem = galaxy.systems[spawnPoint];
-                pm.currentSystemLevel = 3;
-                pm.currentSector = genAndRepeatPlanet(pm.currentSystem.systemPlanetCount, 0, pm.currentSystem.systemPlanetCount);
-                galaxy.galaxySystemCount++;
-            }
-            else if (PlayerPrefs.GetInt("PlayerCurrentSystemLevel") == 4)
-            {
-                galaxy.systems[0] = saggitarius;
-                pm.currentSystem = galaxy.systems[0];
-                pm.currentSystemLevel = 4;
-                pm.currentSector = 0;
-                galaxy.galaxySystemCount++;
-            }
-            */
-
 
             return GenerateRandomGalaxy(galaxy);
         }

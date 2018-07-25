@@ -34,7 +34,23 @@ public class BlastScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<BasicEnemyScript>().healthCurrent -= damage;
+            if(collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent > 0)
+            {
+                if(collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent - damage >= 0)
+                {
+                    collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent -= damage;
+                }
+                else
+                {
+                    float shieldDamage = damage - collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent;
+                    collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent -= shieldDamage;
+                    collision.gameObject.GetComponent<BasicEnemyScript>().healthCurrent -= damage - shieldDamage;
+                }
+            }
+            else
+            {
+                collision.gameObject.GetComponent<BasicEnemyScript>().healthCurrent -= damage;
+            }
             Destroy(transform.gameObject);
         }
     }

@@ -137,5 +137,6 @@ public class MantaRayScript : BasicEnemyScript {
     {
         Instantiate(secondExplosion, transform.position, transform.rotation);
         base.Explode();
+        Destroy(gameObject.transform.parent.transform.parent.gameObject);
     }
 }

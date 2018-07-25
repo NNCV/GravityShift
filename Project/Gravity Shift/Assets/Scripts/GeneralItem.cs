@@ -11,5 +11,6 @@ public class GeneralItem : ScriptableObject {
     public string itemDescription;
     public int itemValue;
     public string itemType;
+    public Color rarity;
 
 }

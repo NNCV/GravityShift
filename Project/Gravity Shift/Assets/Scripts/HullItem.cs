@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class HullItem : EquippableItem
 {
-    public int maxHullHP = 0;
+    public float maxHullHP = 0;
     public float forwardSpeed = 0;
     public float rotationSpeed = 0;
 

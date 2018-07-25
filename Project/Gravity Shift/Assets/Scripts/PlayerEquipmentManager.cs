@@ -14,6 +14,8 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public GameObject nothing;
 
+    public float hullMultiplier, shieldMultiplier, energyMultiplier, energyRechargeMultiplier;
+
     //0 = hull
     //1-4 = weapons
     //5-7 = shields
@@ -21,15 +23,15 @@ public class PlayerEquipmentManager : MonoBehaviour
     //11-15 = cpus
     public SlotScript[] equipment;
 
-    public int hullCurrent, hullMax;
-    public int shieldCurrent, shieldMax, shieldRecharge, shieldRechargeRate;
-    public int energyCurrent, energyMax, energyRecharge, energyRechargeRate;
+    public float hullCurrent, hullMax;
+    public float shieldCurrent, shieldMax, shieldRecharge, shieldRechargeRate;
+    public float energyCurrent, energyMax, energyRecharge, energyRechargeRate;
 
     public float shieldCooldown;
     public float energyCooldown;
 
     public float hydrSpeedMult;
-    public int hydrCost;
+    public float hydrCost;
     public float hydrTimeCurrent;
     public float hydrTimeMax;
     public bool isHyperDrifting = false;
@@ -162,7 +164,7 @@ public class PlayerEquipmentManager : MonoBehaviour
         }
 
         weaponReload = new float[currentBlasters.Length];
-
+            
         for (int z = 0; z < currentBlasters.Length; z++)
         {
             weaponReload[z] = currentBlasters[z].blasterCooldown;
@@ -262,14 +264,14 @@ public class PlayerEquipmentManager : MonoBehaviour
                 shieldCooldown += Time.deltaTime;
                 if (shieldCooldown >= shieldRechargeRate)
                 {
-                    shieldCurrent += shieldRecharge;
+                    shieldCurrent += shieldRecharge * shieldRechargeRate;
                 }
             }
 
             energyCooldown += Time.deltaTime;
             if (energyCooldown >= energyRechargeRate)
             {
-                energyCurrent += energyRecharge;
+                energyCurrent += energyRecharge * energyRechargeMultiplier;
             }
 
             if (shieldCurrent >= shieldMax)

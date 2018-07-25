@@ -26,6 +26,11 @@ public class PlayerUIManager : MonoBehaviour {
 
     public bool jumped = true;
     public float timeCurrent, timeMax;
+    
+    public void spawnEN()
+    {
+        pm.spawnEnemy();
+    }
 
     public void setGalaxyViewStats(SystemLevelObject systemIN)
     {
@@ -37,8 +42,14 @@ public class PlayerUIManager : MonoBehaviour {
             }
             galaxyViewTexts[1].text = systemIN.systemName;
             galaxyViewTexts[3].text = (systemIN.systemPlanetCount - 1).ToString();
-            galaxyViewTexts[5].text = systemIN.systemOrbitStage.ToString() + "00 light years";
-
+            if (systemIN.systemOrbitStage == 0)
+            {
+                galaxyViewTexts[5].text = "This is the center";
+            }
+            else
+            {
+                galaxyViewTexts[5].text = systemIN.systemOrbitStage.ToString() + "00 light years";
+            }
         }
         else
         {
@@ -73,15 +84,15 @@ public class PlayerUIManager : MonoBehaviour {
         string preFinalSystemText = "";
         string preFinalSectorText = "";
 
-        if (systemType.Contains("Nebula"))
+        if (systemType.Contains("nebula"))
         {
             jumpSystemTypeImage.sprite = jumpSystemTypes[2];
-            preFinalSystemText = "Nebula System " + pm.currentGalaxy.systems[pm.currentSystem].systemName;
+            preFinalSystemText = "nebula system " + pm.currentGalaxy.systems[pm.currentSystem].systemName;
         }
         else
         {
             jumpSystemTypeImage.sprite = jumpSystemTypes[0];
-            preFinalSystemText = "System " + pm.currentGalaxy.systems[pm.currentSystem].systemName;
+            preFinalSystemText = "system " + pm.currentGalaxy.systems[pm.currentSystem].systemName;
         }
 
         if (sector > 0)

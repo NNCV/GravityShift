@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ShieldItem : EquippableItem {
 
-    public int shieldMax;
-    public int shieldRecharge;
-    public int shieldRechargeRate;
+    public float shieldMax;
+    public float shieldRecharge;
+    public float shieldRechargeRate;
 
 }

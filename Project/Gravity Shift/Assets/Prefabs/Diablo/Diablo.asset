@@ -16,6 +16,7 @@ MonoBehaviour:
   itemDescription: A fierce turret firing a fiery load
   itemValue: 100
   itemType: Equippable Weapon
+  rarity: {r: 0.48584908, g: 0.6845376, b: 1, a: 1}
   equipmentType: 1
   slotImage: {fileID: 21300000, guid: 0697262c7b99b0949a0e98c098feb50b, type: 3}
   stat1: thermal
@@ -27,7 +28,7 @@ MonoBehaviour:
   blasterDmgType2: Thermal
   blasterGO: {fileID: 1034998673504596, guid: 5fbb94a1b90b6bd459efd6bc5a98d388, type: 2}
   blasterEnergyDrain: 15
-  blasterFireRate: 1
+  blasterFireRate: 0.35
   blasterCooldown: 0
   wep1Value: 0.4
   wep2Value: 1

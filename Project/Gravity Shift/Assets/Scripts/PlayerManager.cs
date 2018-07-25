@@ -25,6 +25,9 @@ public class PlayerManager : MonoBehaviour {
     public SlotScript selectedSlot;
     public Vector2 slotSelectorOffset;
 
+    //test
+    public GameObject enemy;
+
     //Variabile specifice instantierii nivelelor
     public float step;
 
@@ -61,6 +64,8 @@ public class PlayerManager : MonoBehaviour {
     public bool warmingUp = false;
     public GameObject warpConduit;
     public float jumpRange;
+    public float jumpRangeMultiplier;
+    public float nebulaSectorJumpMultiplierInflunece;
     public int mode = 0;
     
     public void smartSaveGalaxy()
@@ -70,10 +75,34 @@ public class PlayerManager : MonoBehaviour {
 
     public void setMapJUmpDisplayStats()
     {
-        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).localScale = new Vector3(jumpRange * 1.2f, jumpRange * 1.2f, jumpRange * 1.2f);
+        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).localScale = new Vector3(jumpRange * jumpRangeMultiplier, jumpRange * jumpRangeMultiplier, jumpRange * jumpRangeMultiplier);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).transform.position = lm.getPositionOfSystem(currentSystem);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[currentSystem].systemCentre.rot1);
     }
+
+    public void spawnEnemy()
+    {
+        float x = Random.Range(900, 110);
+        float y = Random.Range(90, 110);
+
+        if((int)Random.Range(0, 1) == 0)
+        {
+            x = -x;
+        }
+        if ((int)Random.Range(0, 1) == 0)
+        {
+            y = -y;
+        }
+        Vector3 pos = new Vector3(x, y, -4750f);
+
+        GameObject en = enemy;
+        en.GetComponentInChildren<BasicEnemyScript>().player = transform;
+
+        Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
+        Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
+        Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
+    }
+    
 
     private void FixedUpdate()
     {
@@ -383,9 +412,9 @@ public class PlayerManager : MonoBehaviour {
             pem.currentBlasters = blastersa;
 
             ReactorItem[] reactorsa = new ReactorItem[pem.currentHull.maxNeocortexNumber];
-            int energyTotal = 0;
-            int energyRechargeTotal = 0;
-            int energyRechargeTimeTotal = 0;
+            float energyTotal = 0;
+            float energyRechargeTotal = 0;
+            float energyRechargeTimeTotal = 0;
             int reactorNo = 0;
 
             for (int j = 0; j < pem.currentHull.maxNeocortexNumber; j++)
@@ -406,9 +435,9 @@ public class PlayerManager : MonoBehaviour {
             pem.currentReactors = reactorsa;
 
             ShieldItem[] shieldsa = new ShieldItem[pem.currentHull.maxShieldsNumber];
-            int shieldTotal = 0;
-            int shieldRechargeTotal = 0;
-            int shieldRechargeTimeTotal = 0;
+            float shieldTotal = 0;
+            float shieldRechargeTotal = 0;
+            float shieldRechargeTimeTotal = 0;
             int shieldNo = 0;
 
             for (int z = 0; z < pem.currentHull.maxShieldsNumber; z++)
@@ -527,9 +556,9 @@ public class PlayerManager : MonoBehaviour {
             }
         }
         
-        PlayerPrefs.SetInt("HullCurrent", pem.hullCurrent);
-        PlayerPrefs.SetInt("ShieldCurrent", pem.shieldCurrent);
-        PlayerPrefs.SetInt("EnergyCurrent", pem.energyCurrent);
+        PlayerPrefs.SetFloat("HullCurrent", pem.hullCurrent);
+        PlayerPrefs.SetFloat("ShieldCurrent", pem.shieldCurrent);
+        PlayerPrefs.SetFloat("EnergyCurrent", pem.energyCurrent);
 
         for (int a = 0; a < 6; a++)
         {
@@ -747,13 +776,18 @@ public class PlayerManager : MonoBehaviour {
 
     public void loadSector()
     {
-        if(currentSystem == 0 || currentSystem == 499)
-        {
-            isFrozen = true;
-        }
-        else
-        {
+       // if(currentSystem == 0 || currentSystem == 499)
+       // {
+       //     isFrozen = true;
+       // }
+       // else
+       // {
             isFrozen = false;
+       // }
+
+        if(currentGalaxy.systems[currentSystem].systemType.Contains("Nebula"))
+        {
+            jumpRangeMultiplier = nebulaSectorJumpMultiplierInflunece;
         }
 
         if (currentSector == 0)

@@ -5,6 +5,12 @@ using UnityEngine;
 public class BasicEnemyScript : MonoBehaviour {
 
     //Variabile generale necesare pentru o nava simpla
+    public GameObject hpViewHolder, shViewHolder;
+    public float hpBaseScale, shBaseScale;
+    public Vector3 hpOffset, shOffset;
+    public GameObject dropGO;
+    public GeneralItem[] drops;
+    public float[] dropRates;
     public float healthCurrent, healthMax;
     public float shieldCurrent, shieldMax;
     public bool dead = false;
@@ -16,19 +22,47 @@ public class BasicEnemyScript : MonoBehaviour {
     {
         healthCurrent = healthMax;
         shieldCurrent = shieldMax;
+        hpViewHolder.transform.GetChild(1).transform.localScale = new Vector3(hpBaseScale, hpViewHolder.transform.GetChild(1).transform.localScale.y, hpViewHolder.transform.GetChild(1).transform.localScale.z);
+        shViewHolder.transform.GetChild(1).transform.localScale = new Vector3(shBaseScale, shViewHolder.transform.GetChild(1).transform.localScale.y, shViewHolder.transform.GetChild(1).transform.localScale.z);
     }
 
     //Cand nava nu mai are viata, navele ce vor mosteni clasa asta vor putea sa isi adauge propriul efect de explozie
     public virtual void FixedUpdate()
     {
-        if(healthCurrent <= 0)
+        hpViewHolder.transform.localPosition = transform.localPosition + hpOffset;
+        shViewHolder.transform.localPosition = transform.localPosition + shOffset;
+        hpViewHolder.transform.GetChild(0).transform.localScale = new Vector3(Mathf.Lerp(hpViewHolder.transform.GetChild(0).transform.localScale.x, (healthCurrent / healthMax) * hpBaseScale, Time.deltaTime * 20f), hpViewHolder.transform.GetChild(0).transform.localScale.y, hpViewHolder.transform.GetChild(0).transform.localScale.z);
+        shViewHolder.transform.GetChild(0).transform.localScale = new Vector3(Mathf.Lerp(shViewHolder.transform.GetChild(0).transform.localScale.x, (shieldCurrent / shieldMax) * shBaseScale, Time.deltaTime * 20f), shViewHolder.transform.GetChild(0).transform.localScale.y, shViewHolder.transform.GetChild(0).transform.localScale.z);
+
+        if (healthCurrent <= 0)
         {
             dead = true;
         }
     }
-    
+
     public virtual void Explode()
     {
-        Destroy(gameObject);
+        GameObject drop = dropGO;
+        int selected = dropRates.Length - 1;
+        float chance = Random.Range(0f, 1f);
+        bool found = false;
+        if (chance >= dropRates[0])
+        {
+            while(!found)
+            {
+                if(dropRates[selected] > chance)
+                {
+                    selected--;
+                }
+                if(dropRates[selected] <= chance)
+                {
+                    found = true;
+                }
+            }
+            drop.GetComponent<DropScript>().drop = drops[selected];
+            drop.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = drops[selected].itemImage;
+            drop.transform.GetChild(2).GetComponent<SpriteRenderer>().color = drops[selected].rarity;
+            Instantiate(drop, transform.position, transform.rotation);
+        }
     }
 }
