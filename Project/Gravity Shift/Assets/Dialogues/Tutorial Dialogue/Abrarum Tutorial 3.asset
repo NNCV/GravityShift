@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Abrarum Tutorial 3
   m_EditorClassIdentifier: 
   characterImage: {fileID: 21300000, guid: 489c2e37c4bafbd49b59c14eccd11a22, type: 3}
-  characterName: Abrarum
-  characterText: Oxygen systems offline!
-  timeToDisappear: 3
+  characterName: abrarum
+  characterText: action confirmed. initializing scan.
+  timeToDisappear: 1.5
   isSkippable: 0

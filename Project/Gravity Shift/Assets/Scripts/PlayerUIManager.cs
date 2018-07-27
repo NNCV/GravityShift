@@ -31,7 +31,7 @@ public class PlayerUIManager : MonoBehaviour {
     {
         pm.spawnEnemy();
     }
-
+    
     public void setGalaxyViewStats(SystemLevelObject systemIN)
     {
         if (systemIN != null)
@@ -136,7 +136,7 @@ public class PlayerUIManager : MonoBehaviour {
 
     void LateUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && (pm.warping == false && pm.warmingUp == false))
+        if(Input.GetKeyDown(KeyCode.Escape) && (pm.warping == false && pm.warmingUp == false) && (pm.currentSystem != 499 && pm.currentSector != 5))
         {
             animState = -1;
             pm.stopTime();
@@ -145,6 +145,10 @@ public class PlayerUIManager : MonoBehaviour {
         if(pm.warping == true || pm.warmingUp == true)
         {
             animState = 100;
+        }
+        if(pm.tutorialIntroAnimation == true)
+        {
+            anim.SetInteger("State", 99);
         }
 
         anim.SetInteger("State", animState);

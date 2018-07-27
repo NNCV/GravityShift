@@ -94,9 +94,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_40ED9A04: {r: 0.015686272, g: 0.032616615, b: 0.105882354, a: 1}
-    - Vector2_9D1115A5: {r: 0.4, g: 1.4, b: 0, a: 0}
-    - Vector2_E88029BF: {r: 0.2, g: 0.9, b: 0, a: 0}
+    - Color_40ED9A04: {r: 0.6242585, g: 0.109153256, b: 0.2671946, a: 0}
+    - Vector2_9D1115A5: {r: 0.48192382, g: 1.5638477, b: 0, a: 0}
+    - Vector2_E88029BF: {r: 0.28192383, g: 0.9819238, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

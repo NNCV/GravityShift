@@ -36,6 +36,7 @@ public class PlayerEquipmentManager : MonoBehaviour
     public float hydrTimeMax;
     public bool isHyperDrifting = false;
     public DialogueScript enterHydr, exitHydr, isInHydr;
+    public DialogueScript tutorial;
     public DialogueManager dm;
 
     public float[] weaponReload;
@@ -324,6 +325,11 @@ public class PlayerEquipmentManager : MonoBehaviour
                 GameObject.Instantiate(blasterToSpawn, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -0.0001f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
             }
         }
+    }
+
+    public void showTutorialDialogue()
+    {
+        dm.ShowDialogue(tutorial);
     }
 
     public void ToggleHyperDrift()

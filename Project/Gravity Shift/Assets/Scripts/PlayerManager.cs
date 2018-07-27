@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour {
     public PlayerMovementManager pmm;
     public PlayerUIManager puim;
     public LevelManager lm;
+    public ObjectiveManager om;
     
     //Lucruri pentru inventar
     public Image slotSelector;
@@ -39,6 +40,7 @@ public class PlayerManager : MonoBehaviour {
     public int currentXP = 0;
     public int[] xpLevels = new int[51];
     public int[] completedSystems;
+    public ObjectiveObject currentObjective;
     public GalaxyObject currentGalaxy = new GalaxyObject();
     public Transform currentPositionMap;
     public int currentSystem = 0;
@@ -62,6 +64,7 @@ public class PlayerManager : MonoBehaviour {
     public float warpTimeCurrent, warpTimeMax;
     public bool warping = false;
     public bool warmingUp = false;
+    public bool tutorialIntroAnimation = true;
     public GameObject warpConduit;
     public float jumpRange;
     public float jumpRangeMultiplier;
@@ -82,8 +85,8 @@ public class PlayerManager : MonoBehaviour {
 
     public void spawnEnemy()
     {
-        float x = Random.Range(900, 110);
-        float y = Random.Range(90, 110);
+        float x = Random.Range(10, 30);
+        float y = Random.Range(10, 30);
 
         if((int)Random.Range(0, 1) == 0)
         {
@@ -99,7 +102,13 @@ public class PlayerManager : MonoBehaviour {
         en.GetComponentInChildren<BasicEnemyScript>().player = transform;
 
         Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
+
+        en.transform.GetChild(0).GetChild(2).transform.rotation = Quaternion.Euler(0f, 0f, 120f);
+
         Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
+
+        en.transform.GetChild(0).GetChild(2).transform.rotation = Quaternion.Euler(0f, 0f, -120f);
+
         Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
     }
     
@@ -175,6 +184,19 @@ public class PlayerManager : MonoBehaviour {
     {
         if (mode != 0)
         {
+            if(currentSystem == 499 && currentSector == 5)
+            {
+                warmingUp = false;
+                warping = false;
+                isFrozen = true;
+                isInCutscene = true;
+                tutorialIntroAnimation = true;
+                globalAnim.SetInteger("State", -1);
+            }
+            else
+            {
+                warping = true;
+            }
             Load();
             pem.UpdateShipEquipmentStats();
             setMapJUmpDisplayStats();
@@ -308,41 +330,7 @@ public class PlayerManager : MonoBehaviour {
 
         currentGalaxy = loadGalaxy;
     }
-
-        /*
-        public void saveSectorAndSystem()
-        {
-            PlayerPrefs.SetString("PlayerSystem", currentGalaxy.systems[currentSystem].systemName);
-            PlayerPrefs.SetInt("PlayerSystemOrbitStage", currentGalaxy.systems[currentSystem].systemOrbitStage);
-            PlayerPrefs.SetInt("PlayerSystemPlanetCount", currentGalaxy.systems[currentSystem].systemPlanetCount);
-            PlayerPrefs.SetString("PlayerSystemSystemType", currentGalaxy.systems[currentSystem].systemType);
-
-            for (int b = 0; b < currentGalaxy.systems[currentSystem].systemPlanetCount; b++)
-            {
-                if (b == 0)
-                {
-                    PlayerPrefs.SetFloat("PlayerSystemCenterRadius", currentGalaxy.systems[currentSystem].systemCentre.sunRadius);
-                    PlayerPrefs.SetFloat("PlayerSystemCenterColorR", currentGalaxy.systems[currentSystem].systemCentre.sunColor.r);
-                    PlayerPrefs.SetFloat("PlayerSystemCenterColorG", currentGalaxy.systems[currentSystem].systemCentre.sunColor.g);
-                    PlayerPrefs.SetFloat("PlayerSystemCenterColorB", currentGalaxy.systems[currentSystem].systemCentre.sunColor.b);
-                }
-                if (currentGalaxy.systems[currentSystem].systemPlanets[b] != null)
-                {
-                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "Rot1", currentGalaxy.systems[currentSystem].systemPlanets[b].rot1);
-                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "Rot2", currentGalaxy.systems[currentSystem].systemPlanets[b].rot2);
-                    PlayerPrefs.SetString("PlayerSystemPlanet" + b + "Name", currentGalaxy.systems[currentSystem].systemPlanets[b].sectorName);
-                    PlayerPrefs.SetString("PlayerSystemPlanet" + b + "Type", currentGalaxy.systems[currentSystem].systemPlanets[b].sectorType);
-                    PlayerPrefs.SetString("PlayerSystemPlanet" + b + "PlanetType", currentGalaxy.systems[currentSystem].systemPlanets[b].planetType);
-                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorR", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.r);
-                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorG", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.g);
-                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "ColorB", currentGalaxy.systems[currentSystem].systemPlanets[b].planetMainColor.b);
-                    PlayerPrefs.SetFloat("PlayerSystemPlanet" + b + "PlanetRadius", currentGalaxy.systems[currentSystem].systemPlanets[b].planetRadius);
-
-                }
-            }
-        }
-        */
-
+    
     public void FreezePlayerFunctions()
     {
         isFrozen = true;
@@ -379,15 +367,13 @@ public class PlayerManager : MonoBehaviour {
     
     public void Load()
     {
-
         if (PlayerPrefs.GetString("PlayerName") == "")
             return;
         else
         {
             playerName = PlayerPrefs.GetString("PlayerName");
-
             jumpRange = PlayerPrefs.GetFloat("JumpRange");
-
+            
             foreach (HullItem hull in hulls)
             {
                 if (hull.itemName == PlayerPrefs.GetString("ShipHull"))

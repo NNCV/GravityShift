@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Abrarum Tutorial 1
   m_EditorClassIdentifier: 
   characterImage: {fileID: 21300000, guid: 489c2e37c4bafbd49b59c14eccd11a22, type: 3}
-  characterName: Abrarum
-  characterText: Warning! Critical system failure!
-  timeToDisappear: 3
+  characterName: abrarum
+  characterText: en route to eve - 50 sector 5, P
+  timeToDisappear: 2
   isSkippable: 0

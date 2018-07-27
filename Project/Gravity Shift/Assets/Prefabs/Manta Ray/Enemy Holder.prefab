@@ -358,7 +358,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1154538901779438}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.86602545, w: 0.49999997}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1070,8 +1070,8 @@ MonoBehaviour:
   - {fileID: 4193247669171612}
   - {fileID: 4934389039973646}
   currentTurret: 0
-  moveSpeed: 16
-  rotSpeed: 195
+  moveSpeed: 5
+  rotSpeed: 165
   rb2d: {fileID: 0}
   offsetPosMin: -3
   offsetPosMax: 3

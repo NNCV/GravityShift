@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class ExterminateObjective : ObjectiveObject {
-    
-    public int currentTargetsDestroyed;
-    public int necessaryTargetsDestroyed;
+
+    public int enemyType = 0;
 
 }

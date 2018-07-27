@@ -5,6 +5,8 @@ using UnityEngine;
 public class BasicEnemyScript : MonoBehaviour {
 
     //Variabile generale necesare pentru o nava simpla
+    public int enemyID;
+    public int enemyTypeID;
     public GameObject hpViewHolder, shViewHolder;
     public float hpBaseScale, shBaseScale;
     public Vector3 hpOffset, shOffset;
@@ -31,9 +33,9 @@ public class BasicEnemyScript : MonoBehaviour {
     {
         hpViewHolder.transform.localPosition = transform.localPosition + hpOffset;
         shViewHolder.transform.localPosition = transform.localPosition + shOffset;
-        hpViewHolder.transform.GetChild(0).transform.localScale = new Vector3(Mathf.Lerp(hpViewHolder.transform.GetChild(0).transform.localScale.x, (healthCurrent / healthMax) * hpBaseScale, Time.deltaTime * 20f), hpViewHolder.transform.GetChild(0).transform.localScale.y, hpViewHolder.transform.GetChild(0).transform.localScale.z);
-        shViewHolder.transform.GetChild(0).transform.localScale = new Vector3(Mathf.Lerp(shViewHolder.transform.GetChild(0).transform.localScale.x, (shieldCurrent / shieldMax) * shBaseScale, Time.deltaTime * 20f), shViewHolder.transform.GetChild(0).transform.localScale.y, shViewHolder.transform.GetChild(0).transform.localScale.z);
-
+        hpViewHolder.transform.GetChild(0).transform.localScale = new Vector3(Mathf.Lerp(hpViewHolder.transform.GetChild(0).transform.localScale.x, (healthCurrent / healthMax) * hpBaseScale, Time.deltaTime * 40f), hpViewHolder.transform.GetChild(0).transform.localScale.y, hpViewHolder.transform.GetChild(0).transform.localScale.z);
+        shViewHolder.transform.GetChild(0).transform.localScale = new Vector3(Mathf.Lerp(shViewHolder.transform.GetChild(0).transform.localScale.x, (shieldCurrent / shieldMax) * shBaseScale, Time.deltaTime * 40f), shViewHolder.transform.GetChild(0).transform.localScale.y, shViewHolder.transform.GetChild(0).transform.localScale.z);
+        
         if (healthCurrent <= 0)
         {
             dead = true;
@@ -42,6 +44,22 @@ public class BasicEnemyScript : MonoBehaviour {
 
     public virtual void Explode()
     {
+        foreach(AssasinationObjective oo in FindObjectOfType<ObjectiveManager>().currentObjectives)
+        {
+            if(oo.enemyID == enemyID)
+            {
+                oo.objectiveProgress++;
+            }
+        }
+
+        foreach(ExterminateObjective oo in FindObjectOfType<ObjectiveManager>().currentObjectives)
+        {
+            if(oo.enemyType == enemyTypeID)
+            {
+                oo.objectiveProgress++;
+            }
+        }
+
         GameObject drop = dropGO;
         int selected = dropRates.Length - 1;
         float chance = Random.Range(0f, 1f);

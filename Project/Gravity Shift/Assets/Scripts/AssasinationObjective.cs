@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class AssasinationObjective : ObjectiveObject {
 
-    public int enemyType = 0;
-    public bool destroyedTarget = false;
+    public int enemyID = 0;
 
 }

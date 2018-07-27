@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Name: Abrarum Tutorial 4
   m_EditorClassIdentifier: 
   characterImage: {fileID: 21300000, guid: 489c2e37c4bafbd49b59c14eccd11a22, type: 3}
-  characterName: Abrarum
-  characterText: Oxygen levels critical!
-  timeToDisappear: 3
+  characterName: abrarum
+  characterText: nearest space station is only 0.4 light years away from eve - 50
+    - 5
+  timeToDisappear: 3.5
   isSkippable: 0

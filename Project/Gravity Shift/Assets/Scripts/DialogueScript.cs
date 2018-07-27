@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DialogueScript : MonoBehaviour {
 
+    public PlayerManager pm;
     public DialogueManager dm;
 
     public bool canBeOverlayed = false;
@@ -30,11 +31,34 @@ public class DialogueScript : MonoBehaviour {
 
     public float timeToLoad = 0f;
 
+    public Vector3 offset;
+
     private void Start()
     {
         dm = FindObjectOfType<DialogueManager>();
-        characterNameBox.text = dialogueLines[currentDialogueLine].characterName;
-        characterTextBox.text = dialogueLines[currentDialogueLine].characterText;
+        pm = FindObjectOfType<PlayerManager>();
+        if (dialogueLines[currentDialogueLine].characterName == "P")
+        {
+            characterNameBox.text = pm.playerName;
+        }
+        else
+        {
+            characterNameBox.text = dialogueLines[currentDialogueLine].characterName;
+        }
+        if (dialogueLines[currentDialogueLine].characterText.Contains("P"))
+        {
+            string[] parts = dialogueLines[currentDialogueLine].characterText.Split('P');
+            string finalText = "";
+            for (int i = 0; i < parts.Length; i++)
+            {
+                finalText += parts[i] + pm.playerName;
+            }
+            characterTextBox.text = finalText;
+        }
+        else
+        {
+            characterTextBox.text = dialogueLines[currentDialogueLine].characterText;
+        }
         characterImageBox.sprite = dialogueLines[currentDialogueLine].characterImage;
     }
 
@@ -53,8 +77,28 @@ public class DialogueScript : MonoBehaviour {
 
             if (timeCurrent >= timeToLoad)
             {
-                characterNameBox.text = dialogueLines[currentDialogueLine].characterName;
-                characterTextBox.text = dialogueLines[currentDialogueLine].characterText;
+                if (dialogueLines[currentDialogueLine].characterName == "P")
+                {
+                    characterNameBox.text = pm.playerName;
+                }
+                else
+                {
+                    characterNameBox.text = dialogueLines[currentDialogueLine].characterName;
+                }
+                if (dialogueLines[currentDialogueLine].characterText.Contains("P"))
+                {
+                    string[] parts = dialogueLines[currentDialogueLine].characterText.Split('P');
+                    string finalText = "";
+                    for (int i = 0; i < parts.Length; i++)
+                    {
+                        finalText += parts[i] + pm.playerName;
+                    }
+                    characterTextBox.text = finalText;
+                }
+                else
+                {
+                    characterTextBox.text = dialogueLines[currentDialogueLine].characterText;
+                }
                 characterImageBox.sprite = dialogueLines[currentDialogueLine].characterImage;
             }
 

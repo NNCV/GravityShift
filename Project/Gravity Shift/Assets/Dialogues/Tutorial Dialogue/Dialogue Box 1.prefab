@@ -387,15 +387,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff7cbc49916bef43ae11e0719e98f2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pm: {fileID: 0}
   dm: {fileID: 0}
   canBeOverlayed: 0
   canBeSkippedEntirely: 0
   pos: {fileID: 224169668927871166}
   dialogueLines:
   - {fileID: 11400000, guid: 56058da7cb6cd7645b49c8a1e825dae6, type: 2}
-  - {fileID: 11400000, guid: 719fbd2471232a8479b0761a9aff436a, type: 2}
   - {fileID: 11400000, guid: 52badbd7a68ae674b8868bbd6a306c3b, type: 2}
+  - {fileID: 11400000, guid: 60829bf05ed41854fa88fd69b92f93c3, type: 2}
   - {fileID: 11400000, guid: 1aa7e4b1d9bf930408e88e15718096b0, type: 2}
+  - {fileID: 11400000, guid: cdd43f3782e18984d889b0d262a5fb24, type: 2}
+  - {fileID: 11400000, guid: 65b8ddd8dbf7e2148be3674ff165a036, type: 2}
+  - {fileID: 11400000, guid: 96569da31d7a1174a815648dfe41ebbe, type: 2}
+  - {fileID: 11400000, guid: 272eadf5c0567204f9b06b3b0a303ad6, type: 2}
+  - {fileID: 11400000, guid: b69c6314d3fccd645bbe032105894ef0, type: 2}
+  - {fileID: 11400000, guid: 9ab33d7be846b1547b3ec3ca9c4e9e4b, type: 2}
   anim: {fileID: 95087277950482862}
   animState: 0
   currentDialogueLine: 0
@@ -407,6 +414,7 @@ MonoBehaviour:
   isLastDialogueLine: 0
   timeToFadeOut: 0.25
   timeToLoad: 0.35
+  offset: {x: 0, y: -0.4, z: 2}
 --- !u!222 &222155310048542050
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -455,9 +463,9 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1778498450312008}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.00000004371139, y: -0.00000004371139, z: -1, w: 1.9106855e-15}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: -1, z: -1}
   m_Children:
   - {fileID: 224486121744072524}
   - {fileID: 224937067702367002}

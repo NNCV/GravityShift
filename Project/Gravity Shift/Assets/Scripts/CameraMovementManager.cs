@@ -67,7 +67,7 @@ public class CameraMovementManager : MonoBehaviour
         //Daca exista jucator, se centreaza pe el
         target = FindObjectOfType<PlayerEquipmentManager>().transform.gameObject;
         cam = GetComponent<Camera>();
-        if (pm.warping == false || pm.warmingUp == true)
+        if (pm.warping == false || pm.warmingUp == true || (pm.currentSystem == 499 && pm.currentSector == 5))
         {
             if (target != null)
             {
@@ -133,7 +133,7 @@ public class CameraMovementManager : MonoBehaviour
     void FixedUpdate()
     {
         //Pregatire pentru salt
-        if (pm.warmingUp == true || pm.warping == true)
+        if (pm.warmingUp == true || pm.warping == true || (pm.currentSystem == 499 && pm.currentSector == 5))
         {
             cam.transform.position = cam.transform.parent.transform.position + new Vector3(0f, 1f, -50f);
             cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);

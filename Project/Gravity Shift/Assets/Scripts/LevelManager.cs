@@ -33,8 +33,6 @@ public class LevelManager : MonoBehaviour {
     public string[] starNames;
     public string[] planetTypes;
 
-    public ObjectiveObject[] possibleObjectives;
-
     public SystemLevelObject[] levels;
 
     public PlayerManager pm;
@@ -238,7 +236,6 @@ public class LevelManager : MonoBehaviour {
         sun.sunRadius = Random.Range(sunMinR, sunMaxR);
         sun.sunColor = new Color(Random.Range(sunMinCR, sunMaxCR), Random.Range(sunMinCG, sunMaxCG), Random.Range(sunMinCB, sunMaxCB), 1f);
         sun.sectorGO = sunGO;
-        sun.sectorObjective = possibleObjectives[Random.Range(0, possibleObjectives.Length)];
         sun.sectorType = "Sun";
         sun.sectorName = GenerateRandomName("", Random.Range(1, 4));
         return sun;
@@ -257,7 +254,6 @@ public class LevelManager : MonoBehaviour {
         for (int a = 1; a < system.systemPlanetCount; a++)
         {
             system.systemPlanets[a] = GenerateRandomPlanet(system.systemCentre, a+1);
-            system.systemPlanets[a].sectorObjective.objectiveDifficulty = 500 - sos;
             system.systemPlanets[a].orbitNumber = a;
         }
         return system;
@@ -331,7 +327,6 @@ public class LevelManager : MonoBehaviour {
         planet.planetType = planetTypes[pType];
         planet.mapGO = planetsGO[pType];
         planet.sectorGO = planetsSectorGO[pType];
-        planet.sectorObjective = possibleObjectives[Random.Range(1, possibleObjectives.Length)];
         planet.sectorType = planet.planetType;
         planet.sectorName = s.sectorName + " - " + orbitNumber;
         return planet;
