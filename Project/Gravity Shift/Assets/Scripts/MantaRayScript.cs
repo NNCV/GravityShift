@@ -126,7 +126,7 @@ public class MantaRayScript : BasicEnemyScript {
         
     }
 
-    //Se explica de la sine
+    //Functia folosita de inamic pentru a trage catre jucator
     void Shoot(int turret)
     {
         Instantiate(projectile, turrets[turret].transform.position, turrets[turret].transform.rotation);

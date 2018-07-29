@@ -39,7 +39,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: df2be54d983927949a421ba0b324bc54, type: 3}
+        m_Texture: {fileID: 2800000, guid: 12aea9a863cc2a34a84ae3cb2feb3ebb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -103,4 +103,4 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TintColor: {r: 0.3333027, g: 0.24705882, b: 0.35686275, a: 0.03529412}
+    - _TintColor: {r: 0.33330268, g: 0.24705878, b: 0.35686272, a: 1}

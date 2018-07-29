@@ -14,6 +14,6 @@ MonoBehaviour:
   characterImage: {fileID: 21300000, guid: 489c2e37c4bafbd49b59c14eccd11a22, type: 3}
   characterName: abrarum
   characterText: the warp conduit is destabilizing, we must jump out of hyperspace,
-    P!
+    PLAYER!
   timeToDisappear: 3
   isSkippable: 0

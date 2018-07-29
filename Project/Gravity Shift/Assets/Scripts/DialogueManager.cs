@@ -19,15 +19,19 @@ public class DialogueManager : MonoBehaviour {
         {
             if(ds.canBeOverlayed)
             {
-                GameObject dialogue = Instantiate(ds.gameObject, this.gameObject.GetComponent<RectTransform>(), false) as GameObject;
-                dialogue.GetComponent<RectTransform>().position = ds.pos.position;
-                if (Camera.main.orthographic == false)
+                if (Camera.main.orthographic == true)
                 {
+                    GameObject dialogue = ds.gameObject;
+                    dialogue.GetComponent<RectTransform>().localPosition = ds.pos.position;
                     Instantiate(dialogue, this.gameObject.GetComponent<RectTransform>(), false);
                 }
                 else
                 {
-                    Instantiate(dialogue, transform.position, Quaternion.LookRotation(Camera.main.transform.position, transform.up));
+                    GameObject dialogue = ds.gameObject;
+                    dialogue.GetComponent<RectTransform>().localPosition = ds.pos.position;
+                    dialogue.GetComponent<RectTransform>().localScale = new Vector3(-1f, -1f, -1f);
+                    dialogue.GetComponent<RectTransform>().rotation = Quaternion.Euler(180f, 180f, 0f);
+                    Instantiate(dialogue, cameraCanvas.GetComponent<RectTransform>(), false);
                 }
                 inDialogue = true;
             }
@@ -36,14 +40,14 @@ public class DialogueManager : MonoBehaviour {
         {
             if (Camera.main.orthographic == true)
             {
-                GameObject dialogue = Instantiate(ds.gameObject, this.gameObject.GetComponent<RectTransform>(), false) as GameObject;
-                dialogue.GetComponent<RectTransform>().position = ds.pos.position;
+                GameObject dialogue = ds.gameObject;
+                dialogue.GetComponent<RectTransform>().localPosition = ds.pos.position;
                 Instantiate(dialogue, this.gameObject.GetComponent<RectTransform>(), false);
             }
             else
             {
                 GameObject dialogue = ds.gameObject;
-                dialogue.GetComponent<RectTransform>().position = ds.pos.position;
+                dialogue.GetComponent<RectTransform>().localPosition = ds.pos.position;
                 dialogue.GetComponent<RectTransform>().localScale = new Vector3(-1f, -1f, -1f);
                 dialogue.GetComponent<RectTransform>().rotation = Quaternion.Euler(180f, 180f, 0f);
                 Instantiate(dialogue, cameraCanvas.GetComponent<RectTransform>(), false);

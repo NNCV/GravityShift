@@ -378,4 +378,22 @@ public class PlayerEquipmentManager : MonoBehaviour
         }
         weaponSelected++;
     }
+
+    public void TakeDamage(float damage)
+    {
+        if(shieldCurrent > 0)
+        {
+            if (shieldCurrent >= damage)
+            {
+                shieldCurrent -= damage;
+            }
+            else
+            {
+                float damageToHull = damage - shieldCurrent;
+                shieldCurrent -= damage - damageToHull;
+                hullCurrent -= damageToHull;
+            }
+        }
+        shieldCooldown = 0;
+    }
 }

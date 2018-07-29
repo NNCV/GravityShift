@@ -11,7 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c831aa679318787428c1be641acff963, type: 3}
   m_Name: Test Assasination Objective
   m_EditorClassIdentifier: 
-  objectiveText: Assasinate the Manta Ray target!
+  objectiveType: 
+  objectiveText: assasinate the manta ray target
   objectiveProgress: 0
   objectiveRequired: 1
   objectiveDone: 0
@@ -20,5 +21,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba4356f31490d5c43a268653d752b37b, type: 2}
   objectiveNext: {fileID: 0}
   objectiveImage: {fileID: 21300000, guid: a9ac79806cb103f4d9996f1c3c446313, type: 3}
-  objectiveDoneText: Objective completed! Jump drive surging with energy!
+  objectiveDoneText: objective completed, jump drive fully charged
   enemyID: 0

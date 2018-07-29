@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ObjectiveObject : ScriptableObject {
 
+    public string objectiveType;
     public string objectiveText;
     public int objectiveProgress;
     public int objectiveRequired;
@@ -14,8 +15,9 @@ public class ObjectiveObject : ScriptableObject {
     public ObjectiveObject objectiveNext;
     public Sprite objectiveImage;
     public string objectiveDoneText;
+    public bool isExtra;
 
-    public void checkIfComplete()
+    public virtual void checkIfComplete()
     {
         if(objectiveProgress >= objectiveRequired)
         {

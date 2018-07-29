@@ -24,13 +24,8 @@ public class PlayerUIManager : MonoBehaviour {
     public Text jumpSectorTypeText;
     public Sprite[] jumpSystemTypes;
 
-    public bool jumped = true;
+    public bool jumped = false;
     public float timeCurrent, timeMax;
-    
-    public void spawnEN()
-    {
-        pm.spawnEnemy();
-    }
     
     public void setGalaxyViewStats(SystemLevelObject systemIN)
     {
@@ -136,7 +131,7 @@ public class PlayerUIManager : MonoBehaviour {
 
     void LateUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && (pm.warping == false && pm.warmingUp == false) && (pm.currentSystem != 499 && pm.currentSector != 5))
+        if(Input.GetKeyDown(KeyCode.Escape) && (pm.warping == false && pm.warmingUp == false) && pm.tutorialIntroAnimation == true)
         {
             animState = -1;
             pm.stopTime();
@@ -148,7 +143,7 @@ public class PlayerUIManager : MonoBehaviour {
         }
         if(pm.tutorialIntroAnimation == true)
         {
-            anim.SetInteger("State", 99);
+            animState = 99;
         }
 
         anim.SetInteger("State", animState);
@@ -156,10 +151,12 @@ public class PlayerUIManager : MonoBehaviour {
         curSh = (float)pm.pem.shieldCurrent / (float)pm.pem.shieldMax;
         curHp = (float)pm.pem.hullCurrent / (float)pm.pem.hullMax;
         curEn = (float)pm.pem.energyCurrent / (float)pm.pem.energyMax;
+        curXp = (float)pm.currentXP / (float)pm.xpLevels[pm.playerLevel];
 
         sh.GetComponent<RectTransform>().localScale = new Vector3(curSh, 1f, 1f);
         hp.GetComponent<RectTransform>().localScale = new Vector3(curHp, 1f, 1f);
         en.GetComponent<RectTransform>().localScale = new Vector3(curEn, 1f, 1f);
+        xp.GetComponent<RectTransform>().localScale = new Vector3(curXp, 1f, 1f);
 
         shEq.GetComponent<RectTransform>().localScale = new Vector3(curSh, 1f, 1f);
         hpEq.GetComponent<RectTransform>().localScale = new Vector3(curHp, 1f, 1f);

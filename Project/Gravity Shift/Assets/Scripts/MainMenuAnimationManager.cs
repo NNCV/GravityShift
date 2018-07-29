@@ -53,12 +53,14 @@ public class MainMenuAnimationManager : MonoBehaviour {
         PlayerPrefs.SetString("Blaster1", "Diablo Turret");
         PlayerPrefs.SetString("Reactor0", "Protos Reactor");
         PlayerPrefs.SetString("Shield0", "Diffuser Mk1");
+        PlayerPrefs.SetString("CanJump", "false");
         PlayerPrefs.SetInt("HullCurrent", 20);
         PlayerPrefs.SetInt("ShieldCurrent", 0);
         PlayerPrefs.SetInt("EnergyCurrent", 0);
         PlayerPrefs.SetInt("ParticleAmmount", PlayerPrefs.GetInt("ParticleAmmount"));
-        PlayerPrefs.SetInt("PlayerCurrentSystemLevel", 0);
-        PlayerPrefs.SetFloat("JumpRange", 10000);
+        PlayerPrefs.SetInt("CurrentSystem", 499);
+        PlayerPrefs.SetInt("CurrentSector", 5);
+        PlayerPrefs.SetString("CompletedSystems", "");
 
         for (int a = 0; a < 6; a++)
         {

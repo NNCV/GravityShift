@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour {
-    
+
+    public AssasinationObjective testObj;
+
     //Itemele care pot fi obtinute
     public GeneralItem[] allItems;
     public HullItem[] hulls;
@@ -20,14 +22,17 @@ public class PlayerManager : MonoBehaviour {
     public PlayerUIManager puim;
     public LevelManager lm;
     public ObjectiveManager om;
+    public DialogueManager dm;
     
     //Lucruri pentru inventar
     public Image slotSelector;
     public SlotScript selectedSlot;
     public Vector2 slotSelectorOffset;
 
-    //test
-    public GameObject enemy;
+    //Inamici
+    public string[] enemyNames;
+    public GameObject[] enemies;
+    public int[] currentEnemies;
 
     //Variabile specifice instantierii nivelelor
     public float step;
@@ -40,7 +45,7 @@ public class PlayerManager : MonoBehaviour {
     public int currentXP = 0;
     public int[] xpLevels = new int[51];
     public int[] completedSystems;
-    public ObjectiveObject currentObjective;
+    public int pathProgression = 0;
     public GalaxyObject currentGalaxy = new GalaxyObject();
     public Transform currentPositionMap;
     public int currentSystem = 0;
@@ -68,12 +73,43 @@ public class PlayerManager : MonoBehaviour {
     public GameObject warpConduit;
     public float jumpRange;
     public float jumpRangeMultiplier;
+    public bool canJump;
     public float nebulaSectorJumpMultiplierInflunece;
     public int mode = 0;
-    
-    public void smartSaveGalaxy()
-    {
 
+    //Dialoguri
+    public DialogueObject levelUpDialogue;
+    
+    public void loadCompletedSystems()
+    {
+        string loadedCompletedSystems = PlayerPrefs.GetString("Completed Systems");
+        if (loadedCompletedSystems != "")
+        {
+            loadedCompletedSystems.Trim();
+            string[] decompressedCS = loadedCompletedSystems.Split(' ');
+            int[] knownCompletedSystems = new int[decompressedCS.Length];
+
+            for (int a = 0; a < decompressedCS.Length; a++)
+            {
+                int.TryParse(decompressedCS[a], out knownCompletedSystems[a]);
+            }
+
+            completedSystems = knownCompletedSystems;
+        }
+    }
+
+    public void saveCompletedSystems()
+    {
+        string compressedCS = "";
+
+        if (completedSystems != null)
+        {
+            foreach (int cSys in completedSystems)
+            {
+                compressedCS += cSys.ToString() + " ";
+            }
+        }
+        PlayerPrefs.SetString("Completed Systems", compressedCS);
     }
 
     public void setMapJUmpDisplayStats()
@@ -82,37 +118,7 @@ public class PlayerManager : MonoBehaviour {
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).transform.position = lm.getPositionOfSystem(currentSystem);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[currentSystem].systemCentre.rot1);
     }
-
-    public void spawnEnemy()
-    {
-        float x = Random.Range(10, 30);
-        float y = Random.Range(10, 30);
-
-        if((int)Random.Range(0, 1) == 0)
-        {
-            x = -x;
-        }
-        if ((int)Random.Range(0, 1) == 0)
-        {
-            y = -y;
-        }
-        Vector3 pos = new Vector3(x, y, -4750f);
-
-        GameObject en = enemy;
-        en.GetComponentInChildren<BasicEnemyScript>().player = transform;
-
-        Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
-
-        en.transform.GetChild(0).GetChild(2).transform.rotation = Quaternion.Euler(0f, 0f, 120f);
-
-        Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
-
-        en.transform.GetChild(0).GetChild(2).transform.rotation = Quaternion.Euler(0f, 0f, -120f);
-
-        Instantiate(en, pos, Quaternion.Euler(0f, 0f, 0f));
-    }
     
-
     private void FixedUpdate()
     {
         if (mode != 0)
@@ -121,9 +127,16 @@ public class PlayerManager : MonoBehaviour {
             {
                 SceneManager.LoadScene("Testing Stuff");
             }
+
+            if(currentXP >= xpLevels[playerLevel])
+            {
+                playerLevel++;
+                currentXP = 0;
+            }
+
             if (warmingUp == true)
             {
-                transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0f, 0f, -4950f), Time.deltaTime * 12f);
+                transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * 12f);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 8f);
                 Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 12f, Time.deltaTime * 6f);
                 if(Camera.main.orthographicSize <= 12.05f && (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f) && (transform.position.x >= -0.1f || transform.position.x <= 0.1f) && (transform.position.y >= -0.1f || transform.position.y <= 0.1f))
@@ -155,7 +168,7 @@ public class PlayerManager : MonoBehaviour {
                     warping = false;
                     loadSector();
                     globalAnim.SetInteger("State", 0);
-                    transform.localPosition = new Vector3(0f, 0f, -4950f);
+                    transform.localPosition = new Vector3(0f, 0f, -4750f);
                     warpTimeCurrent = 0;
                 }
             }
@@ -184,7 +197,7 @@ public class PlayerManager : MonoBehaviour {
     {
         if (mode != 0)
         {
-            if(currentSystem == 499 && currentSector == 5)
+            if (currentSystem == 499 && currentSector == 5)
             {
                 warmingUp = false;
                 warping = false;
@@ -197,7 +210,7 @@ public class PlayerManager : MonoBehaviour {
             {
                 warping = true;
             }
-            Load();
+            FullLoad();
             pem.UpdateShipEquipmentStats();
             setMapJUmpDisplayStats();
         }
@@ -365,151 +378,175 @@ public class PlayerManager : MonoBehaviour {
         Application.Quit();
     }
     
-    public void Load()
+    public void LoadEquipment()
     {
-        if (PlayerPrefs.GetString("PlayerName") == "")
-            return;
-        else
+        foreach (HullItem hull in hulls)
         {
-            playerName = PlayerPrefs.GetString("PlayerName");
-            jumpRange = PlayerPrefs.GetFloat("JumpRange");
-            
-            foreach (HullItem hull in hulls)
+            if (hull.itemName == PlayerPrefs.GetString("ShipHull"))
             {
-                if (hull.itemName == PlayerPrefs.GetString("ShipHull"))
+                pem.currentHull = hull;
+            }
+        }
+
+        jumpRange = pem.currentHull.jumpRange;
+
+        BlasterItem[] blastersa = new BlasterItem[pem.currentHull.maxWeaponNumber];
+
+        for (int i = 0; i < pem.currentHull.maxWeaponNumber; i++)
+        {
+            foreach (BlasterItem blaster in blasters)
+            {
+                if (blaster.itemName == PlayerPrefs.GetString("Blaster" + i))
                 {
-                    pem.currentHull = hull;
+                    blastersa[i] = blaster;
                 }
             }
+        }
 
-            BlasterItem[] blastersa = new BlasterItem[pem.currentHull.maxWeaponNumber];
+        pem.currentBlasters = blastersa;
 
-            for (int i = 0; i < pem.currentHull.maxWeaponNumber; i++)
+        ReactorItem[] reactorsa = new ReactorItem[pem.currentHull.maxNeocortexNumber];
+        float energyTotal = 0;
+        float energyRechargeTotal = 0;
+        float energyRechargeTimeTotal = 0;
+        int reactorNo = 0;
+
+        for (int j = 0; j < pem.currentHull.maxNeocortexNumber; j++)
+        {
+            foreach (ReactorItem reactor in reactors)
             {
-                foreach (BlasterItem blaster in blasters)
+                if (reactor.itemName == PlayerPrefs.GetString("Reactor" + j))
                 {
-                    if (blaster.itemName == PlayerPrefs.GetString("Blaster" + i))
-                    {
-                        blastersa[i] = blaster;
-                    }
+                    reactorsa[j] = reactor;
+                    reactorNo++;
+                    energyRechargeTotal += reactor.rechargeRate;
+                    energyRechargeTimeTotal += reactor.timeRecharge;
+                    energyTotal += reactor.maxEnergy;
                 }
             }
+        }
 
-            pem.currentBlasters = blastersa;
+        pem.currentReactors = reactorsa;
 
-            ReactorItem[] reactorsa = new ReactorItem[pem.currentHull.maxNeocortexNumber];
-            float energyTotal = 0;
-            float energyRechargeTotal = 0;
-            float energyRechargeTimeTotal = 0;
-            int reactorNo = 0;
+        ShieldItem[] shieldsa = new ShieldItem[pem.currentHull.maxShieldsNumber];
+        float shieldTotal = 0;
+        float shieldRechargeTotal = 0;
+        float shieldRechargeTimeTotal = 0;
+        int shieldNo = 0;
 
-            for (int j = 0; j < pem.currentHull.maxNeocortexNumber; j++)
+        for (int z = 0; z < pem.currentHull.maxShieldsNumber; z++)
+        {
+            foreach (ShieldItem shield in shields)
             {
-                foreach(ReactorItem reactor in reactors)
+                if (shield.itemName == PlayerPrefs.GetString("Shield" + z))
                 {
-                    if (reactor.itemName == PlayerPrefs.GetString("Reactor" + j))
-                    {
-                        reactorsa[j] = reactor;
-                        reactorNo++;
-                        energyRechargeTotal += reactor.rechargeRate;
-                        energyRechargeTimeTotal += reactor.timeRecharge;
-                        energyTotal += reactor.maxEnergy;
-                    }
+                    shieldsa[z] = shield;
+                    shieldNo++;
+                    shieldRechargeTotal += shield.shieldRecharge;
+                    shieldRechargeTimeTotal += shield.shieldRechargeRate;
+                    shieldTotal += shield.shieldMax;
                 }
             }
+        }
 
-            pem.currentReactors = reactorsa;
+        pem.currentShields = shieldsa;
 
-            ShieldItem[] shieldsa = new ShieldItem[pem.currentHull.maxShieldsNumber];
-            float shieldTotal = 0;
-            float shieldRechargeTotal = 0;
-            float shieldRechargeTimeTotal = 0;
-            int shieldNo = 0;
 
-            for (int z = 0; z < pem.currentHull.maxShieldsNumber; z++)
+        pem.hullMax = pem.currentHull.maxHullHP;
+
+        shieldRechargeTotal = Mathf.RoundToInt(shieldRechargeTotal / shieldNo);
+        shieldRechargeTimeTotal = Mathf.RoundToInt(shieldRechargeTimeTotal / shieldNo);
+        pem.shieldRecharge = shieldRechargeTotal;
+        pem.shieldRechargeRate = shieldRechargeTimeTotal;
+        pem.shieldMax = shieldTotal;
+
+        energyRechargeTotal = Mathf.RoundToInt(energyRechargeTotal / reactorNo);
+        energyRechargeTimeTotal = Mathf.RoundToInt(energyRechargeTimeTotal / reactorNo);
+        pem.energyRecharge = energyRechargeTotal;
+        pem.energyRechargeRate = energyRechargeTimeTotal;
+        pem.energyMax = energyTotal;
+
+        pmm.fSpeed = pem.currentHull.forwardSpeed;
+        pmm.rSpeed = pem.currentHull.rotationSpeed;
+
+        currentXP = PlayerPrefs.GetInt("CurrentXP");
+        playerLevel = PlayerPrefs.GetInt("CurrentLevel");
+
+        pem.hullCurrent = PlayerPrefs.GetInt("HullCurrent");
+        pem.shieldCurrent = PlayerPrefs.GetInt("ShieldCurrent");
+        pem.energyCurrent = PlayerPrefs.GetInt("EnergyCurrent");
+
+        pem.DisplayEquipment();
+    }
+
+    public void LoadInventory()
+    {
+        for (int a = 0; a < 6; a++)
+        {
+            for (int b = 0; b < 8; b++)
             {
-                foreach(ShieldItem shield in shields)
+                if (PlayerPrefs.GetString("InventorySlot" + b + "" + a) == "")
                 {
-                    if(shield.itemName == PlayerPrefs.GetString("Shield" + z))
-                    {
-                        shieldsa[z] = shield;
-                        shieldNo++;
-                        shieldRechargeTotal += shield.shieldRecharge;
-                        shieldRechargeTimeTotal += shield.shieldRechargeRate;
-                        shieldTotal += shield.shieldMax;
-                    }
+                    pim.slots[b].line[a].itemInSlot = null;
+                    pim.slots[b].line[a].DisplayItem();
                 }
-            }
-
-            pem.currentShields = shieldsa;
-
-
-            pem.hullMax = pem.currentHull.maxHullHP;
-            
-            shieldRechargeTotal = Mathf.RoundToInt(shieldRechargeTotal / shieldNo);
-            shieldRechargeTimeTotal = Mathf.RoundToInt(shieldRechargeTimeTotal / shieldNo);
-            pem.shieldRecharge = shieldRechargeTotal;
-            pem.shieldRechargeRate = shieldRechargeTimeTotal;
-            pem.shieldMax = shieldTotal;
-
-            energyRechargeTotal = Mathf.RoundToInt(energyRechargeTotal / reactorNo);
-            energyRechargeTimeTotal = Mathf.RoundToInt(energyRechargeTimeTotal / reactorNo);
-            pem.energyRecharge = energyRechargeTotal;
-            pem.energyRechargeRate = energyRechargeTimeTotal;
-            pem.energyMax = energyTotal;
-
-            pmm.fSpeed = pem.currentHull.forwardSpeed;
-            pmm.rSpeed = pem.currentHull.rotationSpeed;
-            
-            currentXP = PlayerPrefs.GetInt("CurrentXP");
-            playerLevel = PlayerPrefs.GetInt("CurrentLevel");
-
-            pem.hullCurrent = PlayerPrefs.GetInt("HullCurrent");
-            pem.shieldCurrent = PlayerPrefs.GetInt("ShieldCurrent");
-            pem.energyCurrent = PlayerPrefs.GetInt("EnergyCurrent");
-
-            pem.DisplayEquipment();
-            
-            for (int a = 0; a < 6; a++)
-            {
-                for (int b = 0; b < 8; b++)
+                else
                 {
-                    if (PlayerPrefs.GetString("InventorySlot" + b + "" + a) == "")
+                    foreach (GeneralItem gi in allItems)
                     {
-                        pim.slots[b].line[a].itemInSlot = null;
-                        pim.slots[b].line[a].DisplayItem();
-                    }
-                    else
-                    {
-                        foreach (GeneralItem gi in allItems)
+                        if (gi.itemName == PlayerPrefs.GetString("InventorySlot" + b + "" + a))
                         {
-                            if (gi.itemName == PlayerPrefs.GetString("InventorySlot" + b + "" + a))
-                            {
-                                pim.slots[b].line[a].itemInSlot = gi;
-                                pim.slots[b].line[a].DisplayItem();
-                            }
+                            pim.slots[b].line[a].itemInSlot = gi;
+                            pim.slots[b].line[a].DisplayItem();
                         }
                     }
                 }
             }
-
-            loadGalaxy();
         }
     }
 
-    public void Save()
+    public void LoadPlayerInfo()
     {
-        PlayerPrefs.SetInt("CurrentLevel", playerLevel);
-        PlayerPrefs.SetInt("CurrentXP", currentXP);
-        PlayerPrefs.SetString("PlayerName", playerName);
+        playerLevel = PlayerPrefs.GetInt("CurrentLevel");
+        currentXP = PlayerPrefs.GetInt("CurrentXP");
+        playerName = PlayerPrefs.GetString("PlayerName");
+        bool.TryParse(PlayerPrefs.GetString("CanJump"), out canJump);
+        pathProgression = PlayerPrefs.GetInt("PathProgression");
+        currentSystem = PlayerPrefs.GetInt("CurrentSystem");
+        currentSector = PlayerPrefs.GetInt("CurrentSector");
+
+        loadCompletedSystems();
+    }
+
+    public void Load()
+    {
+        LoadPlayerInfo();
+        LoadEquipment();
+        LoadInventory();
+    }
+
+    public void FullLoad()
+    {
+        if (PlayerPrefs.GetString("PlayerName") == "")
+        {
+            return;
+        }
+
+        LoadPlayerInfo();
+        LoadEquipment();
+        LoadInventory();
+        loadGalaxy();
+    }
+
+    public void SaveEquipment()
+    {
         PlayerPrefs.SetString("ShipHull", pem.currentHull.itemName);
-        PlayerPrefs.SetFloat("JumpRange", jumpRange);
 
         if (pem.currentBlasters != null)
         {
             for (int i = 0; i < pem.currentHull.maxWeaponNumber; i++)
             {
-                if(pem.currentBlasters[i] == null)
+                if (pem.currentBlasters[i] == null)
                 {
                     PlayerPrefs.SetString("Blaster" + i, "");
                 }
@@ -529,9 +566,9 @@ public class PlayerManager : MonoBehaviour {
                     PlayerPrefs.SetString("Reactor" + j, pem.currentReactors[j].itemName);
             }
         }
-        if(pem.currentShields != null)
+        if (pem.currentShields != null)
         {
-            for(int z = 0; z < pem.currentHull.maxShieldsNumber; z++)
+            for (int z = 0; z < pem.currentHull.maxShieldsNumber; z++)
             {
                 if (pem.currentShields[z] == null)
                 {
@@ -541,11 +578,15 @@ public class PlayerManager : MonoBehaviour {
                     PlayerPrefs.SetString("Shield" + z, pem.currentShields[z].itemName);
             }
         }
-        
+
         PlayerPrefs.SetFloat("HullCurrent", pem.hullCurrent);
         PlayerPrefs.SetFloat("ShieldCurrent", pem.shieldCurrent);
         PlayerPrefs.SetFloat("EnergyCurrent", pem.energyCurrent);
 
+    }
+
+    public void SaveInventory()
+    {
         for (int a = 0; a < 6; a++)
         {
             for (int b = 0; b < 8; b++)
@@ -558,9 +599,34 @@ public class PlayerManager : MonoBehaviour {
                     PlayerPrefs.SetString("InventorySlot" + b + "" + a, pim.slots[b].line[a].itemInSlot.itemName);
             }
         }
+    }
 
+    public void SavePlayerInfo()
+    {
+        PlayerPrefs.SetInt("CurrentLevel", playerLevel);
+        PlayerPrefs.SetInt("CurrentXP", currentXP);
+        PlayerPrefs.SetString("PlayerName", playerName);
+        PlayerPrefs.SetString("CanJump", canJump.ToString());
+        PlayerPrefs.SetInt("PathProgression", pathProgression);
+        PlayerPrefs.SetInt("CurrentSystem", currentSystem);
+        PlayerPrefs.SetInt("CurrentSector", currentSector);
+
+        saveCompletedSystems();
+    }
+
+    public void Save()
+    {
+        SavePlayerInfo();
+        SaveEquipment();
+        SaveInventory();
+    }
+
+    public void FullSave()
+    {
+        SavePlayerInfo();
+        SaveEquipment();
+        SaveInventory();
         saveGalaxy();
-        
     }
     
     public void SelectSlot(SlotScript ss)
@@ -760,16 +826,72 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
+    public ObjectiveObject GenerateRandomSectorObjective(int objectiveType, int enemyType = 0, int enemyID = 0)
+    {
+        switch (objectiveType)
+        {
+            case 0:
+                AssasinationObjective ao = new AssasinationObjective();
+                ao.enemyID = enemyID;
+                ao.objectiveProgress = 0;
+                ao.enemyID = currentEnemies[enemyType];
+                ao.objectiveRequired = 1;
+                ao.objectiveText = "assasinate the " + enemyNames[enemyType] + " target";
+                ao.objectiveImage = om.abrarum;
+                ao.objectiveDoneText = "assasination completed, here's what we found";
+                ao.objectiveXP = Mathf.RoundToInt((enemies[enemyType].GetComponentInChildren<BasicEnemyScript>().xpReward / 2) * (playerLevel + 0.5f));
+                return ao;
+        }
+        return null;
+    }
+
     public void loadSector()
     {
-       // if(currentSystem == 0 || currentSystem == 499)
-       // {
-       //     isFrozen = true;
-       // }
-       // else
-       // {
-            isFrozen = false;
-       // }
+        int total = Random.Range(1, 6);
+
+        currentEnemies = new int[total];
+
+        for (int a = 0; a < total; a++)
+        {
+            foreach (GameObject e in enemies)
+            {
+                float chance = e.GetComponentInChildren<BasicEnemyScript>().chanceToSpawn;
+                float generatedChance = Random.Range(0f, 1f);
+                
+                if (generatedChance >= chance)
+                {
+                    e.GetComponentInChildren<BasicEnemyScript>().enemyID = currentEnemies[e.GetComponentInChildren<BasicEnemyScript>().enemyTypeID];
+                    
+                    float x = Random.Range(10, 30);
+                    float y = Random.Range(10, 30);
+
+                    if ((int)Random.Range(0, 1) == 0)
+                    {
+                        x = -x;
+                    }
+                    if ((int)Random.Range(0, 1) == 0)
+                    {
+                        y = -y;
+                    }
+
+                    Vector3 pos = new Vector3(x, y, -4750f);
+
+                    e.GetComponentInChildren<BasicEnemyScript>().player = transform;
+
+                    Instantiate(e, pos, Quaternion.Euler(0f, 0f, 0f));
+
+                    currentEnemies[e.GetComponentInChildren<BasicEnemyScript>().enemyTypeID]++;
+                }
+            }
+        }
+
+        om.currentObjectives.Add(GenerateRandomSectorObjective(Random.Range(0, 1), Random.Range(0, currentEnemies.Length - 1), currentEnemies[Random.Range(0, currentEnemies.Length - 1)]));
+        //om.currentObjectives.Add(GenerateRandomSectorObjective(0, 0, 0));
+        //om.currentObjectives.Add(testObj);
+
+        Save();
+
+        isFrozen = false;
 
         if(currentGalaxy.systems[currentSystem].systemType.Contains("Nebula"))
         {
@@ -819,5 +941,4 @@ public class PlayerManager : MonoBehaviour {
             Instantiate(planetGO, new Vector3(0f, 0f, -4850f), Quaternion.Euler(0f, 0f, 0f));
         }
     }
-    
 }

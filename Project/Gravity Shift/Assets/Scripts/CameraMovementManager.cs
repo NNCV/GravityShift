@@ -133,7 +133,8 @@ public class CameraMovementManager : MonoBehaviour
     void FixedUpdate()
     {
         //Pregatire pentru salt
-        if (pm.warmingUp == true || pm.warping == true || (pm.currentSystem == 499 && pm.currentSector == 5))
+        // || (pm.currentSystem == 499 && pm.currentSector == 5)
+        if (pm.warmingUp == true || pm.warping == true || pm.tutorialIntroAnimation)
         {
             cam.transform.position = cam.transform.parent.transform.position + new Vector3(0f, 1f, -50f);
             cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -155,10 +156,6 @@ public class CameraMovementManager : MonoBehaviour
             if (isSystemView == false)
             {
                 jumpButton.interactable = false;
-            }
-            else
-            {
-                jumpButton.interactable = true;
             }
 
             if (isInMapScreen == false)
@@ -252,8 +249,20 @@ public class CameraMovementManager : MonoBehaviour
                 else
                 {
                     pmtm.stopSpriteRenderer();
+
+                    /*
+                    bool goodSystem = false;
                     
-                    if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= pm.jumpRange)
+                    for(int a = 0; a < pm.completedSystems.Length; a++)
+                    {
+                        if (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemOrbitStage == pm.completedSystems[a])
+                        {
+                            goodSystem = true;
+                        }
+                    }
+                    */
+
+                    if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= pm.jumpRange && pm.canJump == true) //&& goodsystem == true
                     {
                         jumpButton.enabled = true;
                     }
@@ -289,11 +298,9 @@ public class CameraMovementManager : MonoBehaviour
                     }
 
                     mapSelector.transform.localScale = Vector3.Lerp(mapSelector.transform.localScale, new Vector3((mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar), Time.deltaTime * mapZoomSpeed);
-
-
+                    
                     cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(mapSelectedSystem.transform.position.x, mapSelectedSystem.transform.position.y, -50f), Time.deltaTime * mapZoomSpeed);
-                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 750f, Time.deltaTime * mapZoomSpeed);
-
+                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 1100f, Time.deltaTime * mapZoomSpeed);
                 }
             }
         }

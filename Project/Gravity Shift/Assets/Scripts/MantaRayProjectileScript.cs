@@ -28,7 +28,7 @@ public class MantaRayProjectileScript : MonoBehaviour {
     {
         if(collision.tag == "Player")
         {
-            collision.GetComponent<PlayerEquipmentManager>().shieldCurrent -= damage;
+            collision.GetComponent<PlayerEquipmentManager>().TakeDamage(damage);
             Destroy(gameObject.transform.GetChild(0).gameObject);
             Destroy(GetComponent<BoxCollider2D>());
             Destroy(rb);

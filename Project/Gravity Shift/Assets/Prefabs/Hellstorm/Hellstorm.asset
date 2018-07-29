@@ -26,6 +26,7 @@ MonoBehaviour:
   maxHullHP: 1000
   forwardSpeed: 16
   rotationSpeed: 6
+  jumpRange: 6000
   hullGO: {fileID: 1652801529399972, guid: 96a1ba62975e4924eb173a7e9f120969, type: 2}
   blasterTransforms:
   - {fileID: 4620766021493770, guid: 0524db91a9ac8c34abdc534ba8aec49e, type: 2}

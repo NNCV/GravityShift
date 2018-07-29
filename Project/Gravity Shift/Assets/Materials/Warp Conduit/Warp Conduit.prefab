@@ -405,7 +405,7 @@ MonoBehaviour:
   scaleOrigin: 1
   offsetX: 6121
   offsetY: 5353
-  multiplierAfter: 0.1
+  multiplierAfter: 0.35
   multiplierBefore: 2.6
 --- !u!212 &212929752739851454
 SpriteRenderer:

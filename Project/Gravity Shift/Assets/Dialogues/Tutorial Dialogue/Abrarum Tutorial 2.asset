@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Abrarum Tutorial 2
   m_EditorClassIdentifier: 
   characterImage: {fileID: 21300000, guid: e2c83112866200f429a1cb525a3bcf8d, type: 3}
-  characterName: P
+  characterName: PLAYER
   characterText: confirmed. abrarum, search for the nearest space station in eve -
     50 - 5
   timeToDisappear: 4

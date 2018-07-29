@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c831aa679318787428c1be641acff963, type: 3}
+  m_Name: Test Assasination Objective 1
+  m_EditorClassIdentifier: 
+  objectiveText: assasinate the mender target
+  objectiveProgress: 0
+  objectiveRequired: 1
+  objectiveDone: 0
+  objectiveXP: 60
+  objectiveItems:
+  - {fileID: 11400000, guid: ba4356f31490d5c43a268653d752b37b, type: 2}
+  objectiveNext: {fileID: 0}
+  objectiveImage: {fileID: 21300000, guid: a9ac79806cb103f4d9996f1c3c446313, type: 3}
+  objectiveDoneText: objective completed, jump drive fully charged
+  enemyID: 0

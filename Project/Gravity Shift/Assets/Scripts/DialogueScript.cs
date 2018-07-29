@@ -37,7 +37,7 @@ public class DialogueScript : MonoBehaviour {
     {
         dm = FindObjectOfType<DialogueManager>();
         pm = FindObjectOfType<PlayerManager>();
-        if (dialogueLines[currentDialogueLine].characterName == "P")
+        if (dialogueLines[currentDialogueLine].characterName == "PLAYER")
         {
             characterNameBox.text = pm.playerName;
         }
@@ -45,15 +45,10 @@ public class DialogueScript : MonoBehaviour {
         {
             characterNameBox.text = dialogueLines[currentDialogueLine].characterName;
         }
-        if (dialogueLines[currentDialogueLine].characterText.Contains("P"))
+        if (dialogueLines[currentDialogueLine].characterText.Contains("PLAYER"))
         {
-            string[] parts = dialogueLines[currentDialogueLine].characterText.Split('P');
-            string finalText = "";
-            for (int i = 0; i < parts.Length; i++)
-            {
-                finalText += parts[i] + pm.playerName;
-            }
-            characterTextBox.text = finalText;
+            dialogueLines[currentDialogueLine].characterText = dialogueLines[currentDialogueLine].characterText.Replace("PLAYER", pm.playerName);
+            characterTextBox.text = dialogueLines[currentDialogueLine].characterText;
         }
         else
         {
@@ -77,7 +72,7 @@ public class DialogueScript : MonoBehaviour {
 
             if (timeCurrent >= timeToLoad)
             {
-                if (dialogueLines[currentDialogueLine].characterName == "P")
+                if (dialogueLines[currentDialogueLine].characterName == "PLAYER")
                 {
                     characterNameBox.text = pm.playerName;
                 }
@@ -85,15 +80,10 @@ public class DialogueScript : MonoBehaviour {
                 {
                     characterNameBox.text = dialogueLines[currentDialogueLine].characterName;
                 }
-                if (dialogueLines[currentDialogueLine].characterText.Contains("P"))
+                if (dialogueLines[currentDialogueLine].characterText.Contains("PLAYER"))
                 {
-                    string[] parts = dialogueLines[currentDialogueLine].characterText.Split('P');
-                    string finalText = "";
-                    for (int i = 0; i < parts.Length; i++)
-                    {
-                        finalText += parts[i] + pm.playerName;
-                    }
-                    characterTextBox.text = finalText;
+                    dialogueLines[currentDialogueLine].characterText = dialogueLines[currentDialogueLine].characterText.Replace("PLAYER", pm.playerName);
+                    characterTextBox.text = dialogueLines[currentDialogueLine].characterText;
                 }
                 else
                 {
@@ -104,7 +94,7 @@ public class DialogueScript : MonoBehaviour {
 
             if (dialogueLines[currentDialogueLine].isSkippable == true)
             {
-                if (Input.GetKeyDown("L"))
+                if (Input.GetKeyDown(KeyCode.L))
                 {
                     currentDialogueLine++;
                     return;
@@ -152,7 +142,7 @@ public class DialogueScript : MonoBehaviour {
 
         if(canBeSkippedEntirely == true)
         {
-            if(Input.GetKeyDown("K"))
+            if(Input.GetKeyDown(KeyCode.K))
             {
                 anim.SetInteger("AnimationStage", 10);
                 timeCurrent += Time.deltaTime;

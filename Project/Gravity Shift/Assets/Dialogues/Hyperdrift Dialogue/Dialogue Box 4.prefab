@@ -387,6 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff7cbc49916bef43ae11e0719e98f2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pm: {fileID: 0}
   dm: {fileID: 0}
   canBeOverlayed: 0
   canBeSkippedEntirely: 0
@@ -405,6 +406,7 @@ MonoBehaviour:
   isLastDialogueLine: 0
   timeToFadeOut: 0.25
   timeToLoad: 0.35
+  offset: {x: 0, y: 0, z: 0}
 --- !u!222 &222155310048542050
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -454,7 +456,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1778498450312008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4850}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224486121744072524}

@@ -42,9 +42,9 @@ public class BlastScript : MonoBehaviour
                 }
                 else
                 {
-                    float shieldDamage = damage - collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent;
-                    collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent -= shieldDamage;
-                    collision.gameObject.GetComponent<BasicEnemyScript>().healthCurrent -= damage - shieldDamage;
+                    float hullDamage = damage - collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent;
+                    collision.gameObject.GetComponent<BasicEnemyScript>().shieldCurrent -= damage - hullDamage;
+                    collision.gameObject.GetComponent<BasicEnemyScript>().healthCurrent -= hullDamage;
                 }
             }
             else

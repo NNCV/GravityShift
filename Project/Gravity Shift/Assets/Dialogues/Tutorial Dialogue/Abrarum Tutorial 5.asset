@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterImage: {fileID: 21300000, guid: 489c2e37c4bafbd49b59c14eccd11a22, type: 3}
   characterName: abrarum
-  characterText: P, i detect a strange signal coming from our jump destination, a
-    strong wave of--
+  characterText: PLAYER, i detect a strange signal coming from our jump destination,
+    a strong wave of--
   timeToDisappear: 3.5
   isSkippable: 0

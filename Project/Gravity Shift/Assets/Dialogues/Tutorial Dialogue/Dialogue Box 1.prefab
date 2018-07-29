@@ -403,6 +403,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 272eadf5c0567204f9b06b3b0a303ad6, type: 2}
   - {fileID: 11400000, guid: b69c6314d3fccd645bbe032105894ef0, type: 2}
   - {fileID: 11400000, guid: 9ab33d7be846b1547b3ec3ca9c4e9e4b, type: 2}
+  - {fileID: 11400000, guid: 9ab33d7be846b1547b3ec3ca9c4e9e4b, type: 2}
   anim: {fileID: 95087277950482862}
   animState: 0
   currentDialogueLine: 0

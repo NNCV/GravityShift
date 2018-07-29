@@ -21,6 +21,24 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
 
     public float time;
     public bool destabilized = false;
+    
+    public void showDiagTest()
+    {
+        FindObjectOfType<ObjectiveManager>().showInformationOfAllObjectives();
+    }
+    
+    public void setNormalTEST()
+    {
+        FindObjectOfType<PlayerUIManager>().animState = 98;
+        pm.globalAnim.SetInteger("State", 0);
+        pm.isFrozen = false;
+        pm.isInCutscene = false;
+        pm.warping = false;
+        pm.tutorialIntroAnimation = false;
+        pm.loadSector();
+        FindObjectOfType<CameraMovementManager>().target = pm.gameObject;
+        instantRestabilization();
+    }
 
     public void Start()
     {
@@ -44,7 +62,7 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
             Destroy(enemy);
         }
     }
-
+    
     public void Update()
     {
         if(destabilized == true)

@@ -8,6 +8,7 @@ public class HullItem : EquippableItem
     public float maxHullHP = 0;
     public float forwardSpeed = 0;
     public float rotationSpeed = 0;
+    public float jumpRange = 0;
 
     public GameObject hullGO;
 

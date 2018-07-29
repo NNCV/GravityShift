@@ -7,12 +7,15 @@ public class BasicEnemyScript : MonoBehaviour {
     //Variabile generale necesare pentru o nava simpla
     public int enemyID;
     public int enemyTypeID;
+    public float chanceToSpawn;
+    public string enemyName;
     public GameObject hpViewHolder, shViewHolder;
     public float hpBaseScale, shBaseScale;
     public Vector3 hpOffset, shOffset;
     public GameObject dropGO;
     public GeneralItem[] drops;
     public float[] dropRates;
+    public int xpReward;
     public float healthCurrent, healthMax;
     public float shieldCurrent, shieldMax;
     public bool dead = false;
@@ -52,18 +55,13 @@ public class BasicEnemyScript : MonoBehaviour {
             }
         }
 
-        foreach(ExterminateObjective oo in FindObjectOfType<ObjectiveManager>().currentObjectives)
-        {
-            if(oo.enemyType == enemyTypeID)
-            {
-                oo.objectiveProgress++;
-            }
-        }
+        FindObjectOfType<PlayerManager>().currentXP += xpReward;
 
         GameObject drop = dropGO;
         int selected = dropRates.Length - 1;
         float chance = Random.Range(0f, 1f);
         bool found = false;
+
         if (chance >= dropRates[0])
         {
             while(!found)

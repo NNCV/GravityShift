@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Healing Field
   m_Shader: {fileID: 4800000, guid: 5ade065dfba7e8f428ee80a97461d895, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -72,8 +72,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_1DD19EB7: 0.95
-    - Vector1_516F6A68: 0.25
+    - Vector1_516F6A68: 0.97
     - Vector1_5F675393: 85
+    - Vector1_A3572D9C: -0.25
     - Vector1_FD5B3523: 1.2
     - _AlphaClip: 0
     - _Blend: 0
@@ -99,7 +100,7 @@ Material:
     - Color_2F07ED00: {r: 1, g: 0.76089567, b: 0.031372547, a: 0}
     - Color_817AF992: {r: 0.4481132, g: 1, b: 0.7851433, a: 0}
     - Color_E4242775: {r: 0.3915094, g: 1, b: 0.71972555, a: 0}
-    - Vector2_B8BB5A6B: {r: 0.06, g: 0.06, b: 0, a: 0}
+    - Vector2_B8BB5A6B: {r: 0.12, g: 0.12, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

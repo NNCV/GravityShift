@@ -2299,7 +2299,7 @@ GameObject:
   - component: {fileID: 500987463}
   m_Layer: 0
   m_Name: test player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2311,7 +2311,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 500987462}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.25, y: 0.613, z: -4850}
+  m_LocalPosition: {x: -18, y: 0, z: 4900}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2668,7 +2668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &587572954
 Transform:
   m_ObjectHideFlags: 0
@@ -2729,6 +2729,7 @@ MonoBehaviour:
   toLspeed: 4.2
   fromL: {r: 0.47450984, g: 1, b: 0.9167013, a: 1}
   toL: {r: 1, g: 0.63358253, b: 0.4764151, a: 1}
+  pm: {fileID: 0}
   time: 1.25
   destabilized: 0
 --- !u!1 &607936281
@@ -4440,9 +4441,6 @@ MonoBehaviour:
   - Ice Giant
   - Dry Land
   - Fractured Planetoid
-  possibleObjectives:
-  - {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
-  - {fileID: 11400000, guid: b6ee0be4645152e40bb2fa4dc897f2de, type: 2}
   levels: []
   pm: {fileID: 0}
 --- !u!1 &824559994
@@ -8006,8 +8004,8 @@ Camera:
   near clip plane: 0.01
   far clip plane: 2000
   field of view: 119
-  orthographic: 0
-  orthographic size: 125
+  orthographic: 1
+  orthographic size: 10.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8030,7 +8028,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1803619529}
   m_LocalRotation: {x: 0.0078079863, y: -0.011094127, z: 0.00008655473, w: 0.999908}
-  m_LocalPosition: {x: -98.13, y: 1.669024, z: 4870}
+  m_LocalPosition: {x: 0, y: 0, z: 4870}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
