@@ -231,7 +231,7 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (pm.timeStopped == false && pm.warping == false && pm.warmingUp == false && pm.puim.animState != 100)
+        if (pm.timeStopped == false || pm.warping == false || pm.warmingUp == false || pm.tutorialIntroAnimation == false)
         {
             hydrTimeCurrent += Time.deltaTime;
             
@@ -254,7 +254,7 @@ public class PlayerEquipmentManager : MonoBehaviour
             {
                 ToggleHyperDrift();
             }
-
+            
             if (Input.GetMouseButtonDown(0))
             {
                 Fire();

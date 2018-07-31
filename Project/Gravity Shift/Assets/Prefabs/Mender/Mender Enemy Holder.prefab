@@ -636,7 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyID: 0
   enemyTypeID: 1
-  chanceToSpawn: 0.5
+  chanceToSpawn: 0.8
   enemyName: mender
   hpViewHolder: {fileID: 1431691924238056}
   shViewHolder: {fileID: 1894369982284244}
@@ -647,10 +647,10 @@ MonoBehaviour:
   dropGO: {fileID: 1871361722763244, guid: d9cad567171215e41a45cc1f42b7e2d4, type: 2}
   drops:
   - {fileID: 11400000, guid: 06270661d5f034c44aa11e1e31924adb, type: 2}
-  - {fileID: 11400000, guid: 442982ab912c2b94e95315f3473c1601, type: 2}
+  - {fileID: 11400000, guid: f5d8e87d8aac0ad4b857a4392a932210, type: 2}
   dropRates:
   - 0.1
-  - 0.55
+  - 0.65
   xpReward: 60
   healthCurrent: 200
   healthMax: 200
@@ -673,10 +673,12 @@ MonoBehaviour:
   damagePower: 50
   healWave: {fileID: 1141523283687426, guid: 577ed5e526070d641bacf82e2ab8a9ff, type: 2}
   damageWave: {fileID: 1429808625942718, guid: 71e91c8200c594545bfe08bf44b9fbe9, type: 2}
+  explosion: {fileID: 1466017174288416, guid: 6b36401702ae57a45954ed7c55090a08, type: 2}
   healingOrb: {fileID: 4994156811529088}
   damagingOrb: {fileID: 4695448435029374}
   healMat: {fileID: 2100000, guid: 92a2421fa48db934eb922146aaa55a8e, type: 2}
   dmgMat: {fileID: 2100000, guid: d53b7ebabb323454b81b94b457ef48c5, type: 2}
+  expMat: {fileID: 2100000, guid: a6550d131e26be54c85ce9a387e83a74, type: 2}
 --- !u!114 &114049208270270250
 MonoBehaviour:
   m_ObjectHideFlags: 1

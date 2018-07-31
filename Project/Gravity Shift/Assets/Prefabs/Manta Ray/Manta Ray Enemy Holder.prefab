@@ -1128,7 +1128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccaeca8ed7844d740a1695856435dc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: 4
+  enemyID: 0
   enemyTypeID: 0
   chanceToSpawn: 0
   enemyName: manta ray
@@ -1140,17 +1140,11 @@ MonoBehaviour:
   shOffset: {x: 0, y: -0.35, z: 0}
   dropGO: {fileID: 1871361722763244, guid: d9cad567171215e41a45cc1f42b7e2d4, type: 2}
   drops:
-  - {fileID: 11400000, guid: 442982ab912c2b94e95315f3473c1601, type: 2}
-  - {fileID: 11400000, guid: 7c33dbfc89b31c64e81b40a84c86e8c8, type: 2}
-  - {fileID: 11400000, guid: 799a624b09b0ba546a0fbbc826e20f96, type: 2}
-  - {fileID: 11400000, guid: ba4356f31490d5c43a268653d752b37b, type: 2}
-  - {fileID: 11400000, guid: 638ca2c35645bc046a97bfdedd4f8c47, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 06270661d5f034c44aa11e1e31924adb, type: 2}
   dropRates:
   - 0
   - 0.2
-  - 0.4
-  - 0.7
-  - 0.9
   xpReward: 15
   healthCurrent: 0
   healthMax: 20
@@ -1183,12 +1177,8 @@ MonoBehaviour:
   offset: 0
   expTimeC: 0
   expTimeM: 1.8
-  firstExplosion: {fileID: 1407466565534304, guid: 8f3c1c4a4c2025648b6e1b639d803a93,
-    type: 2}
-  whileExploding: {fileID: 1263259758855172, guid: 429c0a25791cf91438b9186183c41e47,
-    type: 2}
-  secondExplosion: {fileID: 1138906820914762, guid: 8e0ad89bcd871074c922a29b709fa1c4,
-    type: 2}
+  explosion: {fileID: 1466017174288416, guid: 6b36401702ae57a45954ed7c55090a08, type: 2}
+  expMat: {fileID: 2100000, guid: a6550d131e26be54c85ce9a387e83a74, type: 2}
   globalAnim: {fileID: 0}
 --- !u!212 &212038123593137078
 SpriteRenderer:

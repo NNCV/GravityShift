@@ -67,7 +67,14 @@ public class CameraMovementManager : MonoBehaviour
         //Daca exista jucator, se centreaza pe el
         target = FindObjectOfType<PlayerEquipmentManager>().transform.gameObject;
         cam = GetComponent<Camera>();
-        if (pm.warping == false || pm.warmingUp == true || (pm.currentSystem == 499 && pm.currentSector == 5))
+        foreach(MapDataContainerScript mds in FindObjectsOfType<MapDataContainerScript>())
+        {
+            if(mds.slo.systemOrbitStage == pm.currentSystem)
+            {
+                mapJumpRangeDisplay.transform.position = mds.transform.position;
+            }
+        }
+        if (pm.warping == false || pm.warmingUp == true || pm.tutorialIntroAnimation == true)
         {
             if (target != null)
             {
@@ -91,22 +98,6 @@ public class CameraMovementManager : MonoBehaviour
     {
         if(selected == true)
         {
-            //removeMapPartsWhenSwitching();
-             
-            /*
-            Transform trAct = mapSelectedSystem.transform.parent.transform.parent.Find(mapSelectedSystem.transform.parent.name);
-
-            GameObject[] goAll = GameObject.FindGameObjectsWithTag("MapPart");
-            
-            foreach(GameObject go in goAll)
-            {
-                if(go.GetComponent<MapDataContainerScript>().slo.systemName != mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemName)
-                {
-                    Destroy(go);
-                }
-            }
-
-    */
             mapSelectedSystem.GetComponent<MapDataContainerScript>().showPlanets(systemPlanetsScalar, mapSelectedSystem.transform, 1);
 
             currentSector = 0;
@@ -133,13 +124,10 @@ public class CameraMovementManager : MonoBehaviour
     void FixedUpdate()
     {
         //Pregatire pentru salt
-        // || (pm.currentSystem == 499 && pm.currentSector == 5)
         if (pm.warmingUp == true || pm.warping == true || pm.tutorialIntroAnimation)
         {
             cam.transform.position = cam.transform.parent.transform.position + new Vector3(0f, 1f, -50f);
             cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-           // zoom = Mathf.Lerp(zoom, 12f, Time.deltaTime * 2f);
-           // cam.orthographicSize = zoom;
         }
         else
         if (pm.warping == false)
@@ -196,6 +184,15 @@ public class CameraMovementManager : MonoBehaviour
             }
             else
             {
+                foreach (MapDataContainerScript mds in FindObjectsOfType<MapDataContainerScript>())
+                {
+                    if (mds.slo.systemOrbitStage == pm.currentSystem)
+                    {
+                        mapJumpRangeDisplay.transform.position = mds.transform.position;
+                        mapJumpRangeDisplay.transform.GetChild(0).transform.localPosition = new Vector3(0f, 0f, 0f);
+                    }
+                }
+
                 cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
                 mapScalableSpeed = mapZoom / mapTravelMult;
@@ -214,7 +211,7 @@ public class CameraMovementManager : MonoBehaviour
 
                 if (isSystemView == false)
                 {
-                    jumpButton.enabled = false;
+                    jumpButton.enabled = true;
                     pmtm.startSpriteRenderer();
                     mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, mapTarget.transform.position + new Vector3(Input.GetAxisRaw("Horizontal") * mapScalableSpeed, -Input.GetAxisRaw("Vertical") * mapScalableSpeed, 0f), Time.deltaTime * mapTravelSpeed);
                     mapTarget.transform.localScale = Vector3.Lerp(mapTarget.transform.localScale, new Vector3(mapTargetScalableScale, mapTargetScalableScale, mapTargetScalableScale), Time.deltaTime * mapTravelSpeed);
@@ -262,9 +259,13 @@ public class CameraMovementManager : MonoBehaviour
                     }
                     */
 
-                    if (Vector3.Distance(pm.currentPositionMap.position, mapSelectedSector.transform.position) <= pm.jumpRange && pm.canJump == true) //&& goodsystem == true
+                    Vector2 pCurrent = new Vector2(mapJumpRangeDisplay.transform.position.x, mapJumpRangeDisplay.transform.position.y);
+                    Vector2 pThen = new Vector2(mapSelectedSector.transform.position.x, mapSelectedSector.transform.position.y);
+
+                    if (Vector2.Distance(pCurrent, pThen) <= pm.jumpRange * pm.jumpRangeMultiplier) //&& canJump && goodsystem == true
                     {
                         jumpButton.enabled = true;
+                        jumpButton.interactable = true;
                     }
                     
                     if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
@@ -315,7 +316,6 @@ public class CameraMovementManager : MonoBehaviour
             pm.warmingUp = true;
             switchMapScreen();
         }
-          //  pm.JumpTo(mapSelectedSector, currentSector);
     }
 
     public void Shake(float shakeXIN, float shakeYIN, float shakeRotIN)

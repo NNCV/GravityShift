@@ -9,6 +9,7 @@ TagManager:
   - MapPlayerTarget
   - MapPart
   - SectorGOPart
+  - DialogueBox
   layers:
   - Default
   - TransparentFX

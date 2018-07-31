@@ -22,5 +22,5 @@ MonoBehaviour:
   mapPosition: {x: 0, y: 0, z: 0}
   planetType: Dry Land
   planetMainColor: {r: 1, g: 0.9118514, b: 0.8160377, a: 1}
-  planetRadius: 0.65
+  planetRadius: 4
   orbitNumber: 2

@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1240858872630788}
   m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
-  m_LocalPosition: {x: -7400.324, y: -46823.812, z: 0}
+  m_LocalPosition: {x: -36368.383, y: -30406.838, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4616830423154272}
@@ -102,7 +102,7 @@ MonoBehaviour:
   slo: {fileID: 0}
   orbitRing: {fileID: 1809408596350302, guid: 962cb71ebe11ed24ebe053e448406920, type: 2}
   scalarInside: 45
-  offsetInside: 1.25
+  offsetInside: 1.5
 --- !u!135 &135729853627012262
 SphereCollider:
   m_ObjectHideFlags: 1

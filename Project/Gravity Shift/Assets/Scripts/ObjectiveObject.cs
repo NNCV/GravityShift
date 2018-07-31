@@ -11,7 +11,7 @@ public class ObjectiveObject : ScriptableObject {
     public int objectiveRequired;
     public bool objectiveDone;
     public int objectiveXP;
-    public GeneralItem[] objectiveItems;
+    public GeneralItem[] objectiveItems = new GeneralItem[0];
     public ObjectiveObject objectiveNext;
     public Sprite objectiveImage;
     public string objectiveDoneText;

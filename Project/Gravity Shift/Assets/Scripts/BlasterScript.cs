@@ -28,12 +28,16 @@ public class BlasterScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!pm.warmingUp || !pm.warping)
+        if (!pm.warmingUp || !pm.warping || !pm.tutorialIntroAnimation)
         {
-            if (pm.isFrozen == false)
+            if (pm.isFrozen == false || pm.isInCutscene == false || pm.tutorialIntroAnimation == false)
             {
                 dif = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
                 dif.Normalize();
+            }
+            else
+            {
+                dif = new Vector3(0f, 1f, 0f);
             }
 
             float rotZ = Mathf.Atan2(dif.y, dif.x) * Mathf.Rad2Deg;

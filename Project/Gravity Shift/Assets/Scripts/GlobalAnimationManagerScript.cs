@@ -7,10 +7,12 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
     public Material m1, m2, m3, m4;
     [ColorUsageAttribute(true, true)]
     public Color c1from, c2from, c3from, c4from;
+    public float distFrom;
     public Vector2 s1from, s2from, s3from, s4from;
     public Vector2 s1fromN, s2fromN, s3fromN, s4fromN;
     [ColorUsageAttribute(true, true)]
     public Color to1, to2, to3, to4;
+    public float distTo;
     public Vector2 s1to, s2to, s3to, s4to;
     public Vector2 s1toN, s2toN, s3toN, s4toN;
     public SpriteRenderer srL;
@@ -26,7 +28,31 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
     {
         FindObjectOfType<ObjectiveManager>().showInformationOfAllObjectives();
     }
+
+    public void stopDiagWhileJumping()
+    {
+        FindObjectOfType<DialogueManager>().canDisplay = false;
+        foreach (GameObject diag in GameObject.FindGameObjectsWithTag("DialogueBox"))
+        {
+            Destroy(diag);
+        }
+    }
     
+    public void stopJump()
+    {
+        FindObjectOfType<ObjectiveManager>().jumpActivated = false;
+    }
+
+    public void startJump()
+    {
+        FindObjectOfType<ObjectiveManager>().jumpActivated = true;
+    }
+
+    public void startDiag()
+    {
+        FindObjectOfType<DialogueManager>().canDisplay = true;
+    }
+
     public void setNormalTEST()
     {
         FindObjectOfType<PlayerUIManager>().animState = 98;
@@ -104,6 +130,8 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
 
         srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierBefore = toLspeed;
         srL.color = fromL;
+
+        destabilized = false;
     }
 
     public void restabilizeShift()

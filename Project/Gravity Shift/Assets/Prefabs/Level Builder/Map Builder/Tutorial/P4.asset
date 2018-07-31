@@ -22,5 +22,5 @@ MonoBehaviour:
   mapPosition: {x: 0, y: 0, z: 0}
   planetType: Rocky Planet
   planetMainColor: {r: 1, g: 0.98182, b: 0.8254717, a: 1}
-  planetRadius: 1.25
+  planetRadius: 3.6
   orbitNumber: 3

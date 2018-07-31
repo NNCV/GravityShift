@@ -204,4 +204,4 @@ MonoBehaviour:
   initPos: {x: 0, y: 0, z: 0}
   rb2d: {fileID: 50937063230796790}
   bc2d: {fileID: 0}
-  damage: 10
+  damage: 25

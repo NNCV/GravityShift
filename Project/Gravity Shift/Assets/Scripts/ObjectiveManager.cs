@@ -8,7 +8,6 @@ public class ObjectiveManager : MonoBehaviour
     public DialogueScript ds;
     public DialogueScript dsActivatedJump;
     public List<ObjectiveObject> currentObjectives;
-    public GameObject[] enemies;
     public DialogueObject noObjective;
     public DialogueObject jumpActivatedDialogue;
     public Sprite abrarum;
@@ -31,7 +30,7 @@ public class ObjectiveManager : MonoBehaviour
         ds.canBeSkippedEntirely = true;
         return objectiveDialogue;
     }
-    
+
     //Functie ce afiseaza toate obiectivele cu ajutorul dialogue-manager-ului
     public void showInformationOfAllObjectives()
     {
@@ -62,74 +61,69 @@ public class ObjectiveManager : MonoBehaviour
 
     public void Update()
     {
-        bool onlyExtras = false;
-        foreach(ObjectiveObject oobj in currentObjectives)
+        if (FindObjectOfType<PlayerManager>().warping == false || FindObjectOfType<PlayerManager>().tutorialIntroAnimation == false)
         {
-            if(oobj.isExtra == true)
+            if (currentObjectives.Count > 0)
             {
-                onlyExtras = true;
-            }
-        }
-        if (currentObjectives.Count > 0)
-        {
-            for (int a = 0; a < currentObjectives.Count; a++)
-            {
-                if (currentObjectives[a] != null)
+                for (int a = 0; a < currentObjectives.Count; a++)
                 {
-                    if (currentObjectives[a].objectiveProgress >= currentObjectives[a].objectiveRequired)
+                    if (currentObjectives[a] != null)
                     {
-                        currentObjectives[a].objectiveDone = true;
-                    }
-                    if (currentObjectives[a].objectiveDone == true)
-                    {
-                        DialogueObject objectiveDone = new DialogueObject();
-                        objectiveDone.characterImage = currentObjectives[a].objectiveImage;
-                        objectiveDone.characterName = "objective " + (a + 1) + " completed";
-                        if (currentObjectives[a].objectiveDoneText == null)
+                        if (currentObjectives[a].objectiveProgress >= currentObjectives[a].objectiveRequired)
                         {
-                            objectiveDone.characterText = "objective number " + a + " completed!\n jump drive fully charged!";
+                            currentObjectives[a].objectiveDone = true;
                         }
-                        else
+                        if (currentObjectives[a].objectiveDone == true)
                         {
-                            objectiveDone.characterText = currentObjectives[a].objectiveDoneText;
-                        }
-
-                        objectiveDone.timeToDisappear = 2f;
-                        currentObjectives[a].giveReward();
-
-                        ds.dialogueLines = new DialogueObject[2];
-                        ds.dialogueLines[0] = objectiveDone;
-                        ds.dialogueLines[1] = objectiveDone;
-                        dm.ShowDialogue(ds);
-
-                        currentObjectives[a] = null;
-
-                        List<ObjectiveObject> newObjList = new List<ObjectiveObject>();
-
-                        foreach (ObjectiveObject obj in currentObjectives)
-                        {
-                            if (obj != null)
+                            DialogueObject objectiveDone = new DialogueObject();
+                            objectiveDone.characterImage = currentObjectives[a].objectiveImage;
+                            objectiveDone.characterName = "objective " + (a + 1) + " completed";
+                            if (currentObjectives[a].objectiveDoneText == null)
                             {
-                                newObjList.Add(obj);
+                                objectiveDone.characterText = "objective number " + a + " completed!\n jump drive fully charged!";
                             }
-                        }
+                            else
+                            {
+                                objectiveDone.characterText = currentObjectives[a].objectiveDoneText;
+                            }
 
-                        currentObjectives = newObjList;
+                            objectiveDone.timeToDisappear = 2f;
+                            currentObjectives[a].giveReward();
+
+                            ds.dialogueLines = new DialogueObject[2];
+                            ds.dialogueLines[0] = objectiveDone;
+                            ds.dialogueLines[1] = objectiveDone;
+                            dm.ShowDialogue(ds);
+
+                            currentObjectives[a] = null;
+
+                            List<ObjectiveObject> newObjList = new List<ObjectiveObject>();
+
+                            foreach (ObjectiveObject obj in currentObjectives)
+                            {
+                                if (obj != null)
+                                {
+                                    newObjList.Add(obj);
+                                }
+                            }
+
+                            currentObjectives = newObjList;
+                        }
                     }
                 }
             }
-        }
-        else if(jumpActivated == false || onlyExtras == true)
-        {
-            jumpActivated = true;
+            else if (jumpActivated == false)
+            {
+                jumpActivated = true;
 
-            FindObjectOfType<PlayerManager>().canJump = true;
-            
-            dsActivatedJump.dialogueLines = new DialogueObject[2];
-            dsActivatedJump.dialogueLines[0] = jumpActivatedDialogue;
-            dsActivatedJump.dialogueLines[1] = jumpActivatedDialogue;
+                FindObjectOfType<PlayerManager>().canJump = true;
 
-            dm.ShowDialogue(dsActivatedJump);
+                dsActivatedJump.dialogueLines = new DialogueObject[2];
+                dsActivatedJump.dialogueLines[0] = jumpActivatedDialogue;
+                dsActivatedJump.dialogueLines[1] = jumpActivatedDialogue;
+
+                dm.ShowDialogue(dsActivatedJump);
+            }
         }
     }
 }

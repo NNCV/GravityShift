@@ -22,7 +22,7 @@ MonoBehaviour:
   mapPosition: {x: 0, y: 0, z: 0}
   planetType: 
   planetMainColor: {r: 1, g: 0.89339215, b: 0.6, a: 1}
-  planetRadius: 5
+  planetRadius: 9
   orbitNumber: 0
   sunColor: {r: 1, g: 0.89339215, b: 0.6, a: 1}
-  sunRadius: 4
+  sunRadius: 9

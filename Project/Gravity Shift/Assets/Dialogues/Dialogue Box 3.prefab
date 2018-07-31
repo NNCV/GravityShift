@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 114937919382118770}
   m_Layer: 5
   m_Name: Dialogue Box 3
-  m_TagString: Untagged
+  m_TagString: DialogueBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -457,7 +457,7 @@ RectTransform:
   m_GameObject: {fileID: 1778498450312008}
   m_LocalRotation: {x: -0.00000004371139, y: -0.00000004371139, z: -1, w: 1.9106855e-15}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -0.6, y: -0.6, z: -0.6}
+  m_LocalScale: {x: -1, y: -1, z: -1}
   m_Children:
   - {fileID: 224486121744072524}
   - {fileID: 224937067702367002}

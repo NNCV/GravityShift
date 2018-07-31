@@ -27,9 +27,8 @@ public class MantaRayScript : BasicEnemyScript {
     public float expSpeed;
     public bool offset = false;
     public float expTimeC, expTimeM;
-    public GameObject firstExplosion;
-    public GameObject whileExploding;
-    public GameObject secondExplosion;
+    public GameObject explosion;
+    public Material expMat;
 
     //Variabile pentru efectul de salt
     public Animator globalAnim;
@@ -99,8 +98,6 @@ public class MantaRayScript : BasicEnemyScript {
                     offsetPos += transform.position;
                     offsetRot = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z + offsetAngle, transform.rotation.w);
                     offset = true;
-                    Instantiate(firstExplosion, transform.position, transform.rotation);
-                    Instantiate(whileExploding, transform);
                 }
                 //se efectueaza efectul de explozie
                 //se inlatura collider-ul si rigidbody-ul pentru a se misca bazat pe transform-ul legat
@@ -109,6 +106,8 @@ public class MantaRayScript : BasicEnemyScript {
                 {
                     Destroy(rb2d);
                     Destroy(GetComponent<BoxCollider2D>());
+                    healthCurrent = 0;
+                    shieldCurrent = 0;
 
                     transform.rotation = Quaternion.Lerp(transform.rotation, offsetRot, Time.deltaTime * expSpeed);
                     transform.position = Vector3.Lerp(transform.position, offsetPos, Time.deltaTime * expSpeed);
@@ -135,7 +134,18 @@ public class MantaRayScript : BasicEnemyScript {
     //Instantiaza un efect de explozie si dupa care se distruge nava 
     public override void Explode()
     {
-        Instantiate(secondExplosion, transform.position, transform.rotation);
+        GameObject exp = explosion;
+        exp.GetComponent<ExplosionScript>().mat = new Material(expMat);
+        exp.GetComponent<ExplosionScript>().scaleInit = 0f;
+        exp.GetComponent<ExplosionScript>().scaleMax = 4f;
+        exp.GetComponent<ExplosionScript>().distInit = 85f;
+        exp.GetComponent<ExplosionScript>().distFin = 75f;
+        exp.GetComponent<ExplosionScript>().speed = 2.5f;
+        exp.GetComponent<ExplosionScript>().speedInit = new Vector2(4f, 4f);
+        exp.GetComponent<ExplosionScript>().speedFin = new Vector2(1f, 1f);
+        exp.GetComponent<ExplosionScript>().initFL = -6f;
+        exp.GetComponent<ExplosionScript>().finalFL = 1f;
+        Instantiate(exp, transform.position + new Vector3(0f, 0f, 0.01f), transform.rotation);
         base.Explode();
         Destroy(gameObject.transform.parent.transform.parent.gameObject);
     }

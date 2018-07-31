@@ -46,7 +46,7 @@ public class MainMenuAnimationManager : MonoBehaviour {
     public void createNewPlayer()
     {
         PlayerPrefs.SetString("ShipHull", "Hellstorm Hull");
-        PlayerPrefs.SetInt("CurrentLevel", 0);
+        PlayerPrefs.SetInt("CurrentLevel", 1);
         PlayerPrefs.SetInt("CurrentXP", 0);
         PlayerPrefs.SetString("PlayerName", playNameInputField.text);
         PlayerPrefs.SetString("Blaster0", "Diablo Turret");

@@ -5,9 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour {
-
-    public AssasinationObjective testObj;
-
+    
     //Itemele care pot fi obtinute
     public GeneralItem[] allItems;
     public HullItem[] hulls;
@@ -33,6 +31,7 @@ public class PlayerManager : MonoBehaviour {
     public string[] enemyNames;
     public GameObject[] enemies;
     public int[] currentEnemies;
+    public float setMinP, setMaxP;
 
     //Variabile specifice instantierii nivelelor
     public float step;
@@ -43,9 +42,8 @@ public class PlayerManager : MonoBehaviour {
     //Atribute ale jucatorului care pot influenta generarea nivelelor
     public int playerLevel = 0;
     public int currentXP = 0;
-    public int[] xpLevels = new int[51];
+    public int[] xpLevels;
     public int[] completedSystems;
-    public int pathProgression = 0;
     public GalaxyObject currentGalaxy = new GalaxyObject();
     public Transform currentPositionMap;
     public int currentSystem = 0;
@@ -59,10 +57,7 @@ public class PlayerManager : MonoBehaviour {
     public float timeWait = 1f;
     public float timeCurrent = 0f;
     public bool timeStopped = false;
-    public Animator uiAnim;
-    public int uiAnimState;
-    public Animator playerAnim;
-    public int playerAnimState;
+    public bool enteredEqScreen = false;
 
     //Animator global si animatii de salt
     public Animator globalAnim;
@@ -78,7 +73,7 @@ public class PlayerManager : MonoBehaviour {
     public int mode = 0;
 
     //Dialoguri
-    public DialogueObject levelUpDialogue;
+    public DialogueScript levelUpDialogue;
     
     public void loadCompletedSystems()
     {
@@ -118,6 +113,11 @@ public class PlayerManager : MonoBehaviour {
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).transform.position = lm.getPositionOfSystem(currentSystem);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[currentSystem].systemCentre.rot1);
     }
+
+    public void switchEquipmentScreen()
+    {
+        enteredEqScreen = !enteredEqScreen;
+    }
     
     private void FixedUpdate()
     {
@@ -132,6 +132,8 @@ public class PlayerManager : MonoBehaviour {
             {
                 playerLevel++;
                 currentXP = 0;
+                puim.level.text = playerLevel.ToString();
+                dm.ShowDialogue(levelUpDialogue);
             }
 
             if (warmingUp == true)
@@ -189,6 +191,17 @@ public class PlayerManager : MonoBehaviour {
                         timeCurrent += Time.deltaTime;
                     }
                 }
+                else
+                {
+                    if(enteredEqScreen == true)
+                    {
+                        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 6f);
+                        if(transform.rotation.z <= 0.05f || transform.rotation.z >= -0.05f)
+                        {
+                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                        }
+                    }
+                }
             }
         }
     }
@@ -197,6 +210,7 @@ public class PlayerManager : MonoBehaviour {
     {
         if (mode != 0)
         {
+            FullLoad();
             if (currentSystem == 499 && currentSector == 5)
             {
                 warmingUp = false;
@@ -208,10 +222,17 @@ public class PlayerManager : MonoBehaviour {
             }
             else
             {
-                warping = true;
+                warmingUp = true;
             }
-            FullLoad();
+
+            puim.level.text = playerLevel.ToString();
             pem.UpdateShipEquipmentStats();
+            
+            for (int a = 0; a < pem.currentBlasters.Length; a++)
+            {
+                transform.GetChild(a + 1).transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+            }
+            
             setMapJUmpDisplayStats();
         }
     }
@@ -247,8 +268,7 @@ public class PlayerManager : MonoBehaviour {
                     PlayerPrefs.SetFloat("System " + a + " Center Color B", currentGalaxy.systems[a].systemCentre.sunColor.b);
                     PlayerPrefs.SetFloat("System " + a + " Center Rotation", currentGalaxy.systems[a].systemCentre.rot1);
                     PlayerPrefs.SetFloat("System " + a + " Center Radius", currentGalaxy.systems[a].systemCentre.sunRadius);
-                    //PlayerPrefs.SetString("System " + a + " Center Completed", currentGalaxy.systems[a].systemCentre.sectorObjective.objectiveDone.ToString());
-
+                    
                     for (int b = 1; b < currentGalaxy.systems[a].systemPlanetCount; b++)
                     {
                         PlayerPrefs.SetString("System " + a + " Planet " + b + " Type", currentGalaxy.systems[a].systemPlanets[b].sectorType);
@@ -270,7 +290,6 @@ public class PlayerManager : MonoBehaviour {
         GalaxyObject loadGalaxy = new GalaxyObject();
         loadGalaxy.galaxyName = PlayerPrefs.GetString("Galaxy Name");
         loadGalaxy.galaxySystemCount = PlayerPrefs.GetInt("Galaxy System Count");
-
         loadGalaxy.systems = new SystemLevelObject[loadGalaxy.galaxySystemCount];
 
         for(int a = 0; a < loadGalaxy.galaxySystemCount; a++)
@@ -322,10 +341,6 @@ public class PlayerManager : MonoBehaviour {
 
                     int selectedPlanetID = 0;
 
-
-                    //optimizeaza asta
-                    //for-ul asta ruleaza si aici, si in loadSector, cand poate rula doar o singura data si va avea acelasi rezultat
-                    //sterge-l din loadSector, si fa ca loadSector sa primeasca un int
                     for (int s = 0; s < lm.planetsGO.Length; s++)
                     {
                         if (loadGalaxy.systems[a].systemPlanets[b].planetType == lm.planetTypes[s])
@@ -451,7 +466,6 @@ public class PlayerManager : MonoBehaviour {
 
         pem.currentShields = shieldsa;
 
-
         pem.hullMax = pem.currentHull.maxHullHP;
 
         shieldRechargeTotal = Mathf.RoundToInt(shieldRechargeTotal / shieldNo);
@@ -468,9 +482,6 @@ public class PlayerManager : MonoBehaviour {
 
         pmm.fSpeed = pem.currentHull.forwardSpeed;
         pmm.rSpeed = pem.currentHull.rotationSpeed;
-
-        currentXP = PlayerPrefs.GetInt("CurrentXP");
-        playerLevel = PlayerPrefs.GetInt("CurrentLevel");
 
         pem.hullCurrent = PlayerPrefs.GetInt("HullCurrent");
         pem.shieldCurrent = PlayerPrefs.GetInt("ShieldCurrent");
@@ -511,7 +522,6 @@ public class PlayerManager : MonoBehaviour {
         currentXP = PlayerPrefs.GetInt("CurrentXP");
         playerName = PlayerPrefs.GetString("PlayerName");
         bool.TryParse(PlayerPrefs.GetString("CanJump"), out canJump);
-        pathProgression = PlayerPrefs.GetInt("PathProgression");
         currentSystem = PlayerPrefs.GetInt("CurrentSystem");
         currentSector = PlayerPrefs.GetInt("CurrentSector");
 
@@ -607,7 +617,6 @@ public class PlayerManager : MonoBehaviour {
         PlayerPrefs.SetInt("CurrentXP", currentXP);
         PlayerPrefs.SetString("PlayerName", playerName);
         PlayerPrefs.SetString("CanJump", canJump.ToString());
-        PlayerPrefs.SetInt("PathProgression", pathProgression);
         PlayerPrefs.SetInt("CurrentSystem", currentSystem);
         PlayerPrefs.SetInt("CurrentSector", currentSector);
 
@@ -639,11 +648,6 @@ public class PlayerManager : MonoBehaviour {
         {
             return;
         }
-      //  else if(ss.slotType.Contains("Equippable"))
-      //  {
-      //      slotSelector.enabled = false;
-      //      return;
-      //  }
         else
         {
             slotSelector.enabled = true;
@@ -834,7 +838,7 @@ public class PlayerManager : MonoBehaviour {
                 AssasinationObjective ao = new AssasinationObjective();
                 ao.enemyID = enemyID;
                 ao.objectiveProgress = 0;
-                ao.enemyID = currentEnemies[enemyType];
+                ao.enemyID = currentEnemies[enemyType] - 1;
                 ao.objectiveRequired = 1;
                 ao.objectiveText = "assasinate the " + enemyNames[enemyType] + " target";
                 ao.objectiveImage = om.abrarum;
@@ -847,14 +851,60 @@ public class PlayerManager : MonoBehaviour {
 
     public void loadSector()
     {
+        canJump = false;
+        tutorialIntroAnimation = false;
+
+        pem.hullCurrent = pem.hullMax * pem.hullMultiplier;
+        pem.shieldCurrent = pem.shieldMax * pem.shieldMultiplier;
+        pem.energyCurrent = pem.energyMax * pem.energyMultiplier;
+
+        foreach(ObjectiveObject oExtra in om.currentObjectives)
+        {
+            if(oExtra.isExtra == true)
+            {
+                om.currentObjectives.Remove(oExtra);
+            }
+        }
+
+        foreach(GameObject enemy in enemies)
+        {
+            enemy.GetComponentInChildren<BasicEnemyScript>().enemyID = 0;
+        }
+
         int total = Random.Range(1, 6);
 
-        currentEnemies = new int[total];
+        currentEnemies = new int[enemies.Length];
+        currentEnemies.Initialize();
+
+        GameObject fe = enemies[0];
+
+        fe.GetComponentInChildren<BasicEnemyScript>().enemyID = currentEnemies[fe.GetComponentInChildren<BasicEnemyScript>().enemyTypeID];
+
+        float x1 = Random.Range(setMinP, setMaxP);
+        float y1 = Random.Range(setMinP, setMaxP);
+
+        if ((int)Random.Range(0, 1) == 0)
+        {
+            x1 = -x1;
+        }
+        if ((int)Random.Range(0, 1) == 0)
+        {
+            y1 = -y1;
+        }
+
+        Vector3 pos1 = new Vector3(x1, y1, -4750f);
+
+        fe.GetComponentInChildren<BasicEnemyScript>().player = transform;
+
+        Instantiate(fe, pos1, Quaternion.Euler(0f, 0f, 0f));
+
+        currentEnemies[fe.GetComponentInChildren<BasicEnemyScript>().enemyTypeID]++;
 
         for (int a = 0; a < total; a++)
         {
-            foreach (GameObject e in enemies)
+            foreach (GameObject en in enemies)
             {
+                GameObject e = en;
                 float chance = e.GetComponentInChildren<BasicEnemyScript>().chanceToSpawn;
                 float generatedChance = Random.Range(0f, 1f);
                 
@@ -862,8 +912,8 @@ public class PlayerManager : MonoBehaviour {
                 {
                     e.GetComponentInChildren<BasicEnemyScript>().enemyID = currentEnemies[e.GetComponentInChildren<BasicEnemyScript>().enemyTypeID];
                     
-                    float x = Random.Range(10, 30);
-                    float y = Random.Range(10, 30);
+                    float x = Random.Range(setMinP, setMaxP);
+                    float y = Random.Range(setMinP, setMaxP);
 
                     if ((int)Random.Range(0, 1) == 0)
                     {
@@ -885,9 +935,9 @@ public class PlayerManager : MonoBehaviour {
             }
         }
 
-        om.currentObjectives.Add(GenerateRandomSectorObjective(Random.Range(0, 1), Random.Range(0, currentEnemies.Length - 1), currentEnemies[Random.Range(0, currentEnemies.Length - 1)]));
-        //om.currentObjectives.Add(GenerateRandomSectorObjective(0, 0, 0));
-        //om.currentObjectives.Add(testObj);
+        //om.currentObjectives.Add(GenerateRandomSectorObjective(0, Random.Range(0, currentEnemies.Length - 1), currentEnemies[Random.Range(0, currentEnemies.Length - 1)]));
+        om.currentObjectives.Add(GenerateRandomSectorObjective(0, 0, 0));
+        //om.currentObjectives.Add(GenerateRandomSectorObjective(0, Random.Range(0, enemies.Length - 1), currentEnemies[Random.Range(0, currentEnemies[Random.Range(0, enemies.Length - 1)] - 1)] - 1));
 
         Save();
 

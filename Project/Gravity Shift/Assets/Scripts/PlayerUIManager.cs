@@ -161,8 +161,6 @@ public class PlayerUIManager : MonoBehaviour {
         shEq.GetComponent<RectTransform>().localScale = new Vector3(curSh, 1f, 1f);
         hpEq.GetComponent<RectTransform>().localScale = new Vector3(curHp, 1f, 1f);
         enEq.GetComponent<RectTransform>().localScale = new Vector3(curEn, 1f, 1f);
-
-        level.text = pm.playerLevel.ToString();
     }
 
     public void SwitchMapNormalCameraControls()

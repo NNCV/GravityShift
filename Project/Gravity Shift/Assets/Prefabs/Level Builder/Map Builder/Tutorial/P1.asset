@@ -22,5 +22,5 @@ MonoBehaviour:
   mapPosition: {x: 0, y: 0, z: 0}
   planetType: Lava World
   planetMainColor: {r: 1, g: 0.9350156, b: 0.8632076, a: 1}
-  planetRadius: 0.75
+  planetRadius: 3
   orbitNumber: 0

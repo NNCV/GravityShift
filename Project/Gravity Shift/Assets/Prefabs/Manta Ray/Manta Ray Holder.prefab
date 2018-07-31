@@ -816,7 +816,7 @@ MonoBehaviour:
   enemyID: 0
   enemyTypeID: 0
   chanceToSpawn: 0
-  enemyName: 
+  enemyName: manta ray
   hpViewHolder: {fileID: 0}
   shViewHolder: {fileID: 0}
   hpBaseScale: 0
@@ -864,12 +864,8 @@ MonoBehaviour:
   offset: 0
   expTimeC: 0
   expTimeM: 1.8
-  firstExplosion: {fileID: 1407466565534304, guid: 8f3c1c4a4c2025648b6e1b639d803a93,
-    type: 2}
-  whileExploding: {fileID: 1263259758855172, guid: 429c0a25791cf91438b9186183c41e47,
-    type: 2}
-  secondExplosion: {fileID: 1138906820914762, guid: 8e0ad89bcd871074c922a29b709fa1c4,
-    type: 2}
+  explosion: {fileID: 0}
+  expMat: {fileID: 0}
   globalAnim: {fileID: 0}
 --- !u!212 &212494095245557036
 SpriteRenderer:

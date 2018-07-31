@@ -90,7 +90,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1763,28 +1763,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db10cdd0ce1c55d47893a0a506f15884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sunMinR: 3
+  sunMinR: 6
   sunMaxR: 14
   planetMinR: 2
   planetMaxR: 6
-  sunMinCR: 0.4
-  sunMinCG: 0.4
-  sunMinCB: 0.4
+  sunMinCR: 0.65
+  sunMinCG: 0.6
+  sunMinCB: 0.65
   sunMaxCR: 1
   sunMaxCG: 1
   sunMaxCB: 1
   galaxySystemFrequency: 2
   galaxySystemMinReq: 80
-  galaxySystemMinLY: 45
+  galaxySystemMinLY: 75
   galaxySystemFreqBias: 0
-  nebulaChance: 0
+  nebulaChance: 2
   nebulaBias: 0
   sysPMin: 1
   sysPMax: 7
   systemLayerDivider: 0.15
   scalar: 95
   scalarInside: 45
-  offsetInside: 1.25
+  offsetInside: 1.5
   sunGO: {fileID: 1484820966532428, guid: 0fccbdac109a42d4cbc7fb8d5d08c75c, type: 2}
   sunMapGO: {fileID: 1349220507869106, guid: a5a367d6b8e6a524aa9745f4eb4c6ea9, type: 2}
   planetsGO:
@@ -1900,9 +1900,6 @@ MonoBehaviour:
   - Ice Giant
   - Dry Land
   - Fractured Planetoid
-  possibleObjectives:
-  - {fileID: 11400000, guid: 5b6aeaf2709b03446a58ddacb2c50256, type: 2}
-  - {fileID: 11400000, guid: b6ee0be4645152e40bb2fa4dc897f2de, type: 2}
   levels: []
   pm: {fileID: 0}
 --- !u!114 &993419562
@@ -1926,9 +1923,16 @@ MonoBehaviour:
   pmm: {fileID: 0}
   puim: {fileID: 0}
   lm: {fileID: 993419561}
+  om: {fileID: 0}
+  dm: {fileID: 0}
   slotSelector: {fileID: 0}
   selectedSlot: {fileID: 0}
   slotSelectorOffset: {x: 0, y: 0}
+  enemyNames: []
+  enemies: []
+  currentEnemies: 
+  setMinP: 0
+  setMaxP: 0
   step: 0
   playerName: 
   playerLevel: 0
@@ -1946,18 +1950,20 @@ MonoBehaviour:
   timeWait: 0
   timeCurrent: 0
   timeStopped: 0
-  uiAnim: {fileID: 0}
-  uiAnimState: 0
-  playerAnim: {fileID: 0}
-  playerAnimState: 0
+  enteredEqScreen: 0
   globalAnim: {fileID: 0}
   warpTimeCurrent: 0
   warpTimeMax: 0
   warping: 0
   warmingUp: 0
+  tutorialIntroAnimation: 0
   warpConduit: {fileID: 0}
   jumpRange: 0
+  jumpRangeMultiplier: 0
+  canJump: 0
+  nebulaSectorJumpMultiplierInflunece: 0
   mode: 0
+  levelUpDialogue: {fileID: 0}
 --- !u!1 &1026849729
 GameObject:
   m_ObjectHideFlags: 0
