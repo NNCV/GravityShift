@@ -131,36 +131,43 @@ public class PlayerUIManager : MonoBehaviour {
 
     void LateUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && (pm.warping == false && pm.warmingUp == false) && pm.tutorialIntroAnimation == true)
+        if (pm.isDead == false)
         {
-            animState = -1;
-            pm.stopTime();
-        }
+            if (Input.GetKeyDown(KeyCode.Escape) && (pm.warping == false && pm.warmingUp == false) && pm.tutorialIntroAnimation == true)
+            {
+                animState = -1;
+                pm.stopTime();
+            }
 
-        if(pm.warping == true || pm.warmingUp == true)
+            if (pm.warping == true || pm.warmingUp == true)
+            {
+                animState = 100;
+            }
+            if (pm.tutorialIntroAnimation == true)
+            {
+                animState = 99;
+            }
+
+            anim.SetInteger("State", animState);
+
+            curSh = (float)pm.pem.shieldCurrent / (float)pm.pem.shieldMax;
+            curHp = (float)pm.pem.hullCurrent / (float)pm.pem.hullMax;
+            curEn = (float)pm.pem.energyCurrent / (float)pm.pem.energyMax;
+            curXp = (float)pm.currentXP / (float)pm.xpLevels[pm.playerLevel];
+
+            sh.GetComponent<RectTransform>().localScale = new Vector3(curSh, 1f, 1f);
+            hp.GetComponent<RectTransform>().localScale = new Vector3(curHp, 1f, 1f);
+            en.GetComponent<RectTransform>().localScale = new Vector3(curEn, 1f, 1f);
+            xp.GetComponent<RectTransform>().localScale = new Vector3(curXp, 1f, 1f);
+
+            shEq.GetComponent<RectTransform>().localScale = new Vector3(curSh, 1f, 1f);
+            hpEq.GetComponent<RectTransform>().localScale = new Vector3(curHp, 1f, 1f);
+            enEq.GetComponent<RectTransform>().localScale = new Vector3(curEn, 1f, 1f);
+        }
+        else
         {
-            animState = 100;
+            anim.SetInteger("State", -200);
         }
-        if(pm.tutorialIntroAnimation == true)
-        {
-            animState = 99;
-        }
-
-        anim.SetInteger("State", animState);
-
-        curSh = (float)pm.pem.shieldCurrent / (float)pm.pem.shieldMax;
-        curHp = (float)pm.pem.hullCurrent / (float)pm.pem.hullMax;
-        curEn = (float)pm.pem.energyCurrent / (float)pm.pem.energyMax;
-        curXp = (float)pm.currentXP / (float)pm.xpLevels[pm.playerLevel];
-
-        sh.GetComponent<RectTransform>().localScale = new Vector3(curSh, 1f, 1f);
-        hp.GetComponent<RectTransform>().localScale = new Vector3(curHp, 1f, 1f);
-        en.GetComponent<RectTransform>().localScale = new Vector3(curEn, 1f, 1f);
-        xp.GetComponent<RectTransform>().localScale = new Vector3(curXp, 1f, 1f);
-
-        shEq.GetComponent<RectTransform>().localScale = new Vector3(curSh, 1f, 1f);
-        hpEq.GetComponent<RectTransform>().localScale = new Vector3(curHp, 1f, 1f);
-        enEq.GetComponent<RectTransform>().localScale = new Vector3(curEn, 1f, 1f);
     }
 
     public void SwitchMapNormalCameraControls()

@@ -122,7 +122,7 @@ public class LevelManager : MonoBehaviour {
                 }
                 else
                 {
-                    int chance = Random.Range(0, galaxySystemFrequency);
+                    int chance = 1;
 
                     if (a < galaxySystemMinLY)
                     {

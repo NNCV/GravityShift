@@ -124,184 +124,187 @@ public class CameraMovementManager : MonoBehaviour
     void FixedUpdate()
     {
         //Pregatire pentru salt
-        if (pm.warmingUp == true || pm.warping == true || pm.tutorialIntroAnimation)
+        if(pm.isDead == false)
         {
-            cam.transform.position = cam.transform.parent.transform.position + new Vector3(0f, 1f, -50f);
-            cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-        }
-        else
-        if (pm.warping == false)
-        {
-            if (selected == false)
+            if (pm.warmingUp == true || pm.warping == true || pm.tutorialIntroAnimation)
             {
-                systemGalaxyViewButton.interactable = false;
-            }
-            else
-            {
-                systemGalaxyViewButton.interactable = true;
-            }
-
-            if (isSystemView == false)
-            {
-                jumpButton.interactable = false;
-            }
-
-            if (isInMapScreen == false)
-            {
-                zoom += Input.GetAxisRaw("Mouse ScrollWheel") / zoomDif;
-                zoom = Mathf.Clamp(zoom, zoomMin, zoomMax);
-
-                if (pm.warping == false)
-                {
-                    finalMov = target.transform.position + new Vector3(shakeX, shakeY, -150f);
-                    finalRot = Quaternion.Euler(0f, 0f, target.transform.eulerAngles.z + shakeRot);
-                }
-                else
-                {
-                    finalMov = new Vector3(0f, 1f, 4873f);
-                    finalRot = Quaternion.Euler(0f, 0f, 0f);
-                }
-                if (shakeX <= shakeThreshold)
-                {
-                    shakeX = 0f;
-                }
-                else shakeX = shakeX / recoverSpeed;
-                if (shakeY <= shakeThreshold)
-                {
-                    shakeY = 0f;
-                }
-                else shakeY = shakeY / recoverSpeed;
-                if (shakeRot <= shakeThreshold)
-                {
-                    shakeRot = 0f;
-                }
-                else shakeRot = shakeRot / recoverSpeed;
-
-                transform.position = Vector3.Lerp(transform.position, finalMov, focusSpeed * Time.deltaTime);
-                transform.rotation = Quaternion.Lerp(transform.rotation, finalRot, focusSpeed * Time.deltaTime);
-
-                cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
-            }
-            else
-            {
-                foreach (MapDataContainerScript mds in FindObjectsOfType<MapDataContainerScript>())
-                {
-                    if (mds.slo.systemOrbitStage == pm.currentSystem)
-                    {
-                        mapJumpRangeDisplay.transform.position = mds.transform.position;
-                        mapJumpRangeDisplay.transform.GetChild(0).transform.localPosition = new Vector3(0f, 0f, 0f);
-                    }
-                }
-
+                cam.transform.position = cam.transform.parent.transform.position + new Vector3(0f, 1f, -50f);
                 cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
-                mapScalableSpeed = mapZoom / mapTravelMult;
-                mapTargetScalableScale = (mapZoom / mapTravelMult) * mapTargetScale;
-
-                if (mapSelectedSystem != null)
+            }
+            else
+            if (pm.warping == false)
+            {
+                if (selected == false)
                 {
-                    mapSelector.SetActive(true);
-                    mapSelector.transform.position = mapSelectedSystem.transform.position;
-                    mapSelector.transform.localScale = new Vector3(mapSelectedSystem.transform.localScale.x * selectorScalar, mapSelectedSystem.transform.localScale.y * selectorScalar, mapSelectedSystem.transform.localScale.z * selectorScalar);
+                    systemGalaxyViewButton.interactable = false;
                 }
                 else
                 {
-                    mapSelector.SetActive(false);
+                    systemGalaxyViewButton.interactable = true;
                 }
 
                 if (isSystemView == false)
                 {
-                    jumpButton.enabled = true;
-                    pmtm.startSpriteRenderer();
-                    mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, mapTarget.transform.position + new Vector3(Input.GetAxisRaw("Horizontal") * mapScalableSpeed, -Input.GetAxisRaw("Vertical") * mapScalableSpeed, 0f), Time.deltaTime * mapTravelSpeed);
-                    mapTarget.transform.localScale = Vector3.Lerp(mapTarget.transform.localScale, new Vector3(mapTargetScalableScale, mapTargetScalableScale, mapTargetScalableScale), Time.deltaTime * mapTravelSpeed);
-
-                    if (mapTarget.transform.position.x >= mapPosXMax)
-                    {
-                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapPosXMax, mapTarget.transform.position.y, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
-                    }
-                    if (mapTarget.transform.position.x <= mapPosXMin)
-                    {
-                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapPosXMin, mapTarget.transform.position.y, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
-                    }
-                    if (mapTarget.transform.position.y >= mapPosYMax)
-                    {
-                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapTarget.transform.position.x, mapPosYMax, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
-                    }
-                    if (mapTarget.transform.position.y <= mapPosYMin)
-                    {
-                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapTarget.transform.position.x, mapPosYMin, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
-                    }
-
-                    mapZoom += Input.GetAxisRaw("Mouse ScrollWheel") / mapZoomDif;
-                    mapZoom = Mathf.Clamp(mapZoom, mapZoomMin, mapZoomMax);
-
-                    mapPos = mapTarget.transform.position + new Vector3(0f, 0f, -50f);
-
-                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, mapZoom, Time.deltaTime * mapZoomSpeed);
-                    cam.transform.position = Vector3.Lerp(cam.transform.position, mapPos, Time.deltaTime * mapTravelSpeed);
-                    
-                    cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, mapRot, Time.deltaTime * mapTravelSpeed);
+                    jumpButton.interactable = false;
                 }
-                else
+
+                if (isInMapScreen == false)
                 {
-                    pmtm.stopSpriteRenderer();
+                    zoom += Input.GetAxisRaw("Mouse ScrollWheel") / zoomDif;
+                    zoom = Mathf.Clamp(zoom, zoomMin, zoomMax);
 
-                    /*
-                    bool goodSystem = false;
-                    
-                    for(int a = 0; a < pm.completedSystems.Length; a++)
+                    if (pm.warping == false)
                     {
-                        if (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemOrbitStage == pm.completedSystems[a])
-                        {
-                            goodSystem = true;
-                        }
-                    }
-                    */
-
-                    Vector2 pCurrent = new Vector2(mapJumpRangeDisplay.transform.position.x, mapJumpRangeDisplay.transform.position.y);
-                    Vector2 pThen = new Vector2(mapSelectedSector.transform.position.x, mapSelectedSector.transform.position.y);
-
-                    if (Vector2.Distance(pCurrent, pThen) <= pm.jumpRange * pm.jumpRangeMultiplier) //&& canJump && goodsystem == true
-                    {
-                        jumpButton.enabled = true;
-                        jumpButton.interactable = true;
-                    }
-                    
-                    if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-                    {
-                        currentSector++;
-                        if (currentSector >= mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length)
-                        {
-                            currentSector = 0;
-                        }
-                    }
-                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-                    {
-                        currentSector--;
-                        if (currentSector < 0)
-                        {
-                            currentSector = mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length - 1;
-                        }
-                    }
-
-                    if (currentSector == 0)
-                    {
-                        mapSelectedSector.transform.position = Vector3.Lerp(mapSelectedSector.transform.position, mapSelectedSystem.transform.position, Time.deltaTime * 25f);
-
-                        mapSelectedSector.transform.localScale = Vector3.Lerp(mapSelectedSector.transform.localScale, new Vector3((systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f), Time.deltaTime * 25f);
+                        finalMov = target.transform.position + new Vector3(shakeX, shakeY, -150f);
+                        finalRot = Quaternion.Euler(0f, 0f, target.transform.eulerAngles.z + shakeRot);
                     }
                     else
                     {
-                        mapSelectedSector.transform.position = Vector3.Lerp(mapSelectedSector.transform.position, mapSelectedSystem.transform.GetChild(currentSector - 1).transform.GetChild(0).transform.position, Time.deltaTime * 25f);
-                        mapSelectedSector.transform.localScale = Vector3.Lerp(mapSelectedSector.transform.localScale, new Vector3((systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f), Time.deltaTime * 25f);
+                        finalMov = new Vector3(0f, 1f, 4873f);
+                        finalRot = Quaternion.Euler(0f, 0f, 0f);
+                    }
+                    if (shakeX <= shakeThreshold)
+                    {
+                        shakeX = 0f;
+                    }
+                    else shakeX = shakeX / recoverSpeed;
+                    if (shakeY <= shakeThreshold)
+                    {
+                        shakeY = 0f;
+                    }
+                    else shakeY = shakeY / recoverSpeed;
+                    if (shakeRot <= shakeThreshold)
+                    {
+                        shakeRot = 0f;
+                    }
+                    else shakeRot = shakeRot / recoverSpeed;
 
+                    transform.position = Vector3.Lerp(transform.position, finalMov, focusSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, finalRot, focusSpeed * Time.deltaTime);
+
+                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoom, Time.deltaTime * zoomSpeed);
+                }
+                else
+                {
+                    foreach (MapDataContainerScript mds in FindObjectsOfType<MapDataContainerScript>())
+                    {
+                        if (mds.slo.systemOrbitStage == pm.currentSystem)
+                        {
+                            mapJumpRangeDisplay.transform.position = mds.transform.position;
+                            mapJumpRangeDisplay.transform.GetChild(0).transform.localPosition = new Vector3(0f, 0f, 0f);
+                        }
                     }
 
-                    mapSelector.transform.localScale = Vector3.Lerp(mapSelector.transform.localScale, new Vector3((mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar), Time.deltaTime * mapZoomSpeed);
-                    
-                    cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(mapSelectedSystem.transform.position.x, mapSelectedSystem.transform.position.y, -50f), Time.deltaTime * mapZoomSpeed);
-                    cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 1100f, Time.deltaTime * mapZoomSpeed);
+                    cam.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+                    mapScalableSpeed = mapZoom / mapTravelMult;
+                    mapTargetScalableScale = (mapZoom / mapTravelMult) * mapTargetScale;
+
+                    if (mapSelectedSystem != null)
+                    {
+                        mapSelector.SetActive(true);
+                        mapSelector.transform.position = mapSelectedSystem.transform.position;
+                        mapSelector.transform.localScale = new Vector3(mapSelectedSystem.transform.localScale.x * selectorScalar, mapSelectedSystem.transform.localScale.y * selectorScalar, mapSelectedSystem.transform.localScale.z * selectorScalar);
+                    }
+                    else
+                    {
+                        mapSelector.SetActive(false);
+                    }
+
+                    if (isSystemView == false)
+                    {
+                        jumpButton.enabled = true;
+                        pmtm.startSpriteRenderer();
+                        mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, mapTarget.transform.position + new Vector3(Input.GetAxisRaw("Horizontal") * mapScalableSpeed, -Input.GetAxisRaw("Vertical") * mapScalableSpeed, 0f), Time.deltaTime * mapTravelSpeed);
+                        mapTarget.transform.localScale = Vector3.Lerp(mapTarget.transform.localScale, new Vector3(mapTargetScalableScale, mapTargetScalableScale, mapTargetScalableScale), Time.deltaTime * mapTravelSpeed);
+
+                        if (mapTarget.transform.position.x >= mapPosXMax)
+                        {
+                            mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapPosXMax, mapTarget.transform.position.y, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                        }
+                        if (mapTarget.transform.position.x <= mapPosXMin)
+                        {
+                            mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapPosXMin, mapTarget.transform.position.y, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                        }
+                        if (mapTarget.transform.position.y >= mapPosYMax)
+                        {
+                            mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapTarget.transform.position.x, mapPosYMax, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                        }
+                        if (mapTarget.transform.position.y <= mapPosYMin)
+                        {
+                            mapTarget.transform.position = Vector3.Lerp(mapTarget.transform.position, new Vector3(mapTarget.transform.position.x, mapPosYMin, mapTarget.transform.position.z), Time.deltaTime * mapTravelSpeed);
+                        }
+
+                        mapZoom += Input.GetAxisRaw("Mouse ScrollWheel") / mapZoomDif;
+                        mapZoom = Mathf.Clamp(mapZoom, mapZoomMin, mapZoomMax);
+
+                        mapPos = mapTarget.transform.position + new Vector3(0f, 0f, -50f);
+
+                        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, mapZoom, Time.deltaTime * mapZoomSpeed);
+                        cam.transform.position = Vector3.Lerp(cam.transform.position, mapPos, Time.deltaTime * mapTravelSpeed);
+
+                        cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, mapRot, Time.deltaTime * mapTravelSpeed);
+                    }
+                    else
+                    {
+                        pmtm.stopSpriteRenderer();
+
+                        /*
+                        bool goodSystem = false;
+
+                        for(int a = 0; a < pm.completedSystems.Length; a++)
+                        {
+                            if (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemOrbitStage == pm.completedSystems[a])
+                            {
+                                goodSystem = true;
+                            }
+                        }
+                        */
+
+                        Vector2 pCurrent = new Vector2(mapJumpRangeDisplay.transform.position.x, mapJumpRangeDisplay.transform.position.y);
+                        Vector2 pThen = new Vector2(mapSelectedSector.transform.position.x, mapSelectedSector.transform.position.y);
+
+                        if (Vector2.Distance(pCurrent, pThen) <= pm.jumpRange * pm.jumpRangeMultiplier) //&& canJump && goodsystem == true
+                        {
+                            jumpButton.enabled = true;
+                            jumpButton.interactable = true;
+                        }
+
+                        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                        {
+                            currentSector++;
+                            if (currentSector >= mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length)
+                            {
+                                currentSector = 0;
+                            }
+                        }
+                        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                        {
+                            currentSector--;
+                            if (currentSector < 0)
+                            {
+                                currentSector = mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets.Length - 1;
+                            }
+                        }
+
+                        if (currentSector == 0)
+                        {
+                            mapSelectedSector.transform.position = Vector3.Lerp(mapSelectedSector.transform.position, mapSelectedSystem.transform.position, Time.deltaTime * 25f);
+
+                            mapSelectedSector.transform.localScale = Vector3.Lerp(mapSelectedSector.transform.localScale, new Vector3((systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemCentre.sunRadius) * 2.25f), Time.deltaTime * 25f);
+                        }
+                        else
+                        {
+                            mapSelectedSector.transform.position = Vector3.Lerp(mapSelectedSector.transform.position, mapSelectedSystem.transform.GetChild(currentSector - 1).transform.GetChild(0).transform.position, Time.deltaTime * 25f);
+                            mapSelectedSector.transform.localScale = Vector3.Lerp(mapSelectedSector.transform.localScale, new Vector3((systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f, (systemSectorScalar + mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanets[currentSector].planetRadius) * 1.25f), Time.deltaTime * 25f);
+
+                        }
+
+                        mapSelector.transform.localScale = Vector3.Lerp(mapSelector.transform.localScale, new Vector3((mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar, (mapSelectedSystem.GetComponent<MapDataContainerScript>().slo.systemPlanetCount + 100f) * systemSectorScalar), Time.deltaTime * mapZoomSpeed);
+
+                        cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(mapSelectedSystem.transform.position.x, mapSelectedSystem.transform.position.y, -50f), Time.deltaTime * mapZoomSpeed);
+                        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 1100f, Time.deltaTime * mapZoomSpeed);
+                    }
                 }
             }
         }

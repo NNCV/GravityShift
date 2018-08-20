@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class PlayerEquipmentManager : MonoBehaviour
@@ -23,7 +24,7 @@ public class PlayerEquipmentManager : MonoBehaviour
     //11-15 = cpus
     public SlotScript[] equipment;
 
-    public float hullCurrent, hullMax;
+    public float hullCurrent = 1, hullMax = 1;
     public float shieldCurrent, shieldMax, shieldRecharge, shieldRechargeRate;
     public float energyCurrent, energyMax, energyRecharge, energyRechargeRate;
 
@@ -41,6 +42,8 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public float[] weaponReload;
     public int weaponSelected = 0;
+
+    public GameObject deathExplosion;
 
     public void SaveEquipment()
     {
@@ -105,6 +108,7 @@ public class PlayerEquipmentManager : MonoBehaviour
         equipment[0].itemInSlot = currentHull;
         equipment[0].DisplayItem();
 
+        //weapons
         for (int a = 0; a < 6 ; a++)
         {
             if (currentHull.eqEnabled[a + 1] == 1)
@@ -126,6 +130,7 @@ public class PlayerEquipmentManager : MonoBehaviour
             }
         }
 
+        //shields
         for (int b = 0; b < 3 ; b++)
         {
             if (currentHull.eqEnabled[b + 7] == 1)
@@ -145,6 +150,7 @@ public class PlayerEquipmentManager : MonoBehaviour
             }
         }
 
+        //reactors
         for (int b = 0; b < 3 ; b++)
         {
             if (currentHull.eqEnabled[b + 10] == 1)
@@ -231,66 +237,88 @@ public class PlayerEquipmentManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (pm.timeStopped == false || pm.warping == false || pm.warmingUp == false || pm.tutorialIntroAnimation == false)
+        if (pm.timeStopped == false && pm.warping == false && pm.warmingUp == false && pm.tutorialIntroAnimation == false)
         {
-            hydrTimeCurrent += Time.deltaTime;
-            
-            for(int z = 0; z < currentBlasters.Length; z++)
+            if (pm.isDead == false)
             {
-                weaponReload[z] += Time.deltaTime;
-            }
+                hydrTimeCurrent += Time.deltaTime;
 
-            if(isHyperDrifting == true)
-            {
-                transform.GetComponent<PlayerMovementManager>().hydrSpeed = hydrSpeedMult;
-                energyCurrent -= hydrCost;
-            }
-            else
-            {
-                transform.GetComponent<PlayerMovementManager>().hydrSpeed = 1f;
-            }
-            
-            if(Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                ToggleHyperDrift();
-            }
-            
-            if (Input.GetMouseButtonDown(0))
-            {
-                Fire();
-            }
-
-            if (shieldRecharge > 0)
-            {
-                shieldCooldown += Time.deltaTime;
-                if (shieldCooldown >= shieldRechargeRate)
+                for (int z = 0; z < currentBlasters.Length; z++)
                 {
-                    shieldCurrent += shieldRecharge * shieldRechargeRate;
+                    weaponReload[z] += Time.deltaTime;
+                }
+
+                if (isHyperDrifting == true)
+                {
+                    transform.GetComponent<PlayerMovementManager>().hydrSpeed = hydrSpeedMult;
+                    energyCurrent -= hydrCost;
+                }
+                else
+                {
+                    transform.GetComponent<PlayerMovementManager>().hydrSpeed = 1f;
+                }
+
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    ToggleHyperDrift();
+                }
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (pm.warping == false)
+                    {
+                        Fire();
+                    }
+                }
+
+                if (shieldRecharge > 0)
+                {
+                    shieldCooldown += Time.deltaTime;
+                    if (shieldCooldown >= shieldRechargeRate)
+                    {
+                        shieldCurrent += shieldRecharge * shieldRechargeRate;
+                    }
+                }
+
+                energyCooldown += Time.deltaTime;
+                if (energyCooldown >= energyRechargeRate)
+                {
+                    energyCurrent += energyRecharge * energyRechargeMultiplier;
+                }
+
+                if (shieldCurrent >= shieldMax)
+                {
+                    shieldCurrent = shieldMax;
+                }
+
+                if (energyCurrent >= energyMax)
+                {
+                    energyCurrent = energyMax;
+                }
+
+                if (energyCurrent <= 0)
+                {
+                    isHyperDrifting = false;
+                    hydrTimeCurrent = 0;
+                }
+
+                if (hullCurrent <= 0)
+                {
+                    hullCurrent = 0;
+                    ExplodePlayer();
                 }
             }
-
-            energyCooldown += Time.deltaTime;
-            if (energyCooldown >= energyRechargeRate)
-            {
-                energyCurrent += energyRecharge * energyRechargeMultiplier;
-            }
-
-            if (shieldCurrent >= shieldMax)
-            {
-                shieldCurrent = shieldMax;
-            }
-
-            if (energyCurrent >= energyMax)
-            {
-                energyCurrent = energyMax;
-            }
-
-            if(energyCurrent <= 0)
-            {
-                isHyperDrifting = false;
-                hydrTimeCurrent = 0;
-            }
         }
+    }
+
+    public void ExplodePlayer()
+    {
+        pm.isDead = true;
+        for(int a = transform.childCount - 1; a >= 0; a--)
+        {
+            Destroy(transform.GetChild(a).gameObject);
+        }
+        Instantiate(deathExplosion, transform.position, transform.rotation);
     }
 
     public void DisplayEquipment()
@@ -321,7 +349,7 @@ public class PlayerEquipmentManager : MonoBehaviour
                 currentHull.currentWeaponNumber++;
                 //Display new blaster at specified transform
                 GameObject blasterToSpawn = blaster.blasterGO;
-                blasterToSpawn.GetComponent<BlasterScript>().pm = this.pm;
+                blasterToSpawn.GetComponentInChildren<BlasterScript>().pm = this.pm;
                 GameObject.Instantiate(blasterToSpawn, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -0.0001f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
             }
         }
@@ -366,13 +394,13 @@ public class PlayerEquipmentManager : MonoBehaviour
         {
             weaponSelected++;
         }
-        if (energyCurrent >= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterEnergyDrain)
+        if (energyCurrent >= transform.GetChild(weaponSelected + 1).GetComponentInChildren<BlasterScript>().blasterEnergyDrain)
         {
             if(weaponReload[weaponSelected] >= currentBlasters[weaponSelected].blasterFireRate)
             {
                 weaponReload[weaponSelected] = 0f;
-                transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().Fire();
-                energyCurrent -= transform.GetChild(weaponSelected + 1).GetComponent<BlasterScript>().blasterEnergyDrain;
+                transform.GetChild(weaponSelected + 1).GetComponentInChildren<BlasterScript>().Fire();
+                energyCurrent -= transform.GetChild(weaponSelected + 1).GetComponentInChildren<BlasterScript>().blasterEnergyDrain;
                 energyCooldown = 0;
             }
         }
@@ -394,6 +422,11 @@ public class PlayerEquipmentManager : MonoBehaviour
                 hullCurrent -= damageToHull;
             }
         }
+        else
+        {
+            hullCurrent -= damage;
+        }
+
         shieldCooldown = 0;
     }
 }

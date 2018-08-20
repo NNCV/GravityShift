@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Name: Diablo
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: e00edfb774ffd604cac279b995dd996d, type: 3}
-  itemName: Diablo Turret
-  itemDescription: A fierce turret firing a fiery load
+  itemName: diablo turret
+  itemDescription: a fierce turret firing a fiery load
   itemValue: 100
   itemType: Equippable Weapon
   rarity: {r: 0.48584908, g: 0.6845376, b: 1, a: 1}
   equipmentType: 1
   slotImage: {fileID: 21300000, guid: 0697262c7b99b0949a0e98c098feb50b, type: 3}
   stat1: thermal
-  stat1Value: 0.8
+  stat1Value: 0.3
   stat2: kinetic
-  stat2Value: 0.5
+  stat2Value: 0.1
   overchargeEffect: 
   blasterDmgType1: Kinetic
   blasterDmgType2: Thermal
-  blasterGO: {fileID: 1034998673504596, guid: 5fbb94a1b90b6bd459efd6bc5a98d388, type: 2}
+  blasterGO: {fileID: 1048590509914506, guid: 1711372f9fcd786438f5093300fce493, type: 2}
   blasterEnergyDrain: 15
   blasterFireRate: 0.35
   blasterCooldown: 0

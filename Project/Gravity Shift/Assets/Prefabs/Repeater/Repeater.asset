@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Name: Repeater
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: e00edfb774ffd604cac279b995dd996d, type: 3}
-  itemName: Repeater Turret
-  itemDescription: Strike many bolts in a short time
+  itemName: repeater turret
+  itemDescription: more bolts in less time
   itemValue: 250
   itemType: Equippable Weapon
   rarity: {r: 0.48627448, g: 1, b: 0.70105875, a: 1}
   equipmentType: 1
-  slotImage: {fileID: 21300000, guid: 0697262c7b99b0949a0e98c098feb50b, type: 3}
+  slotImage: {fileID: 21300000, guid: 0a08007add6d6294da515ff0ff090528, type: 3}
   stat1: thermal
-  stat1Value: 0.3
+  stat1Value: 0.45
   stat2: kinetic
-  stat2Value: 0.2
+  stat2Value: 0.23
   overchargeEffect: 
   blasterDmgType1: Kinetic
   blasterDmgType2: Thermal
-  blasterGO: {fileID: 1034998673504596, guid: 5fbb94a1b90b6bd459efd6bc5a98d388, type: 2}
+  blasterGO: {fileID: 1228187160274634, guid: a2381b27dd34bf44b85db15954dcee70, type: 2}
   blasterEnergyDrain: 15
   blasterFireRate: 0.35
   blasterCooldown: 0

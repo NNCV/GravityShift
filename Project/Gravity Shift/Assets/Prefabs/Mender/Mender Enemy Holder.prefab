@@ -646,11 +646,13 @@ MonoBehaviour:
   shOffset: {x: 0, y: -2.75, z: 0}
   dropGO: {fileID: 1871361722763244, guid: d9cad567171215e41a45cc1f42b7e2d4, type: 2}
   drops:
-  - {fileID: 11400000, guid: 06270661d5f034c44aa11e1e31924adb, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 0759c6d915f12fb41beaba716e5a78ee, type: 2}
   - {fileID: 11400000, guid: f5d8e87d8aac0ad4b857a4392a932210, type: 2}
   dropRates:
-  - 0.1
-  - 0.65
+  - 0
+  - 0.45
+  - 0.75
   xpReward: 60
   healthCurrent: 200
   healthMax: 200

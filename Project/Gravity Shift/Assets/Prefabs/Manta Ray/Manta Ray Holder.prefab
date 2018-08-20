@@ -825,14 +825,12 @@ MonoBehaviour:
   shOffset: {x: 0, y: 0, z: 0}
   dropGO: {fileID: 0}
   drops:
-  - {fileID: 11400000, guid: 442982ab912c2b94e95315f3473c1601, type: 2}
-  - {fileID: 11400000, guid: 7c33dbfc89b31c64e81b40a84c86e8c8, type: 2}
-  - {fileID: 11400000, guid: 799a624b09b0ba546a0fbbc826e20f96, type: 2}
-  - {fileID: 11400000, guid: ba4356f31490d5c43a268653d752b37b, type: 2}
-  - {fileID: 11400000, guid: 638ca2c35645bc046a97bfdedd4f8c47, type: 2}
-  - {fileID: 0}
-  dropRates: []
-  xpReward: 0
+  - {fileID: 11400000, guid: 06270661d5f034c44aa11e1e31924adb, type: 2}
+  - {fileID: 11400000, guid: f5d8e87d8aac0ad4b857a4392a932210, type: 2}
+  dropRates:
+  - 0
+  - 0.75
+  xpReward: 15
   healthCurrent: 0
   healthMax: 20
   shieldCurrent: 0

@@ -114,12 +114,12 @@ MonoBehaviour:
   blast: {fileID: 1524688287045880, guid: 4abff092e67a0fd4abb76f77fb0a9dbc, type: 2}
   blastSpawnZone: {fileID: 4002313504133516}
   offset: -90
-  pointSpeed: 4
-  shakeMovMin: -1
-  shakeMovMax: 1
-  shakeRotMin: -9
-  shakeRotMax: 9
-  blasterEnergyDrain: 5
+  pointSpeed: 6
+  shakeMovMin: -1.2
+  shakeMovMax: 1.2
+  shakeRotMin: -10
+  shakeRotMax: 10
+  blasterEnergyDrain: 75
   blasterFireRate: 0.15
 --- !u!212 &212549143145557426
 SpriteRenderer:
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 21
-  m_Sprite: {fileID: 21300000, guid: e00edfb774ffd604cac279b995dd996d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba0c18e44ad21274fb561ae22e39c25c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: Scrap Metal
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: 3127edde5a595c4498697a8fb1f95771, type: 3}
-  itemName: Scrap Metal
-  itemDescription: Remnants of a ship.
+  itemName: scrap metal
+  itemDescription: the last sights of what once used to be our kind
   itemValue: 20
   itemType: General
   rarity: {r: 1, g: 0.8908356, b: 0.7877358, a: 1}

@@ -71,9 +71,11 @@ public class PlayerManager : MonoBehaviour {
     public bool canJump;
     public float nebulaSectorJumpMultiplierInflunece;
     public int mode = 0;
+    public bool isDead = false;
 
     //Dialoguri
     public DialogueScript levelUpDialogue;
+    public DialogueScript enemiesInboundDialogue;
     
     public void loadCompletedSystems()
     {
@@ -109,7 +111,8 @@ public class PlayerManager : MonoBehaviour {
 
     public void setMapJUmpDisplayStats()
     {
-        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).localScale = new Vector3(jumpRange * jumpRangeMultiplier, jumpRange * jumpRangeMultiplier, jumpRange * jumpRangeMultiplier);
+        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).localScale = new Vector3(jumpRange * jumpRangeMultiplier * 2, jumpRange * jumpRangeMultiplier * 2, jumpRange * jumpRangeMultiplier * 2);
+        Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(1).localScale = new Vector3(jumpRange * jumpRangeMultiplier * 2, jumpRange * jumpRangeMultiplier * 2, jumpRange * jumpRangeMultiplier * 2);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.GetChild(0).transform.position = lm.getPositionOfSystem(currentSystem);
         Camera.main.GetComponent<CameraMovementManager>().mapJumpRangeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, currentGalaxy.systems[currentSystem].systemCentre.rot1);
     }
@@ -123,85 +126,92 @@ public class PlayerManager : MonoBehaviour {
     {
         if (mode != 0)
         {
-            if(Input.GetKeyDown(KeyCode.Alpha0))
+            if (!isDead)
             {
-                SceneManager.LoadScene("Testing Stuff");
-            }
-
-            if(currentXP >= xpLevels[playerLevel])
-            {
-                playerLevel++;
-                currentXP = 0;
-                puim.level.text = playerLevel.ToString();
-                dm.ShowDialogue(levelUpDialogue);
-            }
-
-            if (warmingUp == true)
-            {
-                transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * 12f);
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 8f);
-                Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 12f, Time.deltaTime * 6f);
-                if(Camera.main.orthographicSize <= 12.05f && (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f) && (transform.position.x >= -0.1f || transform.position.x <= 0.1f) && (transform.position.y >= -0.1f || transform.position.y <= 0.1f))
+                if (Input.GetKeyDown(KeyCode.Alpha0))
                 {
-                    warping = true;
-                    if (currentSystem == 499 && currentSector == 5)
-                    {
-                        globalAnim.SetInteger("State", 3);
-                    }
-                    else if (currentSystem == 0)
-                    {
-                        globalAnim.SetInteger("State", 4);
-                    }
-                    else
-                    {
-                        globalAnim.SetInteger("State", 1);
-                    }
-                    warmingUp = false;
+                    SceneManager.LoadScene("Testing Stuff");
                 }
-            }
-            else if(warping == true)
-            {
-                warpTimeCurrent += Time.deltaTime;
-                puim.setJumpSystemInformation(currentSector);
-                transform.localPosition = new Vector3(0f, 0f, 0f);
-                setMapJUmpDisplayStats();
-                if (warpTimeCurrent >= warpTimeMax)
+
+                if (currentXP >= xpLevels[playerLevel])
                 {
-                    warping = false;
-                    loadSector();
-                    globalAnim.SetInteger("State", 0);
-                    transform.localPosition = new Vector3(0f, 0f, -4750f);
-                    warpTimeCurrent = 0;
+                    playerLevel++;
+                    currentXP = 0;
+                    puim.level.text = playerLevel.ToString();
+                    dm.ShowDialogue(levelUpDialogue);
                 }
-            }
-            else
-            {
-                if (timeStopped == true)
+
+                if (warmingUp == true)
                 {
-                    if (timeCurrent >= timeWait)
+                    transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * 12f);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 8f);
+                    Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 12f, Time.deltaTime * 6f);
+                    if (Camera.main.orthographicSize <= 12.05f && (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f) && (transform.position.x >= -0.1f || transform.position.x <= 0.1f) && (transform.position.y >= -0.1f || transform.position.y <= 0.1f))
                     {
-                        Time.timeScale = Time.timeScale / timeSubMult;
-                        if (Time.timeScale <= 0.05f)
+                        warping = true;
+                        if (currentSystem == 499 && currentSector == 5)
                         {
-                            Time.timeScale = 0f;
+                            globalAnim.SetInteger("State", 3);
                         }
+                        else if (currentSystem == 0)
+                        {
+                            globalAnim.SetInteger("State", 4);
+                        }
+                        else
+                        {
+                            globalAnim.SetInteger("State", 1);
+                        }
+                        warmingUp = false;
                     }
-                    else
+                }
+                else if (warping == true)
+                {
+                    warpTimeCurrent += Time.deltaTime;
+                    puim.setJumpSystemInformation(currentSector);
+                    transform.localPosition = new Vector3(0f, 0f, 0f);
+                    setMapJUmpDisplayStats();
+                    if (warpTimeCurrent >= warpTimeMax)
                     {
-                        timeCurrent += Time.deltaTime;
+                        warping = false;
+                        loadSector();
+                        globalAnim.SetInteger("State", 0);
+                        transform.localPosition = new Vector3(0f, 0f, -4750f);
+                        warpTimeCurrent = 0;
                     }
                 }
                 else
                 {
-                    if(enteredEqScreen == true)
+                    if (timeStopped == true)
                     {
-                        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 6f);
-                        if(transform.rotation.z <= 0.05f || transform.rotation.z >= -0.05f)
+                        if (timeCurrent >= timeWait)
                         {
-                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            Time.timeScale = Time.timeScale / timeSubMult;
+                            if (Time.timeScale <= 0.05f)
+                            {
+                                Time.timeScale = 0f;
+                            }
+                        }
+                        else
+                        {
+                            timeCurrent += Time.deltaTime;
+                        }
+                    }
+                    else
+                    {
+                        if (enteredEqScreen == true)
+                        {
+                            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 6f);
+                            if (transform.rotation.z <= 0.05f || transform.rotation.z >= -0.05f)
+                            {
+                                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                puim.animState = -200;
             }
         }
     }
@@ -211,29 +221,6 @@ public class PlayerManager : MonoBehaviour {
         if (mode != 0)
         {
             FullLoad();
-            if (currentSystem == 499 && currentSector == 5)
-            {
-                warmingUp = false;
-                warping = false;
-                isFrozen = true;
-                isInCutscene = true;
-                tutorialIntroAnimation = true;
-                globalAnim.SetInteger("State", -1);
-            }
-            else
-            {
-                warmingUp = true;
-            }
-
-            puim.level.text = playerLevel.ToString();
-            pem.UpdateShipEquipmentStats();
-            
-            for (int a = 0; a < pem.currentBlasters.Length; a++)
-            {
-                transform.GetChild(a + 1).transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
-            }
-            
-            setMapJUmpDisplayStats();
         }
     }
     
@@ -358,7 +345,17 @@ public class PlayerManager : MonoBehaviour {
 
         currentGalaxy = loadGalaxy;
     }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
     
+    public void LoadGame()
+    {
+        SceneManager.LoadScene("Game Scene");
+    }
+
     public void FreezePlayerFunctions()
     {
         isFrozen = true;
@@ -395,6 +392,8 @@ public class PlayerManager : MonoBehaviour {
     
     public void LoadEquipment()
     {
+        isDead = false;
+
         foreach (HullItem hull in hulls)
         {
             if (hull.itemName == PlayerPrefs.GetString("ShipHull"))
@@ -402,6 +401,8 @@ public class PlayerManager : MonoBehaviour {
                 pem.currentHull = hull;
             }
         }
+
+        pem.hullCurrent = pem.currentHull.maxHullHP;
 
         jumpRange = pem.currentHull.jumpRange;
 
@@ -483,9 +484,9 @@ public class PlayerManager : MonoBehaviour {
         pmm.fSpeed = pem.currentHull.forwardSpeed;
         pmm.rSpeed = pem.currentHull.rotationSpeed;
 
-        pem.hullCurrent = PlayerPrefs.GetInt("HullCurrent");
-        pem.shieldCurrent = PlayerPrefs.GetInt("ShieldCurrent");
-        pem.energyCurrent = PlayerPrefs.GetInt("EnergyCurrent");
+        pem.hullCurrent = PlayerPrefs.GetFloat("HullCurrent");
+        pem.shieldCurrent = PlayerPrefs.GetFloat("ShieldCurrent");
+        pem.energyCurrent = PlayerPrefs.GetFloat("EnergyCurrent");
 
         pem.DisplayEquipment();
     }
@@ -525,6 +526,8 @@ public class PlayerManager : MonoBehaviour {
         currentSystem = PlayerPrefs.GetInt("CurrentSystem");
         currentSector = PlayerPrefs.GetInt("CurrentSector");
 
+        puim.level.text = playerLevel.ToString();
+
         loadCompletedSystems();
     }
 
@@ -546,6 +549,30 @@ public class PlayerManager : MonoBehaviour {
         LoadEquipment();
         LoadInventory();
         loadGalaxy();
+
+        if (currentSystem == 499 && currentSector == 5)
+        {
+            warmingUp = false;
+            warping = false;
+            isFrozen = true;
+            isInCutscene = true;
+            tutorialIntroAnimation = true;
+            globalAnim.SetInteger("State", -1);
+        }
+        else
+        {
+            warmingUp = true;
+        }
+
+        puim.level.text = playerLevel.ToString();
+        pem.UpdateShipEquipmentStats();
+
+        for (int a = 0; a < pem.currentBlasters.Length; a++)
+        {
+            transform.GetChild(a + 1).transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+        }
+
+        setMapJUmpDisplayStats();
     }
 
     public void SaveEquipment()
@@ -650,8 +677,15 @@ public class PlayerManager : MonoBehaviour {
         }
         else
         {
-            slotSelector.enabled = true;
-            slotSelector.rectTransform.anchoredPosition = ss.GetComponent<RectTransform>().anchoredPosition - slotSelectorOffset;
+            if (ss.slotType.Contains("Equippable"))
+            {
+                slotSelector.enabled = false;
+            }
+            else
+            {
+                slotSelector.enabled = true;
+                slotSelector.rectTransform.anchoredPosition = ss.GetComponent<RectTransform>().anchoredPosition - slotSelectorOffset;
+            }
             selectedSlot = ss;
         }
     }
@@ -704,9 +738,6 @@ public class PlayerManager : MonoBehaviour {
                         ss.DisplayItem();
 
                         DeselectSlot();
-
-                        pem.SaveEquipment();
-                        pem.UpdateShipEquipmentStats();
                     }
                 }
                 else
@@ -722,9 +753,6 @@ public class PlayerManager : MonoBehaviour {
                         ss.DisplayItem();
 
                         DeselectSlot();
-
-                        pem.SaveEquipment();
-                        pem.UpdateShipEquipmentStats();
                     }
                     else
                     {
@@ -746,9 +774,6 @@ public class PlayerManager : MonoBehaviour {
                     ss.DisplayItem();
 
                     DeselectSlot();
-                    
-                    pem.SaveEquipment();
-                    pem.UpdateShipEquipmentStats();
                 }
                 else
                 {
@@ -769,9 +794,6 @@ public class PlayerManager : MonoBehaviour {
                         ss.DisplayItem();
 
                         DeselectSlot();
-
-                        pem.SaveEquipment();
-                        pem.UpdateShipEquipmentStats();
                     }
                     else
                     {
@@ -795,9 +817,6 @@ public class PlayerManager : MonoBehaviour {
                         ss.DisplayItem();
 
                         DeselectSlot();
-
-                        pem.SaveEquipment();
-                        pem.UpdateShipEquipmentStats();
                     }
                     else
                     {
@@ -817,9 +836,6 @@ public class PlayerManager : MonoBehaviour {
                         ss.DisplayItem();
 
                         DeselectSlot();
-
-                        pem.SaveEquipment();
-                        pem.UpdateShipEquipmentStats();
                     }
                     else
                     {

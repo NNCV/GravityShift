@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Name: Protos
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: 68276df2e7ca0ed4790840621ca9915b, type: 3}
-  itemName: Protos Reactor
-  itemDescription: A prototype of sorts.
+  itemName: protos reactor
+  itemDescription: this is somehow still functioning
   itemValue: 0
   itemType: Equippable Reactor
+  rarity: {r: 0, g: 0, b: 0, a: 0}
   equipmentType: 0
   slotImage: {fileID: 21300000, guid: 68276df2e7ca0ed4790840621ca9915b, type: 3}
   stat1: energy
-  stat1Value: 1
+  stat1Value: 0.2
   stat2: regen
-  stat2Value: 0.5
+  stat2Value: 0.4
   maxEnergy: 1000
   rechargeRate: 4
   timeRecharge: 2

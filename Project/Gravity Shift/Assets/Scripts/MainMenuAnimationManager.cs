@@ -45,17 +45,17 @@ public class MainMenuAnimationManager : MonoBehaviour {
 
     public void createNewPlayer()
     {
-        PlayerPrefs.SetString("ShipHull", "Hellstorm Hull");
+        PlayerPrefs.SetString("ShipHull", "hellstorm hull");
         PlayerPrefs.SetInt("CurrentLevel", 1);
         PlayerPrefs.SetInt("CurrentXP", 0);
         PlayerPrefs.SetString("PlayerName", playNameInputField.text);
-        PlayerPrefs.SetString("Blaster0", "Diablo Turret");
-        PlayerPrefs.SetString("Blaster1", "Diablo Turret");
-        PlayerPrefs.SetString("Reactor0", "Protos Reactor");
-        PlayerPrefs.SetString("Shield0", "Diffuser Mk1");
+        PlayerPrefs.SetString("Blaster0", "diablo turret");
+        PlayerPrefs.SetString("Blaster1", "diablo turret");
+        PlayerPrefs.SetString("Reactor0", "protos reactor");
+        PlayerPrefs.SetString("Shield0", "broken diffuser");
         PlayerPrefs.SetString("CanJump", "false");
-        PlayerPrefs.SetInt("HullCurrent", 20);
-        PlayerPrefs.SetInt("ShieldCurrent", 0);
+        PlayerPrefs.SetInt("HullCurrent", 1000);
+        PlayerPrefs.SetInt("ShieldCurrent", 1000);
         PlayerPrefs.SetInt("EnergyCurrent", 0);
         PlayerPrefs.SetInt("ParticleAmmount", PlayerPrefs.GetInt("ParticleAmmount"));
         PlayerPrefs.SetInt("CurrentSystem", 499);

@@ -68,7 +68,7 @@ public class MenderScript : BasicEnemyScript {
                 healTC = 0f;
             }
         }
-        else;
+        else
         {
             Explode();
         }

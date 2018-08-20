@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Onwards to Technatoria Rogue
   m_Shader: {fileID: 4800000, guid: 5ade065dfba7e8f428ee80a97461d895, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -74,6 +74,7 @@ Material:
     - Vector1_1DD19EB7: 0.95
     - Vector1_516F6A68: 0.25
     - Vector1_5F675393: 85
+    - Vector1_A3572D9C: 0
     - Vector1_FD5B3523: 0.6
     - _AlphaClip: 0
     - _Blend: 0

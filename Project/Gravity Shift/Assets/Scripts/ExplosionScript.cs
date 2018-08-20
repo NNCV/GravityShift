@@ -13,6 +13,10 @@ public class ExplosionScript : MonoBehaviour {
 
     private void Start()
     {
+        if(FindObjectOfType<PlayerManager>().isDead == true)
+        {
+            mat = gameObject.GetComponent<MeshRenderer>().material;
+        }
         mat.SetVector("Vector2_B8BB5A6B", speedInit);
         mat.SetFloat("Vector1_5F675393", distInit);
         mat.SetFloat("Vector1_A3572D9C", initFL);

@@ -127,7 +127,7 @@ TrailRenderer:
   m_Time: 0.6
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.08
+    widthMultiplier: 0.06
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -155,23 +155,23 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0.9789648, b: 0.9764151, a: 1}
-      key1: {r: 0.9727086, g: 1, b: 0.5882353, a: 0.69411767}
-      key2: {r: 0.9098039, g: 0.75912917, b: 0.20784314, a: 0}
-      key3: {r: 0.14509805, g: 0.09019608, b: 0.078431375, a: 0}
+      key1: {r: 1, g: 0.78706336, b: 0.5882353, a: 0.8901961}
+      key2: {r: 0.9098039, g: 0.41358185, b: 0.20784314, a: 0}
+      key3: {r: 1, g: 1, b: 1, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 5397
-      ctime2: 34695
+      ctime2: 22355
       ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 45296
+      atime1: 48148
       atime2: 65535
       atime3: 65535
       atime4: 0
@@ -203,5 +203,5 @@ MonoBehaviour:
   distanceMax: 10
   initPos: {x: 0, y: 0, z: 0}
   rb2d: {fileID: 50937063230796790}
-  bc2d: {fileID: 0}
-  damage: 10
+  bc2d: {fileID: 61388039273505788}
+  damage: 25

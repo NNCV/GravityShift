@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pim: {fileID: 0}
-  drop: {fileID: 11400000, guid: 06270661d5f034c44aa11e1e31924adb, type: 2}
+  drop: {fileID: 0}
   text: {fileID: 0}
 --- !u!212 &212117321147406294
 SpriteRenderer:

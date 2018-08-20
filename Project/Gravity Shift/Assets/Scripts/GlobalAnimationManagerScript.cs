@@ -17,6 +17,7 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
     public Vector2 s1toN, s2toN, s3toN, s4toN;
     public SpriteRenderer srL;
     public float fromLspeed, toLspeed;
+    public float fromLsize, toLsize;
     public Color fromL, toL;
 
     public PlayerManager pm;
@@ -24,6 +25,11 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
     public float time;
     public bool destabilized = false;
     
+    public void showEnemiesInboundDiagTEST()
+    {
+        pm.dm.ShowDialogue(pm.enemiesInboundDialogue);
+    }
+
     public void showDiagTest()
     {
         FindObjectOfType<ObjectiveManager>().showInformationOfAllObjectives();
@@ -128,7 +134,8 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
         m3.SetVector("Vector2_E88029BF", s3fromN);
         m4.SetVector("Vector2_E88029BF", s4fromN);
 
-        srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierBefore = toLspeed;
+        srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierBefore = fromLspeed;
+        srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierAfter = fromLsize;
         srL.color = fromL;
 
         destabilized = false;
@@ -147,11 +154,12 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
         m4.SetVector("Vector2_9D1115A5", Vector2.Lerp(m4.GetVector("Vector2_9D1115A5"), s4from, Time.deltaTime * time));
 
         m1.SetVector("Vector2_E88029BF", Vector2.Lerp(m1.GetVector("Vector2_E88029BF"), s1fromN, Time.deltaTime * time));
-        m2.SetVector("Vector2_E88029BF", Vector2.Lerp(m2.GetVector("Vector2_E88029BF"), s1fromN, Time.deltaTime * time));
-        m3.SetVector("Vector2_E88029BF", Vector2.Lerp(m3.GetVector("Vector2_E88029BF"), s1fromN, Time.deltaTime * time));
-        m4.SetVector("Vector2_E88029BF", Vector2.Lerp(m4.GetVector("Vector2_E88029BF"), s1fromN, Time.deltaTime * time));
+        m2.SetVector("Vector2_E88029BF", Vector2.Lerp(m2.GetVector("Vector2_E88029BF"), s2fromN, Time.deltaTime * time));
+        m3.SetVector("Vector2_E88029BF", Vector2.Lerp(m3.GetVector("Vector2_E88029BF"), s3fromN, Time.deltaTime * time));
+        m4.SetVector("Vector2_E88029BF", Vector2.Lerp(m4.GetVector("Vector2_E88029BF"), s4fromN, Time.deltaTime * time));
 
         srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierBefore = Mathf.Lerp(srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierBefore, fromLspeed, Time.deltaTime * time);
+        srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierAfter = Mathf.Lerp(srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierAfter, fromLsize, Time.deltaTime * time);
         srL.color = Color.Lerp(srL.color, fromL, Time.deltaTime * time);
     }
 
@@ -173,6 +181,7 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
         m4.SetVector("Vector2_E88029BF", Vector2.Lerp(m4.GetVector("Vector2_E88029BF"), s4toN, Time.deltaTime * time));
         
         srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierBefore = Mathf.Lerp(srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierBefore, toLspeed, Time.deltaTime * time);
+        srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierAfter = Mathf.Lerp(srL.gameObject.GetComponent<WarpConduitLensFlareScript>().multiplierAfter, toLsize, Time.deltaTime * time);
         srL.color = Color.Lerp(srL.color, toL, Time.deltaTime * time);
     }
 }

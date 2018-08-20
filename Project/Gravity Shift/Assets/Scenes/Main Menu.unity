@@ -1777,7 +1777,7 @@ MonoBehaviour:
   galaxySystemMinReq: 80
   galaxySystemMinLY: 75
   galaxySystemFreqBias: 0
-  nebulaChance: 2
+  nebulaChance: 3
   nebulaBias: 0
   sysPMin: 1
   sysPMax: 7
@@ -1892,14 +1892,14 @@ MonoBehaviour:
   - ortho
   - para
   planetTypes:
-  - Rocky Giant
-  - Gas Giant
-  - Earth Sibling
-  - Water World
-  - Lava World
-  - Ice Giant
-  - Dry Land
-  - Fractured Planetoid
+  - rocky giant
+  - gas giant
+  - earth sibling
+  - water world
+  - lava world
+  - ice giant
+  - dry land
+  - fractured planetoid
   levels: []
   pm: {fileID: 0}
 --- !u!114 &993419562
@@ -1963,7 +1963,9 @@ MonoBehaviour:
   canJump: 0
   nebulaSectorJumpMultiplierInflunece: 0
   mode: 0
+  isDead: 0
   levelUpDialogue: {fileID: 0}
+  enemiesInboundDialogue: {fileID: 0}
 --- !u!1 &1026849729
 GameObject:
   m_ObjectHideFlags: 0

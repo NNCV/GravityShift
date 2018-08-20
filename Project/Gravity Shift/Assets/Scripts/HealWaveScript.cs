@@ -13,7 +13,10 @@ public class HealWaveScript : MonoBehaviour {
     {
         if (collision.tag == "Enemy")
         {
-            collision.gameObject.GetComponentInChildren<BasicEnemyScript>().healthCurrent += (collision.gameObject.GetComponentInChildren<BasicEnemyScript>().healthMax - collision.gameObject.GetComponentInChildren<BasicEnemyScript>().healthCurrent) * healingPower;
+            if (collision.gameObject.GetComponent<BasicEnemyScript>().enemyTypeID != 1)
+            {
+                collision.gameObject.GetComponentInChildren<BasicEnemyScript>().healthCurrent += (collision.gameObject.GetComponentInChildren<BasicEnemyScript>().healthMax - collision.gameObject.GetComponentInChildren<BasicEnemyScript>().healthCurrent) * healingPower;
+            }
         }
     }
 

@@ -47,38 +47,45 @@ public class BasicEnemyScript : MonoBehaviour {
 
     public virtual void Explode()
     {
-        foreach(AssasinationObjective oo in FindObjectOfType<ObjectiveManager>().currentObjectives)
+        if (FindObjectsOfType<ObjectiveManager>().Length != 0)
         {
-            if(oo.enemyID == enemyID)
+            foreach (AssasinationObjective oo in FindObjectOfType<ObjectiveManager>().currentObjectives)
             {
-                oo.objectiveProgress++;
-            }
-        }
-
-        FindObjectOfType<PlayerManager>().currentXP += xpReward;
-
-        GameObject drop = dropGO;
-        int selected = dropRates.Length - 1;
-        float chance = Random.Range(0f, 1f);
-        bool found = false;
-
-        if (chance >= dropRates[0])
-        {
-            while(!found)
-            {
-                if(dropRates[selected] > chance)
+                if (oo.enemyID == enemyID)
                 {
-                    selected--;
-                }
-                if(dropRates[selected] <= chance)
-                {
-                    found = true;
+                    oo.objectiveProgress++;
                 }
             }
-            drop.GetComponent<DropScript>().drop = drops[selected];
-            drop.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = drops[selected].itemImage;
-            drop.transform.GetChild(2).GetComponent<SpriteRenderer>().color = drops[selected].rarity;
-            Instantiate(drop, transform.position, transform.rotation);
+
+            FindObjectOfType<PlayerManager>().currentXP += xpReward;
+
+            GameObject drop = dropGO;
+            int selected = dropRates.Length - 1;
+            float chance = Random.Range(0f, 1f);
+            bool found = false;
+
+            if (chance >= dropRates[0])
+            {
+                while (!found)
+                {
+                    if (dropRates[selected] > chance)
+                    {
+                        selected--;
+                    }
+                    if (dropRates[selected] <= chance)
+                    {
+                        found = true;
+                    }
+                }
+                drop.GetComponent<DropScript>().pim = FindObjectOfType<PlayerInventoryManager>();
+                drop.GetComponent<DropScript>().drop = drops[selected];
+                if (drops[selected] != null)
+                {
+                    drop.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = drops[selected].itemImage;
+                    drop.transform.GetChild(2).GetComponent<SpriteRenderer>().color = drops[selected].rarity;
+                    Instantiate(drop, transform.position, transform.rotation);
+                }
+            }
         }
     }
 }
