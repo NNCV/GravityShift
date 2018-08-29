@@ -650,10 +650,14 @@ public class PlayerManager : MonoBehaviour {
     public void Save()
     {
         SavePlayerInfo();
+        if (puim.transform.GetChild(0).transform.GetChild(1).gameObject.activeInHierarchy == true)
+        {
+            pem.SaveEquipment();
+        }
         SaveEquipment();
         SaveInventory();
     }
-
+    
     public void FullSave()
     {
         SavePlayerInfo();
@@ -704,7 +708,6 @@ public class PlayerManager : MonoBehaviour {
         GeneralItem from = selectedSlot.itemInSlot;
         GeneralItem to = ss.itemInSlot;
 
-
         string toSlotType = ss.slotType;
         string fromSlotType = selectedSlot.slotType;
 
@@ -733,7 +736,7 @@ public class PlayerManager : MonoBehaviour {
 
                         selectedSlot.DisplayItem();
                         ss.DisplayItem();
-
+                        
                         DeselectSlot();
                     }
                 }
@@ -841,6 +844,10 @@ public class PlayerManager : MonoBehaviour {
                 }
             }
         }
+
+     
+        pem.SaveEquipment();
+
     }
 
     public ObjectiveObject GenerateRandomSectorObjective(int objectiveType, int enemyType = 0, int enemyID = 0)

@@ -6,6 +6,7 @@ public class ManualTargetWeaponScript : RotatingWeaponScript {
 
     public GameObject manualTargetProjectile;
 
+
     public override void Fire()
     {
         base.Fire();
@@ -20,5 +21,8 @@ public class ManualTargetWeaponScript : RotatingWeaponScript {
         float shakeRotZ = Random.Range(shakeZmin, shakeZmax);
 
         Camera.main.GetComponent<CameraMovementManager>().Shake(shakeAddX, shakeAddY, shakeRotZ);
+
+        pm.pem.energyCurrent -= energyDrain;
+        pm.pem.energyCooldown = 0;
     }
 }

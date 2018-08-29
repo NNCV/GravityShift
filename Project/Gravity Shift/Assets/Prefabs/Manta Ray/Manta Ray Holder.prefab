@@ -825,7 +825,7 @@ MonoBehaviour:
   shOffset: {x: 0, y: 0, z: 0}
   dropGO: {fileID: 0}
   drops:
-  - {fileID: 11400000, guid: 06270661d5f034c44aa11e1e31924adb, type: 2}
+  - {fileID: 11400000, guid: 55d0a8466a057a145a8b49db332476f2, type: 2}
   - {fileID: 11400000, guid: f5d8e87d8aac0ad4b857a4392a932210, type: 2}
   dropRates:
   - 0

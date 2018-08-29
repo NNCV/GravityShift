@@ -1128,7 +1128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccaeca8ed7844d740a1695856435dc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: 5
+  enemyID: 2
   enemyTypeID: 0
   chanceToSpawn: 0
   enemyName: manta ray
@@ -1141,7 +1141,7 @@ MonoBehaviour:
   dropGO: {fileID: 1871361722763244, guid: d9cad567171215e41a45cc1f42b7e2d4, type: 2}
   drops:
   - {fileID: 0}
-  - {fileID: 11400000, guid: 06270661d5f034c44aa11e1e31924adb, type: 2}
+  - {fileID: 11400000, guid: 55d0a8466a057a145a8b49db332476f2, type: 2}
   dropRates:
   - 0
   - 0.35

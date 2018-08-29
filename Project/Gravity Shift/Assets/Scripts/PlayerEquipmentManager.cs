@@ -58,19 +58,22 @@ public class PlayerEquipmentManager : MonoBehaviour
 
         currentHull = (HullItem)equipment[0].itemInSlot;
 
+        currentBlasters = new BlasterItem[currentHull.maxWeaponNumber];
+
         for (int a = 0; a < 6; a++)
         {
             if(equipment[a + 1].enabled == true)
             {
+                Debug.Log(equipment[a + 1].itemInSlot.itemName + " - " + currentWeaponNumber);
                 if (equipment[a + 1].itemInSlot == null)
                 {
                     currentBlasters[currentWeaponNumber] = null;
+                    Debug.Log("weapon no " + a + " unequipped");
                 }
                 else
                 {
                     currentBlasters[currentWeaponNumber] = (BlasterItem)equipment[a + 1].itemInSlot;
                 }
-
                 currentWeaponNumber++;
             }
         }
@@ -435,8 +438,6 @@ public class PlayerEquipmentManager : MonoBehaviour
             {
                 weaponReload[weaponSelected] = 0f;
                 transform.GetChild(weaponSelected + 1).GetComponentInChildren<BasicWeaponScript>().Fire();
-                energyCurrent -= transform.GetChild(weaponSelected + 1).GetComponentInChildren<BasicWeaponScript>().energyDrain;
-                energyCooldown = 0;
             }
         }
         weaponSelected++;

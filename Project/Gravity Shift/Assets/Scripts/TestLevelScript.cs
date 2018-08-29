@@ -71,6 +71,10 @@ public class TestLevelScript : MonoBehaviour {
     //test
     private void Update()
     {
+        if(Input.GetMouseButtonDown(0))
+        {
+            FindObjectOfType<AutoTargetWeaponScript>().Fire();  
+        }
 
         if (cams[0].enabled == true)
         {
@@ -182,7 +186,7 @@ public class TestLevelScript : MonoBehaviour {
             //sunGO.transform.GetChild(0).GetChild(1).transform.localScale = new Vector3(size * 50f, size * 50f, size * 50f);
             sunGO.transform.GetChild(0).GetChild(1).GetComponent<WarpConduitLensFlareScript>().scaleOrigin = size * 40f;
 
-            Instantiate(sunGO, new Vector3(0f, 0f, -4850f), Quaternion.Euler(0f, 0f, 0f));
+            Instantiate(sunGO, new Vector3(0f, 0f, 4850f), Quaternion.Euler(0f, 0f, 0f));
         }
         else if (planet > 0)
         {
@@ -211,7 +215,7 @@ public class TestLevelScript : MonoBehaviour {
             planetGO.transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().color = slo.systemPlanets[planet].planetMainColor;
             planetGO.transform.GetChild(1).GetChild(0).transform.localScale = new Vector3(1.45f * slo.systemPlanets[planet].planetRadius, 1.45f * slo.systemPlanets[planet].planetRadius, 1.45f * slo.systemPlanets[planet].planetRadius);
 
-            Instantiate(planetGO, new Vector3(0f, 0f, -4850f), Quaternion.Euler(0f, 0f, 0f));
+            Instantiate(planetGO, new Vector3(0f, 0f, 4850f), Quaternion.Euler(0f, 0f, 0f));
         }
     }
 

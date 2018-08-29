@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b68f728fc9901148bdb3b3f93038f65, type: 3}
+  m_Name: Vindicator
+  m_EditorClassIdentifier: 
+  itemImage: {fileID: 21300000, guid: 441a10e599c55ed41ab72604edf6fbf1, type: 3}
+  itemName: vindicator turret
+  itemDescription: fires a mighty laser beam that cuts through foes
+  itemValue: 100
+  itemType: Equippable Weapon
+  rarity: {r: 0.95931417, g: 1, b: 0.48627448, a: 1}
+  equipmentType: 1
+  slotImage: {fileID: 21300000, guid: 7b952500063715d4190f29c0ed3e026e, type: 3}
+  stat1: thermal
+  stat1Value: 0.3
+  stat2: kinetic
+  stat2Value: 0.1
+  overchargeEffect: 
+  blasterDmgType1: Kinetic
+  blasterDmgType2: Thermal
+  blasterGO: {fileID: 1394418397362004, guid: 83a87111fbcc4864db890ea3a08b1fef, type: 2}
+  blasterEnergyDrain: 2
+  blasterFireRate: 0.15
+  blasterCooldown: 0
+  wep1Value: 0.4
+  wep2Value: 1
+  wep3Value: 1.6
+  wep4Value: 0.4
