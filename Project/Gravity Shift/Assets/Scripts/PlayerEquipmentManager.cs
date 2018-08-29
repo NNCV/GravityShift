@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum BlasterType
+{
+    AutoTarget, ManualTarget, Homing, MultiTarget, NecromancerModule, TerraframeModule
+}
+
 [System.Serializable]
 public class PlayerEquipmentManager : MonoBehaviour
 {
@@ -267,6 +272,11 @@ public class PlayerEquipmentManager : MonoBehaviour
                 {
                     if (pm.warping == false)
                     {
+                        Ray r = new Ray();
+                        RaycastHit hit = new RaycastHit();
+
+                  //      if (Physics.Raycast(r, hit, ))
+
                         Fire();
                     }
                 }
@@ -332,10 +342,9 @@ public class PlayerEquipmentManager : MonoBehaviour
         //Display new hull
         GameObject.Instantiate(currentHull.hullGO, this.transform.position, this.transform.rotation, this.transform);
 
-        //Reset CurrentWeaponNumber Timer
+        //Display Weapons
         currentHull.currentWeaponNumber = 0;
-
-        //Recalibrate CurrentWeaponNumber Timer and check for bugs
+        
         foreach (BlasterItem blaster in currentBlasters)
         {
             if (blaster == null)
@@ -349,7 +358,35 @@ public class PlayerEquipmentManager : MonoBehaviour
                 currentHull.currentWeaponNumber++;
                 //Display new blaster at specified transform
                 GameObject blasterToSpawn = blaster.blasterGO;
-                blasterToSpawn.GetComponentInChildren<BlasterScript>().pm = this.pm;
+
+                /*
+                switch(blaster.blasterType)
+                {
+                    case BlasterType.AutoTarget:
+                        //not implemented yet
+                        break;
+                    case BlasterType.ManualTarget:
+                        //ok
+                        break;
+                    case BlasterType.Homing:
+                        //not there yet
+                        break;
+                    case BlasterType.MultiTarget:
+                        //nah
+                        break;
+                    case BlasterType.NecromancerModule:
+                        //yes
+                        break;
+                    case BlasterType.TerraframeModule:
+                        //nice
+                        break;
+                }
+                */
+
+                blasterToSpawn.GetComponentInChildren<BasicWeaponScript>().energyDrain = blaster.blasterEnergyDrain;
+                blasterToSpawn.GetComponentInChildren<BasicWeaponScript>().coolDown = blaster.blasterCooldown;
+                blasterToSpawn.GetComponentInChildren<BasicWeaponScript>().fireRate = blaster.blasterFireRate;
+                blasterToSpawn.GetComponentInChildren<BasicWeaponScript>().pm = this.pm;
                 GameObject.Instantiate(blasterToSpawn, transform.position + currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].position + new Vector3(0f, 0f, -0.0001f), transform.rotation * currentHull.blasterTransforms[currentHull.currentWeaponNumber - 1].rotation, this.transform);
             }
         }
@@ -375,13 +412,11 @@ public class PlayerEquipmentManager : MonoBehaviour
             {
                 dm.ShowDialogue(exitHydr);
             }
-
         }
         else
         {
             dm.ShowDialogue(isInHydr);
         }
-
     }
 
     public void Fire()
@@ -394,13 +429,13 @@ public class PlayerEquipmentManager : MonoBehaviour
         {
             weaponSelected++;
         }
-        if (energyCurrent >= transform.GetChild(weaponSelected + 1).GetComponentInChildren<BlasterScript>().blasterEnergyDrain)
+        if (energyCurrent >= transform.GetChild(weaponSelected + 1).GetComponentInChildren<BasicWeaponScript>().energyDrain)
         {
             if(weaponReload[weaponSelected] >= currentBlasters[weaponSelected].blasterFireRate)
             {
                 weaponReload[weaponSelected] = 0f;
-                transform.GetChild(weaponSelected + 1).GetComponentInChildren<BlasterScript>().Fire();
-                energyCurrent -= transform.GetChild(weaponSelected + 1).GetComponentInChildren<BlasterScript>().blasterEnergyDrain;
+                transform.GetChild(weaponSelected + 1).GetComponentInChildren<BasicWeaponScript>().Fire();
+                energyCurrent -= transform.GetChild(weaponSelected + 1).GetComponentInChildren<BasicWeaponScript>().energyDrain;
                 energyCooldown = 0;
             }
         }

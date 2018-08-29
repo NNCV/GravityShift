@@ -196,15 +196,12 @@ public class PlayerManager : MonoBehaviour {
                             timeCurrent += Time.deltaTime;
                         }
                     }
-                    else
+                    if (enteredEqScreen == true)
                     {
-                        if (enteredEqScreen == true)
+                        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 6f);
+                        if (transform.rotation.z <= 0.5f || transform.rotation.z >= -0.5f)
                         {
-                            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, 0f), Time.deltaTime * 6f);
-                            if (transform.rotation.z <= 0.05f || transform.rotation.z >= -0.05f)
-                            {
-                                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                            }
+                            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                         }
                     }
                 }

@@ -7,8 +7,11 @@ public class BlasterItem : EquippableItem
 {
     public string overchargeEffect = "";
 
-    public string blasterDmgType1 = "Kinetic";
-    public string blasterDmgType2 = "Thermal";
+    public string blasterDmgType1 = "";
+    public string blasterDmgType2 = "";
+    //  the following is not yet implemented not because there was no way of doing so, but because at the moment of writing this I don't know what to do with this data, but I knew what just 5 minutes ago
+    //  if you see this, then you know I still didn't remember what that was all about.
+    //    public BlasterType blasterType;
 
     public GameObject blasterGO;
     

@@ -26,6 +26,7 @@ MonoBehaviour:
   overchargeEffect: 
   blasterDmgType1: Kinetic
   blasterDmgType2: Thermal
+  blasterType: 1
   blasterGO: {fileID: 1048590509914506, guid: 1711372f9fcd786438f5093300fce493, type: 2}
   blasterEnergyDrain: 15
   blasterFireRate: 0.35

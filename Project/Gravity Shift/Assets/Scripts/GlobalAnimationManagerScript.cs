@@ -93,6 +93,11 @@ public class GlobalAnimationManagerScript : MonoBehaviour {
         {
             Destroy(enemy);
         }
+
+        foreach (GameObject drop in GameObject.FindGameObjectsWithTag("Drop"))
+        {
+            Destroy(drop);
+        }
     }
     
     public void Update()

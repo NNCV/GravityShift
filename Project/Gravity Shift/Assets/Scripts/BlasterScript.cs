@@ -8,13 +8,6 @@ public class BlasterScript : MonoBehaviour
 
     public GameObject blast;
     public Transform blastSpawnZone;
-    public float offset = -90f;
-    public float pointSpeed;
-
-    public float shakeMovMin = 0f;
-    public float shakeMovMax = 0f;
-    public float shakeRotMin = 0f;
-    public float shakeRotMax = 0f;
 
     public int blasterEnergyDrain = 0;
     public float blasterFireRate = 0f;
@@ -25,32 +18,15 @@ public class BlasterScript : MonoBehaviour
     {
         blastSpawnZone = transform.GetChild(1).transform;
     }
-
-    void FixedUpdate()
-    {
-        if (!pm.warmingUp || !pm.warping || !pm.tutorialIntroAnimation)
-        {
-            if (pm.isFrozen == false || pm.isInCutscene == false || pm.tutorialIntroAnimation == false)
-            {
-                dif = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                dif.Normalize();
-            }
-            else
-            {
-                dif = new Vector3(0f, 1f, 0f);
-            }
-
-            float rotZ = Mathf.Atan2(dif.y, dif.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, rotZ + offset), Time.deltaTime * pointSpeed);
-        }
-    }
+    
 
     public void Fire()
-    {
+    {/*
         float shakeMovAddX = Random.Range(shakeMovMin, shakeMovMax);
         float shakeMovAddY = Random.Range(shakeMovMin, shakeMovMax);
         float shakemovAddRot = Random.Range(shakeRotMin, shakeRotMax);
         Instantiate(blast, blastSpawnZone.position, blastSpawnZone.rotation);
         Camera.main.GetComponent<CameraMovementManager>().Shake(shakeMovAddX, shakeMovAddY, shakemovAddRot);
+        */
     }
 }
